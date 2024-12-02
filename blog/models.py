@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
@@ -6,6 +7,8 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.search import index
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.snippets.models import register_snippet
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
 
 
 
@@ -23,11 +26,16 @@ class BlogIndexPage(Page):
     ]
 
 
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey('BlogPage', related_name='tegged_items', on_delete=models.CASCADE)
+
+
 class BlogPage(Page):
     date = models.DateField("Дата публикации")
     intro = models.CharField('Заголовок', max_length=250)
     body = RichTextField('Текст', blank=True)
     authors = ParentalManyToManyField('blog.Author', blank=True)
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -42,7 +50,11 @@ class BlogPage(Page):
     ]
     
     content_panels = Page.content_panels + [
-        FieldPanel('date'),
+        MultiFieldPanel([
+           FieldPanel('date'),
+           FieldPanel('authors', widget=forms.CheckboxSelectMultiple),
+           FieldPanel('tags'), 
+        ], heading='Информация о блоге'),
         FieldPanel('intro'),
         FieldPanel('body'),
         InlinePanel('gallery_images', label='Галерея изображений'),
@@ -74,3 +86,13 @@ class Author(models.Model):
 
     class Meta:
         verbose_name_plural = "Авторы"
+
+
+class BlogTagIndexPage(Page):
+    
+    def get_context(self, requesst):
+        tag = requesst.GET.get('tag')
+        blogpages = BlogPage.objects.filter(tags__name=tag)
+        context = super().get_context(requesst)
+        context['blogpages'] = blogpages
+        return context
