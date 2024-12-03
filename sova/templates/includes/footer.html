@@ -1,0 +1,17 @@
+<footer>
+    <p>Создано с Wagtail</p>
+
+    {% with vk_url=settings.base.NavigationSettings.vk_url github_url=settings.base.NavigationSettings.github_url %}
+        {% if vk_url or github_url %}
+            <p>
+                Мои страницы в:
+                {% if github_url %}
+                    <a href="{{ github_url }}">GitHub</a>
+                {% endif %}
+                {% if vk_url %}
+                    <a href="{{ vk_url }}">vk</a>
+                {% endif %}
+            </p>
+        {% endif %}
+    {% endwith %}
+</footer>
