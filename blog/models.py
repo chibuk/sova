@@ -92,7 +92,7 @@ class BlogTagIndexPage(Page):
     
     def get_context(self, requesst):
         tag = requesst.GET.get('tag')
-        blogpages = BlogPage.objects.filter(tags__name=tag)
+        blogpages = BlogPage.objects.live().filter(tags__name=tag)
         context = super().get_context(requesst)
         context['blogpages'] = blogpages
         return context
