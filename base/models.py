@@ -52,5 +52,5 @@ class FooterText(
         return {"footer_text": self.body}
     
     class Meta(TranslatableMixin.Meta):
-        verbose_name_plural = "Текстовые блоки футера"
+        verbose_name_plural = "Тексты футера"
     

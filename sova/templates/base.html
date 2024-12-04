@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static wagtailcore_tags %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -23,6 +23,8 @@
         <base target="_blank">
         {% endif %}
 
+        <meta name="color-scheme" content="light dark">
+
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/sova.css' %}">
 
@@ -32,9 +34,12 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
 
-        {% block content %}{% endblock %}
+        {% include "includes/header.html" %}
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
 
         {% include "includes/footer.html" %}
 
