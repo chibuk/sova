@@ -1,10 +1,13 @@
 from django.db import models
 
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PublishingPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PublishingPanel, FieldRowPanel, InlinePanel
 from wagtail.contrib.settings.models import BaseGenericSetting, register_setting
 from wagtail.fields import RichTextField
 from wagtail.models import  DraftStateMixin, PreviewableMixin, RevisionMixin, TranslatableMixin
 from wagtail.snippets.models import register_snippet
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
+from modelcluster.fields import ParentalKey
 
 
 
@@ -54,3 +57,26 @@ class FooterText(
     class Meta(TranslatableMixin.Meta):
         verbose_name_plural = "Тексты футера"
     
+
+class FormField(AbstractFormField):
+    page = ParentalKey("FormPage", on_delete=models.CASCADE, related_name='form_fields')
+    
+    
+    
+class FormPage(AbstractEmailForm):
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+    
+    content_panels = AbstractEmailForm.content_panels + [
+        FormSubmissionsPanel(),
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Поля формы"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address'),
+                FieldPanel('to_address'),
+            ]),
+            FieldPanel('subject'),
+        ], 'Email'),
+    ]
