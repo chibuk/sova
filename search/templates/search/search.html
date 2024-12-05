@@ -3,18 +3,20 @@
 
 {% block body_class %}template-searchresults{% endblock %}
 
-{% block title %}Search{% endblock %}
+{% block title %}Поиск{% endblock %}
 
 {% block content %}
-<h1>Search</h1>
+<h1>Поиск</h1>
 
 <form action="{% url 'search' %}" method="get">
     <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-    <input type="submit" value="Search" class="button">
+    <input type="submit" value="Искать" class="button">
 </form>
 
 {% if search_results %}
-<ul>
+<p>Вы искали{% if search_query %} “{{ search_query }}”{% endif %}, {{ search_results.paginator.count }} 
+    результатов{{ search_results.paginator.count|pluralize }} найдено.</p>
+<ol>
     {% for result in search_results %}
     <li>
         <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
@@ -23,16 +25,21 @@
         {% endif %}
     </li>
     {% endfor %}
-</ul>
+</ol>
+
+{% if search_results.paginator.num_pages > 1 %}
+    <p>Страница {{ search_results.number }} из {{ search_results.paginator.num_pages }}, 
+        показ {{ search_results|length }} результатов{{ search_results|pluralize }} из {{ search_results.paginator.count }}</p>
+{% endif %}
 
 {% if search_results.has_previous %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Предыдущий</a>
 {% endif %}
 
 {% if search_results.has_next %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Следующий</a>
 {% endif %}
 {% elif search_query %}
-No results found
+Ничего не найдено
 {% endif %}
 {% endblock %}

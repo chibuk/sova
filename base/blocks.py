@@ -42,7 +42,7 @@ class HeadingBlock(StructBlock):
 class BaseStreamBlock(StreamBlock):
     heading_block = HeadingBlock()
     paragraph_block = RichTextBlock(icon="pilcrow")
-    imagr_block = CaptionedImageBlock()
+    image_block = CaptionedImageBlock()
     embded_block = EmbedBlock(
         help_text="Ввести URL для встраивания, например, https://rutube.ru/video/da422a2520db8cc2705357e858aaba98/",
         icon="media",
