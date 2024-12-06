@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+    }
+    #container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    header {
+        background-color: #4e10fa;
+        height: 5rem;
+    }
+    main {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    footer {
+        padding: .5rem;
+        font-size: .9rem;
+    }
+</style>
+<body>
+    <div id="container">
+        <header class="has-background-primary">
+            header
+        </header>
+        <main>
+            <section>
+                1
+            </section>
+            <section>
+                2
+            </section>
+            <section>  
+                3
+            </section>
+        </main>
+        <footer class="has-background-grey-lighter">
+            footer <br>
+            test <br>
+        </footer>
+    </div>
+</body>
+</html>
