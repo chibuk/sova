@@ -10,8 +10,13 @@
     * {
         box-sizing: border-box;
     }
-    body {
+    :root {
+        --css-radius: .5rem;
+    }
+
+    video {
         margin: 0;
+        background-color: var(--bulma-grey);
     }
     #container {
         display: flex;
@@ -23,7 +28,7 @@
         height: 5rem;
         position: fixed;
         width: 100%;
-        border-radius: 0 0 1rem 1rem;
+        border-radius: 0 0 var(--css-radius) var(--css-radius);
     }
     main {
         margin-top: 5rem;
@@ -73,6 +78,9 @@
         background-color: var(--bulma-primary);
         color: aliceblue;
     }
+    #first {
+        border-radius: var(--css-radius) var(--css-radius) 0 0;
+    }
 </style>
 <body>
     <video class="bg_video" muted loop playsinline autoplay>
@@ -92,7 +100,7 @@
                     <button class="button">РЕГИСТРАЦИЯ</button>
                 </div>
             </section>
-            <section class="has-background-light">
+            <section id="first" class="has-background-light">
                 2 <br><br><br><br><br><br><br><br>
                 2 <br><br><br><br><br><br><br><br>
                 2 <br><br><br><br><br><br><br><br>
