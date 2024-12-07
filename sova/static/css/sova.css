@@ -53,3 +53,43 @@ header {
 .page-form .helptext {
   font-style: italic;
 }
+
+/* Chibuk styles experiment */
+
+@font-face {
+  font-family: "SOMGER Condensed";
+  font-style: normal;
+  font-weight: bold;
+  src: local("SOMGER Condensed"),
+       url("/fonts/songercondensed_heavy.otf") format('otf');
+}
+
+@font-face {
+  font-family: "Literal";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Literal"),
+       url("/fonts/LiteralRegular.otf") format('otf');
+}
+@font-face {
+  font-family: "Literal Bold";
+  font-style: normal;
+  font-weight: bold;
+  src: local("Literal Bold"),
+       url("/fonts/LiteralBold.otf") format('otf');
+}
+@font-face {
+  font-family: "Literal Light";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Literal Light"),
+       url("/fonts/LiteralLight.otf") format('otf');
+}
+
+h1 {
+  font-family: "SOMGER Condensed", serif;
+}
+body {
+  font-family: "Literal", Verdana, sans-serif ;
+}
+
