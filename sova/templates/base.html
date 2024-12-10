@@ -34,20 +34,23 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
+        <div id="container">
+                
+            {% include "includes/header.html" %}
 
-        {% include "includes/header.html" %}
+            <main>
+                {% block content %}{% endblock %}
+            </main>
 
-        <main>
-            {% block content %}{% endblock %}
-        </main>
+            {% include "includes/footer.html" %}
 
-        {% include "includes/footer.html" %}
+            {# Global javascript #}
+            <script type="text/javascript" src="{% static 'js/sova.js' %}"></script>
 
-        {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/sova.js' %}"></script>
-
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
+            {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+            {% endblock %}
+        
+        </div>
     </body>
 </html>

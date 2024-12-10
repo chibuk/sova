@@ -2,15 +2,29 @@
 
 <header>
     {% get_site_root as site_root %}
+    <div id="logo"></div>
     <nav>
-        <p>
+        <ul class="menu flex-row">
+            <li class="menu-item">
+                <a href="{% pageurl site_root%}">Домашняя страница</a>
+            </li>
+            {% for menuitem in site_root.get_children.live.in_menu %}
+            <li class="menu-item">
+                <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+            </li>
+            {% endfor %}
+            <li class="menu-item">
+                <a href="/search/">Поиск</a>
+            </li>
+        </ul>
+        <!-- <p>
             <a href="{% pageurl site_root%}">Домашняя страница</a> |
             {% for menuitem in site_root.get_children.live.in_menu %}
                 <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
                 {% if not forloop.last %} | {% endif %}
             {% endfor %}
             | <a href="/search/">Поиск</a>
-        </p>
+        </p> -->
     </nav>
     {% wagtailuserbar "top-right" %}
 </header>
