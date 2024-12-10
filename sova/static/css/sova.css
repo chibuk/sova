@@ -160,6 +160,10 @@ body {
   min-width: var(--screen-mobile);
 }
 
+nav {
+  margin: auto 0;
+}
+
 h1, h2, h3, h4 {
 /* font-family: "SOMGER Condensed", "URW Gothic", serif; */
 font-family: "IntroHeadR", Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
@@ -200,7 +204,7 @@ footer {
   font-size: .9em;
   background-color: var(--footer-bgcolor);
 }
-.bg_video {
+#bg_video {
   position: fixed;
   top: calc(var(--header-height) - 1rem);
   left: 0;
@@ -224,7 +228,7 @@ section {
   color: var(--body-bgcolor);
 }
 
-button {
+button, a {
   transition: all 300ms;
   cursor: pointer;
 }
@@ -241,17 +245,19 @@ a {
   }
 }
 #hero_button {
-  box-shadow: inset;
+  /* box-shadow: inset; */
   padding: 0 3em;
 }
-#hero_button > button {
+#hero_button > a {
+  display: block;
+  border: 1px solid var(--brand-bgcolor);
   font: 1em "Cruinn Black", sans-serif;
   background-color: var(--body-color);
   padding: .8em 1em;
   border-radius: 2em;
   color: var(--body-bgcolor)
 }
-#hero_button > button:hover {
+#hero_button > a:hover {
   background-color: var(--brand-bgcolor);
   color: var(--body-color);
 }
@@ -305,8 +311,18 @@ section#content {
   border-bottom: 1px solid var(--body-color);
 }
 
-div#logo > img {
-  width: 70px;
+div#logo {
+  height: 100%;
+}
+
+div#logo > a {
+  display: block;
+  /* width: 5rem; */
+  height: inherit;
+  /* border: 1px solid white; */
   padding: 5px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+}
+div#logo > a > img {
+  height: inherit;
 }

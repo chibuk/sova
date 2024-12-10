@@ -4,42 +4,47 @@ from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
+from wagtailvideos.edit_handlers import VideoChooserPanel
+
 
 class HomePage(Page):
     
-    image = models.ForeignKey(
-        'wagtailimages.Image', 
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        help_text='Изображение домашней страницы',
-    )
-    hero_text = models.CharField(blank=True, max_length=255, help_text='Напиши краткое введение')
-    hero_cta = models.CharField(
-        blank=True,
-        verbose_name="Hero CTA",
-        max_length=255,
-        help_text="Текст выводимый на CTA",
-    )
-    hero_cta_link = models.ForeignKey(
+    # image = models.ForeignKey(
+    #     'wagtailimages.Image', 
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name='+',
+    #     help_text='Изображение домашней страницы',
+    # )
+    hero_video = models.ForeignKey('wagtailvideos.Video',
+                                   related_name='+', null=True, on_delete=models.SET_NULL)
+    hero_text = models.CharField(blank=True, max_length=255, help_text='Слоган на фоне видео')
+    # hero_cta = models.CharField(
+    #     blank=True,
+    #     verbose_name="Hero CTA",
+    #     max_length=255,
+    #     help_text="Текст выводимый на CTA",
+    # )
+    hero_link = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name='Hero CTA ссылка',
-        help_text='Выбрать страницу, с призывом к действию (CTA)'
+        verbose_name='Hero ссылка',
+        help_text='Выбрать страницу, для перехода по кнопке на фоне видео'
     )    
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
-                FieldPanel("image"),
+                # FieldPanel("image"),
                 FieldPanel("hero_text"),
-                FieldPanel("hero_cta"),
-                FieldPanel("hero_cta_link"),
+                VideoChooserPanel('hero_video'),
+                # FieldPanel("hero_cta"),
+                FieldPanel("hero_link"),
             ], heading="Раздел Hero"
         ),
         FieldPanel('body'),

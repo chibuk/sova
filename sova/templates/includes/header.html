@@ -1,13 +1,16 @@
 {% load wagtailcore_tags navigation_tags wagtailuserbar %}
+{% load static wagtailcore_tags %}
 
 <header>
     {% get_site_root as site_root %}
-    <div id="logo"></div>
+    <div id="logo">
+        <a href="{% pageurl site_root%}"><img src="{% static 'css/ttf/kubok_w.png' %}" alt="home"></a>
+    </div>
     <nav>
         <ul class="menu flex-row">
-            <li class="menu-item">
+            <!-- <li class="menu-item">
                 <a href="{% pageurl site_root%}">Домашняя страница</a>
-            </li>
+            </li> -->
             {% for menuitem in site_root.get_children.live.in_menu %}
             <li class="menu-item">
                 <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
@@ -17,14 +20,6 @@
                 <a href="/search/">Поиск</a>
             </li>
         </ul>
-        <!-- <p>
-            <a href="{% pageurl site_root%}">Домашняя страница</a> |
-            {% for menuitem in site_root.get_children.live.in_menu %}
-                <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
-                {% if not forloop.last %} | {% endif %}
-            {% endfor %}
-            | <a href="/search/">Поиск</a>
-        </p> -->
     </nav>
     {% wagtailuserbar "top-right" %}
 </header>
