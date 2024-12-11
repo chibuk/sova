@@ -20,12 +20,9 @@ class HomePage(Page):
     hero_video = models.ForeignKey('wagtailvideos.Video',
                                    related_name='+', null=True, on_delete=models.SET_NULL)
     hero_text = models.CharField(blank=True, max_length=255, help_text='Слоган на фоне видео')
-    # hero_cta = models.CharField(
-    #     blank=True,
-    #     verbose_name="Hero CTA",
-    #     max_length=255,
-    #     help_text="Текст выводимый на CTA",
-    # )
+    hero_button = models.CharField(blank=True, verbose_name="Текст кнопки", max_length=16,
+        help_text="Текст кнопки",
+    )
     hero_link = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
@@ -43,7 +40,7 @@ class HomePage(Page):
                 # FieldPanel("image"),
                 FieldPanel("hero_text"),
                 VideoChooserPanel('hero_video'),
-                # FieldPanel("hero_cta"),
+                FieldPanel("hero_button"),
                 FieldPanel("hero_link"),
             ], heading="Раздел Hero"
         ),

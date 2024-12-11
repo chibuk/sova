@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 :root {
-  --css-radius: .9rem;
+  --border-radius: .9rem;
   --header-height: 5rem;
   
   --brand-color-h: 200;
@@ -19,6 +19,8 @@
   --box-shadow: 2px 2px 25px hsl(var(--brand-color-h), 10%, 20%);
 
   --screen-mobile: 360px;
+  --screen-xtablet: 1360px;
+  --content-max-width: var(--screen-xtablet);
 
   --base-font-size: 1em;
   --base-line-height: 1,5;
@@ -183,7 +185,7 @@ header {
   height: var(--header-height);
   position: fixed;
   width: 100%;
-  border-radius: 0 0 var(--css-radius) var(--css-radius);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
   border-bottom: 1px solid hsl(var(--brand-color-h), var(--brand-color-s), calc(var(--brand-color-l) + 15%));
   box-shadow: var(--box-shadow);
   display: flex;
@@ -252,24 +254,27 @@ a {
   display: block;
   border: 1px solid var(--brand-bgcolor);
   font: 1em "Cruinn Black", sans-serif;
+  font-variant: small-caps;
   background-color: var(--body-color);
-  padding: .8em 1em;
+  padding: .5em 1em;
   border-radius: 2em;
-  color: var(--body-bgcolor)
+  color: var(--body-bgcolor);
+  opacity: 85%;
 }
 #hero_button > a:hover {
   background-color: var(--brand-bgcolor);
   color: var(--body-color);
+  opacity: 100%;
 }
 section#content {
-  border-radius: var(--css-radius) var(--css-radius) 0 0;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
   box-shadow: var(--box-shadow);
   padding-top: 1em;
 }
 
 .box {
   /* box-shadow: var(--box-shadow); */
-  border-radius: calc(var(--css-radius) / 2);
+  border-radius: calc(var(--border-radius) / 2);
   border: 1px solid var(--brand-bgcolor);
   padding: 1em;
   margin: 0 1em 1em 0;
@@ -317,11 +322,8 @@ div#logo {
 
 div#logo > a {
   display: block;
-  /* width: 5rem; */
   height: inherit;
-  /* border: 1px solid white; */
-  padding: 5px;
-  /* margin-top: 5px; */
+  padding: .5em;
 }
 div#logo > a > img {
   height: inherit;

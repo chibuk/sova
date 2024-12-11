@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% load wagtailvideos_tags %}
+{% load static wagtailcore_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/home_page.css' %}">
+{% endblock %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -14,7 +19,12 @@
     {% if page.hero_link %}
     <div id="hero_button">
         <a href="{% pageurl page.hero_link %}">
-             перейти
+            {% if page.hero_button %}
+                {{ page.hero_button|lower }}
+            {% else %}
+                перейти
+            {% endif %} 
+            
         </a>
     </div>
     {% endif %}
@@ -22,5 +32,53 @@
 <section id='content'>
   {{ page.body|richtext }}
 </section>
+<section class="section">
+{% comment %} Слайдер {% endcomment %}
+  <div class="slider" role="region" aria-label="Паттерны">
+    <div class="controls" role="group" aria-label="Управление слайдами">
+      {% comment %} Загружаемый, повторяющийся элемент {% endcomment %}
+      <button class="button button-radio" type="button" aria-current="true" aria-label="Показать 1 из 4"></button>
+      <button class="button button-radio" type="button" aria-label="Показать 2 из 4"></button>
+      <button class="button button-radio" type="button" aria-label="Показать 3 из 4"></button>
+      <button class="button button-radio" type="button" aria-label="Показать 4 из 4"></button>
+    </div>
+    <button aria-label="Предыдущий" type="button" class="button button-prev"></button>
+    <button aria-label="Следующий" type="button" class="button button-next"></button>
+  
+    <div class="slides" aria-live="polite">
+      {% comment %} Загружаемый, повторяющийся элемент {% endcomment %}
+      <div class="slide" role="group" aria-labelledby="item-1-label" id="carousel-item-1" >
+        <img class="slide-img" src="" alt="">      
+        <h2 id="item-1-label">Паттерн «Лето»</h2>
+      </div>
+      <div class="slide" role="group" aria-labelledby="item-2-label" id="carousel-item-2">
+        <img class="slide-img" src="" alt="">
+        <h2 id="item-2-label">Паттерн «Цветочное поле»</h2>
+      </div>
+      <div
+        class="slide" role="group" aria-labelledby="item-3-label" id="carousel-item-3">
+        <img class="slide-img" src="" alt="">
+        <h2 id="item-3-label">Паттерн «Лиловый»</h2>
+      </div>
+      <div class="slide" role="group" aria-labelledby="item-4-label" id="carousel-item-4">
+        <img class="slide-img" src="" alt="">
+        <h2 id="item-4-label">Паттерн «Алый»</h2>
+      </div>
+  
+    </div>
+  </div>
+
+
+</section>
 {% video self.hero_video muted loop playsinline autoplay id=bg_video %}
 {% endblock content %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+

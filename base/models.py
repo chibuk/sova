@@ -12,18 +12,30 @@ from modelcluster.fields import ParentalKey
 
 
 @register_setting
-class NavigationSettings(BaseGenericSetting):
+class BrandSettings(BaseGenericSetting):
     vk_url = models.URLField(verbose_name="Ссылка VK", blank=True)
     github_url = models.URLField("Ссылка на GitHub", blank=True)
+    logo_image = models.ForeignKey(
+        'wagtailimages.Image', 
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text='Логотип компании',
+    )
     
     panels = [
         MultiFieldPanel(
             [
+                FieldPanel('logo_image'),
                 FieldPanel('vk_url'),
                 FieldPanel('github_url'),
-            ], "Настройки соцсетей",
+            ], "Настройки организации",
         )
     ]
+    
+    class Meta:
+        verbose_name = "Логотип и футер"
 
 @register_snippet
 class FooterText(
