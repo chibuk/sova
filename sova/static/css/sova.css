@@ -272,8 +272,8 @@ section#content {
   padding-top: 1em;
 }
 
-.box {
-  /* box-shadow: var(--box-shadow); */
+/* .box {
+  // box-shadow: var(--box-shadow);
   border-radius: calc(var(--border-radius) / 2);
   border: 1px solid var(--brand-bgcolor);
   padding: 1em;
@@ -285,7 +285,7 @@ section#content {
 .box:hover {
   border-color: var(--body-bgcolor);
   transition: all 300ms;
-}
+} */
 
 .flex-row {
   display: flex;
