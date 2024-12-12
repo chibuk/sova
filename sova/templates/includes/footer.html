@@ -1,7 +1,7 @@
 {% load navigation_tags %}
 
 <footer>
-    <p>Создано с помощью Wagtail</p>
+    <p>Создано с помощью Wagtail. <a href="/admin">Admin</a></p>
 
     {% with vk_url=settings.base.BrandSettings.vk_url github_url=settings.base.BrandSettings.github_url %}
         {% if vk_url or github_url %}

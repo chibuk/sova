@@ -15,22 +15,16 @@ from modelcluster.fields import ParentalKey
 class BrandSettings(BaseGenericSetting):
     vk_url = models.URLField(verbose_name="Ссылка VK", blank=True)
     github_url = models.URLField("Ссылка на GitHub", blank=True)
-    logo_image = models.ForeignKey(
-        'wagtailimages.Image', 
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        help_text='Логотип компании',
-    )
+    logo_image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, verbose_name="Логотип",
+                                   on_delete=models.SET_NULL, related_name='+', help_text='Логотип')
     
     panels = [
+        FieldPanel('logo_image', help_text="Значок 60x60 на прозрачном фоне PNG"),
         MultiFieldPanel(
             [
-                FieldPanel('logo_image'),
                 FieldPanel('vk_url'),
                 FieldPanel('github_url'),
-            ], "Настройки организации",
+            ], "Футер",
         )
     ]
     
