@@ -25,7 +25,6 @@
   --base-font-size: 1em;
   --base-line-height: 1,5;
   --base-header-line-height: 1.25;
-  /* --flex-direction-row: row; */
 }
 
 
@@ -34,7 +33,7 @@
   font-style: normal;
   font-weight: bold;
   src: local("SOMGER Condensed"),
-       url("/fonts/songercondensed_heavy.otf") format('otf');
+       url("ttf/songercondensed_heavy.otf") format('otf');
 }
 
 @font-face {
@@ -42,21 +41,21 @@
   font-style: normal;
   font-weight: normal;
   src: local("Literal"),
-       url("/fonts/LiteralRegular.otf") format('otf');
+       url("ttf/LiteralRegular.otf") format('otf');
 }
 @font-face {
   font-family: "Literal Bold";
   font-style: normal;
   font-weight: bold;
   src: local("Literal Bold"),
-       url("/fonts/LiteralBold.otf") format('otf');
+       url("ttf/LiteralBold.otf") format('otf');
 }
 @font-face {
   font-family: "Literal Light";
   font-style: normal;
   font-weight: normal;
   src: local("Literal Light"),
-       url("/fonts/LiteralLight.otf") format('otf');
+       url("ttf/LiteralLight.otf") format('otf');
 } */
 @font-face {
   font-family: 'Cruinn';
@@ -110,7 +109,7 @@
   font-style: normal;
   font-weight: bold;
   src: local("Theater"),
-      url('ttf/IntroHeadR-Base.otf'),
+      url('ttf/Theaterv04_Bold.ttf'),
       url('ttf/Theater_Bold.otf');
 }
 
