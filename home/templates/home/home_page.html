@@ -12,21 +12,22 @@
 {% block content %}
 
 <section id='hero'>
+  {% if page.hero_text %}
     <div id="hero_text">
-        <h1>{{ page.hero_text }}</h1>
+      <h1>{{ page.hero_text }}</h1>
     </div>
-
-    {% if page.hero_link %}
-    <div id="hero_button">
-        <a href="{% pageurl page.hero_link %}">
-            {% if page.hero_button %}
-                {{ page.hero_button|lower }}
-            {% else %}
-                перейти
-            {% endif %} 
-        </a>
-    </div>
-    {% endif %}
+  {% endif %}
+  {% if page.hero_link %}
+  <div id="hero_button">
+      <a href="{% pageurl page.hero_link %}">
+          {% if page.hero_button %}
+              {{ page.hero_button|lower }}
+          {% else %}
+              перейти
+          {% endif %} 
+      </a>
+  </div>
+  {% endif %}
 </section>
 <section id='content'>
   {{ page.body|richtext }}
@@ -69,9 +70,10 @@
 
 
 </section>
-{% video self.hero_video muted loop playsinline autoplay id=bg_video %}
-{% endblock content %}
-
+{% if self.hero_video %}
+  {% video self.hero_video muted loop playsinline autoplay id=bg_video %}
+{% endif %}
+{% endblock %}
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
 {% endblock %}
