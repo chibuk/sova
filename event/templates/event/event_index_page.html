@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block body_class %}template-eventndexpage{% endblock %}
+{% block content %}
+<section id='content'>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.body|richtext }}</p>
+    {% for event in eventpages %}
+        <h2><a href="{% pageurl event %}">{{ event.specific.h1 }}</a></h2>
+        {% with event.specific.image as image %}
+            {% if image %} {% image image max-1360x540 %} {% endif %}
+        {% endwith %}
+    
+
+        {% with tags=event.cpecific.tags.all %}
+            {% if tags %}
+                <div class='tags'>
+                    <h3>Теги</h3>
+                    {% for tag in tags  %}
+                        <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                            <button type="button">{{ tag }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+        <div class='date'>
+            {{ event.specific.date_on }}
+            {% if event.specific.date_end %}- {{ event.specific.date_end }} {% endif %}
+        </div>
+    {% endfor %}
+    <div><a href="{{ page.get_parent.url }}">Домой</a></div>
+</section>
+    {% endblock %}

@@ -27,8 +27,8 @@
   --base-header-line-height: 1.25;
 }
 
-
-/* @font-face {
+/* 
+@font-face {
   font-family: "SOMGER Condensed";
   font-style: normal;
   font-weight: bold;
@@ -166,8 +166,7 @@ nav {
 }
 
 h1, h2, h3, h4 {
-/* font-family: "SOMGER Condensed", "URW Gothic", serif; */
-font-family: "IntroHeadR", Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+  font-family: "IntroHeadR", Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
 }
 
 video {
@@ -269,6 +268,7 @@ section#content {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   box-shadow: var(--box-shadow);
   padding-top: 1em;
+  height: 100%;
 }
 
 /* .box {

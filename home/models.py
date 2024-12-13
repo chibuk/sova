@@ -33,6 +33,8 @@ class HomePage(Page):
         help_text='Выбрать страницу, для перехода по кнопке на фоне видео'
     )    
     body = RichTextField(blank=True)
+    
+    # parent_page_types = ['root']
 
     content_panels = Page.content_panels + [
         MultiFieldPanel(

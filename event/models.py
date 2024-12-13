@@ -12,12 +12,15 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 
 class EventIndexPage(Page):
     body = RichTextField(blank=True)
+    parent_page_types = ['home.HomePage']
     
     def get_context(self, request):
         context = super().get_context(request)
-        eventpages = self.get_children().live().order_by('-first_publishd_at')
+        eventpages = self.get_children().live().order_by('-first_published_at')
         context['eventpages'] = eventpages
         return context
+    
+    subpage_types = ['event.EventPage']
     
     content_panels = Page.content_panels + [
         FieldPanel("body"),
@@ -26,19 +29,22 @@ class EventIndexPage(Page):
 
 class EventTagPage(TaggedItemBase):
     content_object = ParentalKey('EventPage', related_name='tegged_items', on_delete=models.CASCADE)
+    parent_page_types = ['home.HomePage']
     
 
 class EventPage(Page):
     date_on = models.DateField("Дата начала")
     date_end = models.DateField("Дата окончания", blank=True) # если указана, то это диапазон дат
-    h1 = models.CharField('Заголовок', max_length=128, blank=True)
-    h2 = models.CharField('Подаголовок', max_length=256, blank=True)
+    h1 = models.CharField('Заголовок', max_length=128)
+    h2 = models.CharField('Подзаголовок', max_length=256, blank=True)
     body = RichTextField("Основная чвсть", blank=True)
     image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
         related_name='+', help_text='Постер (1360x544)px, 2,5/1')
     tags = ClusterTaggableManager(through=EventTagPage, blank=True)
     founder = models.CharField('Организатор', max_length=256, blank=True)
     place = models.CharField('Место проведения', max_length=256, blank=True)
+    is_for_slider = models.BooleanField("Включить в слайдер", default=False, 
+        help_text="На домашней странице слайдер с самыми актуальными событиями. Поля выше отобразятся в слайдере.")
     
     search_fields = Page.search_fields + [
         index.SearchField('h1'),
@@ -48,14 +54,18 @@ class EventPage(Page):
         index.SearchField('place'),
     ]
     
+    subpage_types = []
+    parent_page_types = ['event.EventIndexPage']
+    
     content_panels = Page.content_panels + [
+        FieldPanel('h1'),
+        FieldPanel('image', heading="Изображение"),
+        FieldPanel('tags'),
         FieldPanel('date_on'),
         FieldPanel('date_end'),
-        FieldPanel('h1'),
+        FieldPanel("is_for_slider"),
         FieldPanel('h2'),
         FieldPanel('body'),
-        FieldPanel('image'),
-        FieldPanel('tags'),
         FieldPanel('founder'),
         FieldPanel('place'),
     ]
