@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<section id='content'>
+    {% if request.GET.tag %}
+        <h4>События с тегом "{{ request.GET.tag }}"</h4>
+    {% endif %}
+
+    {% for eventpage in eventpages %}
+
+          <p>
+              <strong><a href="{% pageurl eventpage %}">{{ eventpage.title }}</a></strong><br />
+              <small>Дата редактирования: {{ eventpage.latest_revision_created_at }}</small><br />
+          </p>
+
+    {% empty %}
+        Отсутствуют записи с данным тегом.
+    {% endfor %}
+</section>
+{% endblock %}

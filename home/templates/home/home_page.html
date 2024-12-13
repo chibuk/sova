@@ -68,6 +68,32 @@
     </div>
   </div>
 
+{% comment %} TODO: Далее список событий, его надо взять в слайдер, что выше {% endcomment %}
+  {% for event in eventpages %}
+        <h2><a href="{% pageurl event %}">{{ event.h1 }}</a></h2>
+        {% with event.image as image %}
+            {% if image %} {% image image max-400x148 %} {% endif %}
+        {% endwith %}
+
+        {% with tags=event.tags.all %}
+            {% if tags %}
+                <div class='tags'>
+                    {% for tag in tags  %}
+                        <a href="{% slugurl 'event-tags' %}?tag={{ tag }}">
+                            <button type="button">{{ tag }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class='date'>
+            {{ event.date_on }}
+            {% if event.date_end %} - {{ event.date_end }} {% endif %}
+        </div>
+    {% endfor %}
+
+
 
 </section>
 {% if self.hero_video %}

@@ -8,16 +8,14 @@
     {% for event in eventpages %}
         <h2><a href="{% pageurl event %}">{{ event.specific.h1 }}</a></h2>
         {% with event.specific.image as image %}
-            {% if image %} {% image image max-1360x540 %} {% endif %}
+            {% if image %} {% image image max-400x148 %} {% endif %}
         {% endwith %}
-    
 
-        {% with tags=event.cpecific.tags.all %}
+        {% with tags=event.specific.tags.all %}
             {% if tags %}
                 <div class='tags'>
-                    <h3>Теги</h3>
                     {% for tag in tags  %}
-                        <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                        <a href="{% slugurl 'event-tags' %}?tag={{ tag }}">
                             <button type="button">{{ tag }}</button>
                         </a>
                     {% endfor %}
@@ -25,10 +23,9 @@
             {% endif %}
         {% endwith %}
 
-
         <div class='date'>
             {{ event.specific.date_on }}
-            {% if event.specific.date_end %}- {{ event.specific.date_end }} {% endif %}
+            {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
         </div>
     {% endfor %}
     <div><a href="{{ page.get_parent.url }}">Домой</a></div>

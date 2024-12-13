@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-eventpage{% endblock %}
+
+{% block content %}
+<section id="content">
+
+    <h1>{{ page.h1 }}</h1>
+    {% with tags=page.tags.all %}
+        {% if tags %}
+            <div class='tags'>
+                {% for tag in tags  %}
+                    <a href="{% slugurl 'event-tags' %}?tag={{ tag }}">
+                        <button type="button">{{ tag }}</button>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% image page.image width-650 %}
+    <h2>{{ page.h2 }}</h2>
+    <date>
+        {{ page.date_on }}
+        {% if page.date_end %} - {{ page.date_end }} {% endif %}
+    </date>
+    {{ page.body|richtext }}
+    {% if page.founder %}
+        <h4>Организаторы</h4>
+        <p>
+            {{ page.founder }}
+        </p>
+    {% endif %}
+    {% if page.place %}
+        <h4>Место проведения</h4>
+        <p>
+            {{ page.place }}
+        </p>
+    {% endif %}
+    <p><a href="{{ page.get_parent.url }}">Вернуться в афишу</a></p>
+</section>
+{% endblock %}

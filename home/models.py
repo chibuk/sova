@@ -3,6 +3,7 @@ from django.db import models
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from event.models import EventPage
 
 from wagtailvideos.edit_handlers import VideoChooserPanel
 
@@ -18,7 +19,7 @@ class HomePage(Page):
     #     help_text='Изображение домашней страницы',
     # )
     hero_video = models.ForeignKey('wagtailvideos.Video',
-                                   related_name='+', null=True, on_delete=models.SET_NULL)
+                                   related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
     hero_text = models.CharField(blank=True, max_length=255, help_text='Слоган на фоне видео')
     hero_button = models.CharField(blank=True, verbose_name="Текст кнопки", max_length=16,
         help_text="Текст кнопки",
@@ -35,6 +36,12 @@ class HomePage(Page):
     body = RichTextField(blank=True)
     
     # parent_page_types = ['root']
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        eventpages = EventPage.objects.live().order_by('date_on')
+        context['eventpages'] = eventpages
+        return context
 
     content_panels = Page.content_panels + [
         MultiFieldPanel(

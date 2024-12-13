@@ -16,7 +16,7 @@ class EventIndexPage(Page):
     
     def get_context(self, request):
         context = super().get_context(request)
-        eventpages = self.get_children().live().order_by('-first_published_at')
+        eventpages = self.get_children().live().order_by('eventpage__date_on')
         context['eventpages'] = eventpages
         return context
     
@@ -29,17 +29,16 @@ class EventIndexPage(Page):
 
 class EventTagPage(TaggedItemBase):
     content_object = ParentalKey('EventPage', related_name='tegged_items', on_delete=models.CASCADE)
-    parent_page_types = ['home.HomePage']
     
 
 class EventPage(Page):
     date_on = models.DateField("Дата начала")
-    date_end = models.DateField("Дата окончания", blank=True) # если указана, то это диапазон дат
+    date_end = models.DateField("Дата окончания", blank=True, null=True) # если указана, то это диапазон дат
     h1 = models.CharField('Заголовок', max_length=128)
     h2 = models.CharField('Подзаголовок', max_length=256, blank=True)
     body = RichTextField("Основная чвсть", blank=True)
     image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
-        related_name='+', help_text='Постер (1360x544)px, 2,5/1')
+        related_name='+', help_text='Постер (1304x483)px, 2,7/1')
     tags = ClusterTaggableManager(through=EventTagPage, blank=True)
     founder = models.CharField('Организатор', max_length=256, blank=True)
     place = models.CharField('Место проведения', max_length=256, blank=True)
@@ -73,6 +72,8 @@ class EventPage(Page):
     
     class EventTagIndexPage(Page):
         
+        subpage_types = []
+
         def get_context(self, requesst):
             tag = requesst.GET.get('tag')
             eventpages = EventPage.objects.live().filter(tags__name=tag)
