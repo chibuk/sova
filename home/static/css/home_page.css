@@ -59,12 +59,14 @@
 
 .button-prev {
     left: 0;
+    margin: 0 0 0 .6em;
 }
 
 .button-next {
     right: 0;
     transform: translateY(-50%) rotateY(180deg);
     transform-origin: center;
+    margin: 0 .6em 0 0;
 }
 
 .slide-img {
@@ -74,10 +76,15 @@
     left: 0;
     width: 100%;
     aspect-ratio: 2.7/1;
+    border-radius: 1em;
     object-fit: cover;
 }
 .section {
-    background-color: var(--body-bgcolor);
+    background-image:repeating-linear-gradient(
+        -0deg,
+        var(--body-color) 0 40%,
+        var(--brand-bgcolor) 40% 60%
+      );
     color: var(--body-color);
 }
 .slider {
@@ -88,9 +95,9 @@
     max-width: var(--content-max-width);
     inline-size: 100%;
     position: relative;
-    padding: 1em;
+    padding: 1em 1.5em;
     margin: auto;
-    }
+}
 
 .slides {
     width: 100%;

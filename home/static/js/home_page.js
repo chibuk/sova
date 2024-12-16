@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const inactiveButton = 'aria-disabled'
     const currentButton = 'aria-current'
     let currentSlide = 0
+    let interval = 4000
   
     function updateSlider() {
       slides.forEach((slide, index) => {
@@ -67,6 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
   
-    updateSlider()
+    updateSlider();
+
+    setTimeout(function run_001() {
+      if (currentSlide < slideCount - 1) currentSlide++ ;
+      else currentSlide = 0;
+      updateSlider();
+      setTimeout(run_001, interval);
+    }, interval);
   })
   

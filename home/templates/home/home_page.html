@@ -46,9 +46,7 @@
   </div>
   <button aria-label="Предыдущий" type="button" class="button button-prev"></button>
   <button aria-label="Следующий" type="button" class="button button-next"></button>
-
   <div class="slides" aria-live="off">
-    {% comment %} Загружаемый, повторяющийся элемент {% endcomment %}
      {% for event in eventpages %}
      <div class="slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" id="carousel-item-{{ forloop.counter }}" >
       {% with event.image as image %}
@@ -57,29 +55,14 @@
       <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
       <date>
         {{ event.date_on|date:"d.m.Y" }}
-        {% if event.date_end %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
+        {% comment %} 
+          TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события 
+        {% endcomment %}
+        {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
       </date>
-      <div class='location'>{{ event.location }}</div>
+      {% if event.location %} <div class='location'>{{ event.location }}</div> {% endif %}
     </div> 
      {% endfor %}
-    {% comment %} <div class="slide" role="group" aria-labelledby="item-1-label" id="carousel-item-1" >
-      <img class="slide-img" src="" alt="">      
-      <h2 id="item-1-label">Паттерн «Лето»</h2>
-    </div>
-    <div class="slide" role="group" aria-labelledby="item-2-label" id="carousel-item-2">
-      <img class="slide-img" src="" alt="">
-      <h2 id="item-2-label">Паттерн «Цветочное поле»</h2>
-    </div>
-    <div
-      class="slide" role="group" aria-labelledby="item-3-label" id="carousel-item-3">
-      <img class="slide-img" src="" alt="">
-      <h2 id="item-3-label">Паттерн «Лиловый»</h2>
-    </div>
-    <div class="slide" role="group" aria-labelledby="item-4-label" id="carousel-item-4">
-      <img class="slide-img" src="" alt="">
-      <h2 id="item-4-label">Паттерн «Алый»</h2>
-    </div> {% endcomment %}
-
   </div>
 </div>
 
@@ -93,9 +76,3 @@
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
 {% endblock %}
-
-
-
-
-
-
