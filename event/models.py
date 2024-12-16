@@ -41,7 +41,7 @@ class EventPage(Page):
         related_name='+', help_text='Постер (1304x483)px, 2,7/1')
     tags = ClusterTaggableManager(through=EventTagPage, blank=True)
     founder = models.CharField('Организатор', max_length=256, blank=True)
-    place = models.CharField('Место проведения', max_length=256, blank=True)
+    location = models.CharField('Место проведения', max_length=256, blank=True)
     is_for_slider = models.BooleanField("Включить в слайдер", default=False, 
         help_text="На домашней странице слайдер с самыми актуальными событиями. Поля выше отобразятся в слайдере.")
     
@@ -50,7 +50,7 @@ class EventPage(Page):
         index.SearchField('h2'),
         index.SearchField('body'),
         index.SearchField('founder'),
-        index.SearchField('place'),
+        index.SearchField('location'),
     ]
     
     subpage_types = []
@@ -66,7 +66,7 @@ class EventPage(Page):
         FieldPanel('h2'),
         FieldPanel('body'),
         FieldPanel('founder'),
-        FieldPanel('place'),
+        FieldPanel('location'),
     ]
     
     

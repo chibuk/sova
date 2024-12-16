@@ -1,32 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-:root {
-  --border-radius: .9rem;
-  --header-height: 5rem;
-  
-  --brand-color-h: 200;
-  --brand-color-s: 96%;
-  --brand-color-l: 55%;    
-  --brand-bgcolor: hsl(var(--brand-color-h), var(--brand-color-s), var(--brand-color-l));
-  
-  
-  --body-bgcolor-l: 30%;
-  --body-bgcolor: hsl(var(--brand-color-h), 1%, var(--body-bgcolor-l));
-  --body-color: hsl(var(--brand-color-h), 99%, 99%);
-  --footer-bgcolor: hsl(var(--brand-color-h), 9%, 90%);
-  
-  --box-shadow: 2px 2px 25px hsl(var(--brand-color-h), 10%, 20%);
-
-  --screen-mobile: 360px;
-  --screen-xtablet: 1360px;
-  --content-max-width: var(--screen-xtablet);
-
-  --base-font-size: 1em;
-  --base-line-height: 1,5;
-  --base-header-line-height: 1.25;
-}
-
 /* 
 @font-face {
   font-family: "SOMGER Condensed";
@@ -113,6 +84,34 @@
       url('ttf/Theater_Bold.otf');
 }
 
+:root {
+  --border-radius: .9rem;
+  --header-height: 5rem;
+  
+  --brand-color-h: 200;
+  --brand-color-s: 96%;
+  --brand-color-l: 55%;    
+  --brand-bgcolor: hsl(var(--brand-color-h), var(--brand-color-s), var(--brand-color-l));
+  
+  
+  --body-bgcolor-l: 30%;
+  --body-bgcolor: hsl(var(--brand-color-h), 1%, var(--body-bgcolor-l));
+  --body-color: hsl(var(--brand-color-h), 99%, 99%);
+  --footer-bgcolor: hsl(var(--brand-color-h), 9%, 90%);
+  
+  --box-shadow: 2px 2px 25px hsl(var(--brand-color-h), 10%, 20%);
+
+  --screen-mobile: 360px;
+  --screen-xtablet: 1360px;
+  --content-max-width: var(--screen-xtablet);
+
+  --base-font-size: 1em;
+  --base-line-height: 1,5;
+  --base-header-line-height: 1.25;
+
+  --body-font-family: "Cruinn", "Literal Light", Verdana, sans-serif ;
+  --header-font-family: "IntroHeadR", Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+}
 
 /* --screen-mobile: 360px; */
 @media only screen and (min-width: 360px) {
@@ -152,10 +151,14 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: var(--body-bgcolor);
-  font-family: "Cruinn", "Literal Light", Verdana, sans-serif ;
+  font-family: var(--body-font-family);
   font-size: var(--base-font-size);
   line-height: var(--base-line-height);
   min-width: var(--screen-mobile);
@@ -166,7 +169,7 @@ nav {
 }
 
 h1, h2, h3, h4 {
-  font-family: "IntroHeadR", Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+  font-family: var(--header-font-family);
 }
 
 video {

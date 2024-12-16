@@ -39,7 +39,7 @@ class HomePage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        eventpages = EventPage.objects.live().order_by('date_on')
+        eventpages = EventPage.objects.live().order_by('date_on').filter(is_for_slider=True) # записи только для слайдера
         context['eventpages'] = eventpages
         return context
 
