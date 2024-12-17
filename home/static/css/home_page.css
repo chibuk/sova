@@ -78,6 +78,7 @@
     aspect-ratio: 2.7/1;
     border-radius: 1em;
     object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 51, 153, .08), 0 4px 8px rgba(0, 51, 153, .08);
 }
 .section {
     background-image:repeating-linear-gradient(
