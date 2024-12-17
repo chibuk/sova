@@ -186,4 +186,8 @@ WAGTAILADMIN_BASE_URL = "http://sport-nur.ru"
 # see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 
-from .local import *
+try:
+    from .local import *
+except ImportError:
+    pass
+
