@@ -166,7 +166,7 @@ STORAGES = {
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "sova"
+WAGTAIL_SITE_NAME = "sport-nur.ru"
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
