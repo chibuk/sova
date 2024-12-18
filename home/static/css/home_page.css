@@ -121,6 +121,7 @@
     bottom: 2.2em;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
+    color: var(--body-color);
 }
 
 .slide--active {

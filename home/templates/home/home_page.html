@@ -48,7 +48,8 @@
   <button aria-label="Следующий" type="button" class="button button-next"></button>
   <div class="slides" aria-live="off">
      {% for event in eventpages %}
-     <div class="slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" id="carousel-item-{{ forloop.counter }}" >
+     <a class="slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" 
+      id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
       {% with event.image as image %}
         {% if image %} {% image image fill-1304x483 class="slide-img" %} {% endif %}
       {% endwith %}      
@@ -61,7 +62,7 @@
         {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
       </date>
       {% if event.location %} <div class='location'>{{ event.location }}</div> {% endif %}
-    </div> 
+    </a> 
      {% endfor %}
   </div>
 </div>

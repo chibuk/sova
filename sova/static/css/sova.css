@@ -174,7 +174,7 @@ h1, h2, h3, h4 {
 
 video {
   margin: 0;
-  background-color: var(--bgbody-color);
+  background-color: var(--body-bgcolor);
 }
 #container {
   display: flex;
@@ -207,6 +207,7 @@ footer {
   padding: .5em;
   font-size: .9em;
   background-color: var(--footer-bgcolor);
+  color: var(--body-bgcolor);
 }
 #bg_video {
   position: fixed;
