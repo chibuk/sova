@@ -36,36 +36,36 @@
 {% comment %} Слайдер {% endcomment %}
 {% if eventpages.count > 0 %}
 
-<div class="slider" role="region" aria-label="Паттерны">
-  <div class="controls" role="group" aria-label="Управление слайдами">
-    {% comment %} Загружаемый, повторяющийся элемент {% endcomment %}
-     {% for event in eventpages %}
-     <button class="button button-radio" type="button" aria-label="Показать {{ forloop.counter }} из {{ eventpages.count }}"
-     {% if forloop.counter == 1 %} aria-current="true" {% endif %}></button>
-     {% endfor %}
-  </div>
-  <button aria-label="Предыдущий" type="button" class="button button-prev"></button>
-  <button aria-label="Следующий" type="button" class="button button-next"></button>
-  <div class="slides" aria-live="off">
-     {% for event in eventpages %}
-     <a class="slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" 
-      id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
-      {% with event.image as image %}
-        {% if image %} {% image image fill-1304x483 class="slide-img" %} {% endif %}
-      {% endwith %}      
-      <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
-      <date>
-        {{ event.date_on|date:"d.m.Y" }}
-        {% comment %} 
-          TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события 
-        {% endcomment %}
-        {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
-      </date>
-      {% if event.location %} <div class='location'>{{ event.location }}</div> {% endif %}
-    </a> 
-     {% endfor %}
-  </div>
+<style>
+  [slider] {
+    scroll-snap-type: x mandatory;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    width: 1304px;
+    height: 483px;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+  }
+  [slide]{
+    scroll-snap-align: start;
+    border: 1px solid green;
+    min-width: 1304px;
+    position: relative;
+  }
+</style>
+<div slider>
+    <div slide style="background-color: blue;">
+      1
+    </div>
+    <div slide style="background-color: blueviolet;">
+      2
+    </div>
+    <div slide style="background-color: gray;">
+      3
+    </div>
 </div>
+  
 
 {% endif %}
 
