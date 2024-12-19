@@ -37,20 +37,51 @@
 {% if eventpages.count > 0 %}
 
 <style>
+  :root {
+    --slider-width: 1304px;
+  }
+
+  /* --screen-mobile: 360px; */
+@media only screen and (min-width: 360px) {
+  :root {
+    --slider-width: 360px;
+  }
+}
+/* --screen-xmobile: 768px; */
+@media only screen and (min-width: 768px) {
+  :root {
+    --slider-width: 768px;
+  }
+}
+/* --screen-tablet: 1024px; */
+@media only screen and (min-width: 1024px) {
+  :root {
+    --slider-width: 1024px;
+  }
+}
+
+
+  [slider], [slide] {
+    max-width: var(--slider-width);
+    width: var(--slider-width);
+    min-width: var(--slider-width);
+    aspect-ratio: 2.7/1;
+    
+  }
   [slider] {
     scroll-snap-type: x mandatory;
     display: flex;
     -webkit-overflow-scrolling: touch;
-    overflow-x: hidden;
-    width: 1304px;
-    height: 483px;
+    overflow-x: scroll;
+    @media (hover: hover) and (pointer: fine) {
+      overflow-x: hidden;
+    };
     margin: 0 auto;
     border-radius: var(--border-radius);
   }
   [slide]{
     scroll-snap-align: start;
     border: 1px solid green;
-    min-width: 1304px;
     position: relative;
   }
 </style>
@@ -64,8 +95,7 @@
     <div slide style="background-color: gray;">
       3
     </div>
-</div>
-  
+</div>  
 
 {% endif %}
 
@@ -75,5 +105,5 @@
 {% endif %}
 {% endblock %}
 {% block extra_js %}
-<script type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
+{% comment %} <script type="text/javascript" src="{% static 'js/home_page.js' %}"></script> {% endcomment %}
 {% endblock %}
