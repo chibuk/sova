@@ -37,36 +37,10 @@
 {% if eventpages.count > 0 %}
 
 <style>
-  :root {
-    --slider-width: 1304px;
-  }
-
-  /* --screen-mobile: 360px; */
-@media only screen and (min-width: 360px) {
-  :root {
-    --slider-width: 360px;
-  }
-}
-/* --screen-xmobile: 768px; */
-@media only screen and (min-width: 768px) {
-  :root {
-    --slider-width: 768px;
-  }
-}
-/* --screen-tablet: 1024px; */
-@media only screen and (min-width: 1024px) {
-  :root {
-    --slider-width: 1024px;
-  }
-}
-
-
   [slider], [slide] {
-    max-width: var(--slider-width);
-    width: var(--slider-width);
-    min-width: var(--slider-width);
-    aspect-ratio: 2.7/1;
-    
+    max-width: 1304px;
+    width: 95vw;
+    aspect-ratio: 2.7/1;    
   }
   [slider] {
     scroll-snap-type: x mandatory;
@@ -77,24 +51,62 @@
       overflow-x: hidden;
     };
     margin: 0 auto;
-    border-radius: var(--border-radius);
+    border-radius: 1em;
   }
-  [slide]{
+  [slide] {
+    display: block; 
     scroll-snap-align: start;
-    border: 1px solid green;
     position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  [slide] > * {
+    position: absolute;
+    color: var(--body-color);
+  }
+  [slide] > img {
+    width: 100%;
+    height: 100%;
+  }
+  [slide] > h2, time {
+    left: 1rem;
+  }
+  [slide] > h2 {
+    bottom: 1.8rem;
+    font-size: 1.5em;
+  }
+  [slide] > time, [slide] > div {
+    background-color: var(--body-color);
+    border-radius: 1em;
+    color: var(--body-bgcolor);
+    padding: .5em 1em;
+    font-size: .7em;
+  }
+  [slide] > time {
+    bottom: 1rem;
+  }
+  [slide] > div {
+    bottom: 1rem;
+    right: 1rem;
   }
 </style>
 <div slider>
-    <div slide style="background-color: blue;">
-      1
-    </div>
-    <div slide style="background-color: blueviolet;">
-      2
-    </div>
-    <div slide style="background-color: gray;">
-      3
-    </div>
+  {% for event in eventpages %}
+     <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
+      id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
+      {% with event.image as image %}
+        {% if image %} {% image image fill-1304x483 %} {% endif %}
+      {% endwith %}
+      <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
+      <time>
+        {{ event.date_on|date:"d.m.Y" }}
+        {% comment %}
+          TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события
+        {% endcomment %}
+        {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
+      </time>
+      {% if event.location %} <div>{{ event.location }}</div> {% endif %}
+    </a>
+     {% endfor %}
 </div>  
 
 {% endif %}
