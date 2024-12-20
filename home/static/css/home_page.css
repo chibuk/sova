@@ -49,6 +49,7 @@
     background-image: url(./arrow.svg);
     background-repeat: no-repeat;
     background-size: contain;
+    z-index: 1;
 }
 
 .button-prev[aria-disabled="true"],

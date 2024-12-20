@@ -39,7 +39,7 @@
 <style>
   [slider], [slide] {
     max-width: 1304px;
-    width: 95vw;
+    wwidth: 95vw;
     aspect-ratio: 2.7/1;    
   }
   [slider] {
@@ -52,6 +52,8 @@
     };
     margin: 0 auto;
     border-radius: 1em;
+    box-shadow: 0 0 6px white, 0 0 2px black;
+    position: relative;
   }
   [slide] {
     display: block; 
@@ -72,7 +74,8 @@
   }
   [slide] > h2 {
     bottom: 1.8rem;
-    font-size: 1.5em;
+    font-size: 1.2em;
+    font-family: inherit;
   }
   [slide] > time, [slide] > div {
     background-color: var(--body-color);
@@ -90,6 +93,8 @@
   }
 </style>
 <div slider>
+  <button class="button-prev"> </button>
+  <button class="button-next"> </button>
   {% for event in eventpages %}
      <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
       id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">

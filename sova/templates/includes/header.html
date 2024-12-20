@@ -6,10 +6,11 @@
 
 <header>
     {% get_site_root as site_root %}
+  <div>  
     <div id="logo">
         <a href="{% pageurl site_root%}">
             {% if settings.base.BrandSettings.logo_image %}
-            {% image settings.base.BrandSettings.logo_image original width='' height='' alt='Главная страница' %}
+            {% image settings.base.BrandSettings.logo_image original alt='Главная страница' %}
             {% else %}
             <span alt="Загрузите логотип в панели управления">Логотип</span>
             {% endif %}
@@ -28,5 +29,6 @@
             </li>
         </ul>
     </nav>
+</div>
     {% wagtailuserbar "top-right" %}
 </header>

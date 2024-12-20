@@ -86,7 +86,7 @@
 
 :root {
   --border-radius: .9rem;
-  --header-height: 5rem;
+  --header-height: 4em;
   
   --brand-color-h: 200;
   --brand-color-s: 96%;
@@ -123,6 +123,7 @@
 @media only screen and (min-width: 768px) {
   :root {
       --flex-direction-row: column;
+      /* --header-height: 3em; */
   }
 }
 /* --screen-tablet: 1024px; */
@@ -190,12 +191,20 @@ header {
   border-bottom: 1px solid hsl(var(--brand-color-h), var(--brand-color-s), calc(var(--brand-color-l) + 15%));
   box-shadow: var(--box-shadow);
   display: flex;
-  justify-content: space-between;
-  padding: 0 15%;
+  justify-content: center;
+  /* padding: 0 15%;
   @media only screen and (max-width: 768px) {
       padding: 0 5%;
-  };
+  }; */
   z-index: 100;
+}
+header > div {
+  max-width: var(--content-max-width);
+  width: 100%;
+  height: inherit;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1em;
 }
 main {
   margin-top: var(--header-height);
@@ -263,6 +272,7 @@ a {
   border-radius: 2em;
   color: var(--body-bgcolor);
   opacity: 85%;
+  text-align: center;
 }
 #hero_button > a:hover {
   background-color: var(--brand-bgcolor);
@@ -331,4 +341,5 @@ div#logo > a {
 }
 div#logo > a > img {
   height: inherit;
+  width: auto;
 }
