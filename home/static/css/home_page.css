@@ -5,7 +5,10 @@
 
 .controls {
     position: absolute;
-    bottom: 1.2em;
+    display: flex;
+    bottom: .5em;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 5;
   }
   
@@ -18,14 +21,14 @@
     background-color: transparent;
     margin: 0;
     padding: 0;
-    width: .8em;
-    height: .8em;
+    width: .6rem;
+    height: .6rem;
     border-radius: 50%;
-    border: 1px solid var(--button-radio-border-color);
+    background-color: var(--button-radio-border-color);
 }
 
 .button-radio + .button-radio {
-    margin-inline-start: 12px;
+    margin-left: .8rem;
 }
 
 .button-radio.active {
@@ -46,10 +49,17 @@
     border: none;
     height: 1.2em;
     background-color: transparent;
-    background-image: url(./arrow.svg);
+    /* background-image: url(./arrow.svg); */
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 1;
+    height: 100%;
+    padding: 0 .6em;
+}
+
+.button-prev:hover,
+.button-next:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .button-prev[aria-disabled="true"],
@@ -60,14 +70,11 @@
 
 .button-prev {
     left: 0;
-    margin: 0 0 0 .6em;
 }
 
 .button-next {
     right: 0;
-    transform: translateY(-50%) rotateY(180deg);
-    transform-origin: center;
-    margin: 0 .6em 0 0;
+    transform: translateY(-50%);
 }
 
 .section {
