@@ -6,27 +6,29 @@
 
 <header>
     {% get_site_root as site_root %}
-    <div id="logo">
-        <a href="{% pageurl site_root%}">
-            {% if settings.base.BrandSettings.logo_image %}
-            {% image settings.base.BrandSettings.logo_image original width='' height='' alt='Главная страница' %}
-            {% else %}
-            <span alt="Загрузите логотип в панели управления">Логотип</span>
-            {% endif %}
-            
-        </a>
+    <div>  
+        <div id="logo">
+            <a href="{% pageurl site_root%}">
+                {% if settings.base.BrandSettings.logo_image %}
+                {% image settings.base.BrandSettings.logo_image original alt='Главная страница' %}
+                {% else %}
+                <span alt="Загрузите логотип в панели управления">Логотип</span>
+                {% endif %}
+                
+            </a>
+        </div>
+        <nav>
+            <ul class="menu flex-row">
+                {% for menuitem in site_root.get_children.live.in_menu %}
+                <li class="menu-item">
+                    <a href="{% pageurl menuitem %}">{{ menuitem.title|lower }}</a>
+                </li>
+                {% endfor %}
+                <li class="menu-item">
+                    <a href="/search/">поиск</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-    <nav>
-        <ul class="menu flex-row">
-            {% for menuitem in site_root.get_children.live.in_menu %}
-            <li class="menu-item">
-                <a href="{% pageurl menuitem %}">{{ menuitem.title|lower }}</a>
-            </li>
-            {% endfor %}
-            <li class="menu-item">
-                <a href="/search/">поиск</a>
-            </li>
-        </ul>
-    </nav>
     {% wagtailuserbar "top-right" %}
 </header>

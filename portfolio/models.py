@@ -12,10 +12,10 @@ class PortfolioPage(Page):
         PortfolioStreamBlock(),
         blank=True,
         use_json_field=True,
-        help_text="Use this section to list your projects and skills.",
+        help_text="Используйте '+' чтобы выбрать тип блока и добавить содержимое",
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel("body"),
+        FieldPanel("body", heading='Блок содержимого'),
     ]
     
