@@ -39,7 +39,6 @@
 <style>
   [slider], [slide] {
     max-width: 1304px;
-    wwidth: 95vw;
     aspect-ratio: 2.7/1;    
   }
   [slider] {
@@ -91,10 +90,19 @@
     bottom: 1rem;
     right: 1rem;
   }
+  [controls] {
+    width: 100%;
+    max-width: var(--content-max-width);
+  }
 </style>
-<div slider>
+
+
+<div controls>
   <button class="button-prev"> </button>
   <button class="button-next"> </button>
+</div>
+<div slider>
+  
   {% for event in eventpages %}
      <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
       id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
@@ -111,7 +119,7 @@
       </time>
       {% if event.location %} <div>{{ event.location }}</div> {% endif %}
     </a>
-     {% endfor %}
+  {% endfor %}
 </div>  
 
 {% endif %}
