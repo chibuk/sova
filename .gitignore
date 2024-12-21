@@ -1,5 +1,6 @@
 /env
 *.sqlite3
 __pycache__
-media
+/media/
 /static/
+/manage.py
