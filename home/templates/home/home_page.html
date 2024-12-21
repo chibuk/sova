@@ -37,13 +37,9 @@
 {% if eventpages.count > 0 %}
 
 <style>
-  [slider], [slide], [controls] {
+  [slider], [slide] {
     max-width: 1304px;
     aspect-ratio: 2.7/1;    
-  }
-  [controls] {
-    margin: 0 auto;
-    position: relative;
   }
   [slider] {
     scroll-snap-type: x mandatory;
@@ -53,10 +49,10 @@
     @media (hover: hover) and (pointer: fine) {
       overflow-x: hidden;
     };
+    margin: 0 auto;
     border-radius: 1em;
     box-shadow: 0 0 6px white, 0 0 2px black;
-    /* margin: 0 auto;
-    position: relative; */
+    position: relative;
   }
   [slide] {
     display: block; 
@@ -94,40 +90,38 @@
     bottom: 1rem;
     right: 1rem;
   }
+  [controls] {
+    width: 100%;
+    max-width: var(--content-max-width);
+  }
 </style>
 
 
 <div controls>
-  <button class="button-prev"><img src="{% static 'css/arrow.svg' %}" alt=""></button>
-  <button class="button-next"><img src="{% static 'css/arrow.svg' %}" alt=""
-      style="transform: rotateY(180deg); transform-origin: center;"></button>
-  <div class="controls">
-    <div class="button button-radio"></div>
-    <div class="button button-radio active"></div>
-    <div class="button button-radio"></div>
-  </div>
-  <div slider>
-    
-    {% for event in eventpages %}
-      <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
-        id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
-        {% with event.image as image %}
-          {% if image %} {% image image fill-1304x483 %} {% endif %}
-        {% endwith %}
-        <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
-        <time>
-          {{ event.date_on|date:"d.m.Y" }}
-          {% comment %}
-            TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события
-          {% endcomment %}
-          {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
-        </time>
-        {% if event.location %} <div>{{ event.location }}</div> {% endif %}
-      </a>
-    {% endfor %}
-  </div>
-
+  <button class="button-prev"> </button>
+  <button class="button-next"> </button>
 </div>
+<div slider>
+  
+  {% for event in eventpages %}
+     <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
+      id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
+      {% with event.image as image %}
+        {% if image %} {% image image fill-1304x483 %} {% endif %}
+      {% endwith %}
+      <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
+      <time>
+        {{ event.date_on|date:"d.m.Y" }}
+        {% comment %}
+          TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события
+        {% endcomment %}
+        {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
+      </time>
+      {% if event.location %} <div>{{ event.location }}</div> {% endif %}
+    </a>
+  {% endfor %}
+</div>  
+
 {% endif %}
 
 </section>
