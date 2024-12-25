@@ -131,6 +131,247 @@
 {% endif %}
 
 </section>
+
+<style>
+  .cal {
+    width: 100%;
+    /* background-color: var(--body-color); */
+    /* background-color: aqua; */
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  [cal] {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    /* box-shadow: 0 0 2px red inset; */
+    position: relative;
+  }
+  [cal-start], [cal-end] {
+    position: absolute;
+    top: 0;
+    width: 5rem;
+    height: 100%;
+    position: absolute;
+    /* box-shadow: 0 0 2px blue inset; */
+    z-index: 1;
+  }
+  [cal-start] {
+    left: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 60%);
+  }
+  [cal-end] {
+    right: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 60%);
+  }
+  [cal-start] > i, [cal-end] > i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-10%);
+  }
+  [cal-start] > i {
+    left: .4em;
+  }
+  [cal-end] > i {
+    right: .4em;
+  }
+  .cal-container {
+    /* width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto; */
+    /* display: flex; */
+    padding: .5em 0;
+    /* box-shadow: 0 0 5px red; */
+    /* overflow-x: hidden; */
+    position: relative;
+    /* background-image: linear-gradient(transparent, white), */
+    scroll-snap-type: x mandatory;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    @media (hover: hover) and (pointer: fine) {
+      overflow-x: hidden;
+    };
+  }
+  .cal-month + .cal-month {
+    margin-left: .5em;
+  }
+  .cal-month > time {
+    font-size: .8em;
+    font-variant: small-caps;
+    font-weight: bold;
+    opacity: .5;
+    position: sticky;
+    z-index: 2;
+  }
+  .cal-month:hover > time {
+    opacity: .7;
+  }
+  .cal-month > div {
+    display: flex;
+  }
+  .cal-day {
+    padding: .3em;
+    border-radius: 45%;
+    width: 2em;
+    text-align: center;
+  }
+  .cal-day + .cal-day {
+    margin-left: .1em;
+  }
+  .cal-day-active {
+    background-color: rgba(0, 0, 0, .1);
+  }
+  .cal-day:hover {
+    box-shadow: 0 0 1px var(--body-bgcolor);
+    transition: all 300ms;
+  }
+  .cal-day > time {
+    font-weight: bold;
+    font-size: .9em;
+  }
+  .cal-day > p {
+    margin: 0;
+    font-variant: small-caps;
+    font-weight: bold;
+    opacity: .6;
+    font-size: .8em;
+  }
+  .cal-day .red {
+    color: red;
+  }
+</style>
+<section class="cal">
+  <div cal>
+    <a cal-start><i class="fa-light fa-chevron-left"></i></a>
+    <a cal-end><i class="fa-light fa-chevron-right"></i></a>
+    <div class="cal-container">
+      <div class="cal-month">
+        <time datetime="декабрь">декабрь</time>
+        <div>
+          <a class="cal-day">
+            <time datetime="24 12.1024">24</time>
+            <p>вт</p>
+          </a>
+          <a class="cal-day cal-day-active">
+            <time datetime="24 12.1024">25</time>
+            <p>ср</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">26</time>
+            <p>чт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">27</time>
+            <p>пт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">28</time>
+            <p class="red">сб</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">29</time>
+            <p class="red">вс</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">30</time>
+            <p>пн</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">31</time>
+            <p>вт</p>
+          </a>
+        </div>
+      </div>
+      <div class="cal-month">
+        <time datetime="январь">январь</time>
+        <div>
+          <a class="cal-day">
+            <time datetime="24 12.1024">1</time>
+            <p>ср</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">2</time>
+            <p>чт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">3</time>
+            <p>пт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">4</time>
+            <p class="red">сб</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">5</time>
+            <p class="red">вс</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">6</time>
+            <p>пн</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">7</time>
+            <p>вт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">8</time>
+            <p>ср</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">9</time>
+            <p>чт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">10</time>
+            <p>пт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">11</time>
+            <p class="red">сб</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">12</time>
+            <p class="red">вс</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">13</time>
+            <p>пн</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">14</time>
+            <p>вт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">15</time>
+            <p>ср</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">16</time>
+            <p>чт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">17</time>
+            <p>пт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">18</time>
+            <p class="red">сб</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">19</time>
+            <p class="red">вс</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">20</time>
+            <p>пн</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
 {% if self.hero_video %}
   {% video self.hero_video muted loop playsinline autoplay id=bg_video %}
 {% endif %}
