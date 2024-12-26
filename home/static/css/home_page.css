@@ -3,7 +3,7 @@
     --button-radio-active-color: var(--brand-bgcolor);
 }
 
-.controls {
+.radio-group {
     position: absolute;
     display: flex;
     bottom: .5em;
@@ -31,7 +31,7 @@
     margin-left: .8rem;
 }
 
-.button-radio.active {
+.button-radio[aria-current='true'] {
     background-color: var(--button-radio-active-color);
     pointer-events: none;
 }
@@ -47,11 +47,7 @@
     top: 50%;
     transform: translateY(-50%);
     border: none;
-    height: 1.2em;
     background-color: transparent;
-    /* background-image: url(./arrow.svg); */
-    background-repeat: no-repeat;
-    background-size: contain;
     z-index: 1;
     height: 100%;
     padding: 0 .6em;
@@ -67,6 +63,10 @@
     opacity: 0.5;
     pointer-events: none;
 }
+.button-prev[aria-disabled="true"]:hover,
+.button-next[aria-disabled="true"]:hover {
+    background-color: transparent;
+}
 
 .button-prev {
     left: 0;
@@ -74,7 +74,6 @@
 
 .button-next {
     right: 0;
-    transform: translateY(-50%);
 }
 
 .section {

@@ -94,17 +94,27 @@
     bottom: 1rem;
     right: 1rem;
   }
+  [controls] button > i {
+    color: var(--body-color);
+    mix-blend-mode: difference;
+    font-size: 1.5em;
+    font-weight: bold;
+    transform: translateY(50%);
+  }
 </style>
 
 
 <div controls>
-  <button class="button-prev"><img src="{% static 'css/arrow.svg' %}" alt=""></button>
-  <button class="button-next"><img src="{% static 'css/arrow.svg' %}" alt=""
-      style="transform: rotateY(180deg); transform-origin: center;"></button>
-  <div class="controls">
-    <div class="button button-radio"></div>
-    <div class="button button-radio active"></div>
-    <div class="button button-radio"></div>
+  <div role="group">
+    <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
+    <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
+    <div class="radio-group">
+      {% for event in eventpages %}
+        <div class="button button-radio" type="button" 
+          aria-label="Показать {{ forloop.counter }} из {{ eventpages.count }}"
+          {% if forloop.first %} aria-current='true' {% endif %}></div>
+      {% endfor %}
+    </div>
   </div>
   <div slider>
     
@@ -129,7 +139,47 @@
 
 </div>
 {% endif %}
+<div id="coord" style="color: black;">Координаты: X - <span id="x"></span>, Y - <span id="y"></span></div>
+<script>
+  // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
+  function debounce(callee, timeoutMs) {
+    return function perform(...args) {
+      let previousCall = this.lastCall
+      this.lastCall = Date.now()
+      if (previousCall && this.lastCall - previousCall <= timeoutMs) {
+        clearTimeout(this.lastCallTimer)
+      }
+      this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs)
+    }
+  }
 
+  // Функция throttle будет принимать 2 аргумента:
+  // - callee, функция, которую надо вызывать;
+  // - timeout, интервал в мс, с которым следует пропускать вызовы.
+  // function throttle(callee, timeout) {
+  //   let timer = null
+  //   return function perform(...args) {
+  //     if (timer) return
+  //     timer = setTimeout(() => {
+  //       callee(...args)
+  //       clearTimeout(timer)
+  //       timer = null
+  //     }, timeout)
+  //   }
+  // }
+
+  function onScrollEnd(event) {
+    let position = event.scrollLeft;
+    let elementWidth = event.offsetWidth;
+    let current = parseInt(position / elementWidth);
+    document.getElementById('x').innerText = current; // текущий слайд 0....n
+    document.getElementById('y').innerText = event.offsetWidth;
+  };
+
+  const onScrollEndDebounce = debounce(onScrollEnd, 200);
+
+  document.querySelector('[slider]').addEventListener('scroll', function() {onScrollEndDebounce(this)});
+</script>
 </section>
 
 <style>
