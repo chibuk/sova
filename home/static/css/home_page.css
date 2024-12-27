@@ -25,6 +25,7 @@
     height: .6rem;
     border-radius: 50%;
     background-color: var(--button-radio-border-color);
+    border: none;
 }
 
 .button-radio + .button-radio {

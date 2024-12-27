@@ -50,13 +50,13 @@
     display: flex;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
-    @media (hover: hover) and (pointer: fine) {
-      overflow-x: hidden;
-    };
+    scrollbar-width: none; /* Для браузера FireFox */
     border-radius: 1em;
     box-shadow: 0 0 6px white, 0 0 2px black;
-    /* margin: 0 auto;
-    position: relative; */
+  }
+  [slider]::-webkit-scrollbar {
+    height: 0;
+    width: 0;
   }
   [slide] {
     display: block; 
@@ -110,9 +110,9 @@
     <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
     <div class="radio-group">
       {% for event in eventpages %}
-        <div class="button button-radio" type="button" 
+        <button class="button button-radio" type="button" 
           aria-label="Показать {{ forloop.counter }} из {{ eventpages.count }}"
-          {% if forloop.first %} aria-current='true' {% endif %}></div>
+          {% if forloop.first %} aria-current='true' {% endif %} slide-num="{{ forloop.counter }}"></button>
       {% endfor %}
     </div>
   </div>
@@ -152,33 +152,65 @@
       this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs)
     }
   }
-
-  // Функция throttle будет принимать 2 аргумента:
-  // - callee, функция, которую надо вызывать;
-  // - timeout, интервал в мс, с которым следует пропускать вызовы.
-  // function throttle(callee, timeout) {
-  //   let timer = null
-  //   return function perform(...args) {
-  //     if (timer) return
-  //     timer = setTimeout(() => {
-  //       callee(...args)
-  //       clearTimeout(timer)
-  //       timer = null
-  //     }, timeout)
-  //   }
-  // }
-
+  
+  let current = 1; // текущий слайд
+  // обновляет позиции на событие скролл
   function onScrollEnd(event) {
     let position = event.scrollLeft;
     let elementWidth = event.offsetWidth;
-    let current = parseInt(position / elementWidth);
+    current = parseInt((elementWidth - 5 + position) / elementWidth) + 1;
     document.getElementById('x').innerText = current; // текущий слайд 0....n
     document.getElementById('y').innerText = event.offsetWidth;
   };
-
   const onScrollEndDebounce = debounce(onScrollEnd, 200);
 
   document.querySelector('[slider]').addEventListener('scroll', function() {onScrollEndDebounce(this)});
+  
+  function setSlideControls() {
+    const slider = document.querySelector('[slider]');
+    const slides = slider.querySelectorAll('a');
+
+    function setCurrentRadio(num) {
+      document.querySelectorAll('.button.button-radio').forEach(radio => {
+        if (radio.getAttribute('aria-label') == `Показать ${num} из ${slides.length}`) radio.setAttribute('aria-current', true)
+        else radio.setAttribute('aria-current', false);
+      });
+    }
+    
+    if (current <= slides.length) { // значит листаем следующий
+      document.querySelector('.button-prev').setAttribute('aria-disabled', false);
+      // а теперь проверим, что это не последний слайд
+      if (current == slides.length) document.querySelector('.button-next').setAttribute('aria-disabled', true)
+      else {
+        document.querySelector('.button-next').setAttribute('aria-disabled', false);
+        if (current == 1) document.querySelector('.button-prev').setAttribute('aria-disabled', true);
+      }
+    } else {   // листаем сначала
+      current = 1;
+      document.querySelector('.button-prev').setAttribute('aria-disabled', true);
+      document.querySelector('.button-next').setAttribute('aria-disabled', false);
+    }
+    setCurrentRadio(current);
+  }
+  
+  // step - это шаг куда смещаемся (1 | -1)
+  function slide(step) {
+    const slider = document.querySelector('[slider]');
+    current += step;
+    setSlideControls();
+    slider.querySelector(`#carousel-item-${current}`).scrollIntoView({ behavior: 'smooth' });
+  };
+  document.querySelector('.button-next').addEventListener('click', () => slide(1));
+  document.querySelector('.button-prev').addEventListener('click', () => slide(-1));
+  function radioAction() {
+    document.querySelectorAll('.button.button-radio').forEach(radio => {
+      radio.addEventListener('click', function() {
+        current = parseInt(this.getAttribute('slide-num')); 
+        slide(0);
+      });
+    });
+  };
+  radioAction();
 </script>
 </section>
 
