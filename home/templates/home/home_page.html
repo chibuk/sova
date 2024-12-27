@@ -104,19 +104,22 @@
 </style>
 
 
-<div controls>
-  <div role="group">
+<div controls 
+    role="region" aria-label="Слайдер">
+  <div role="group" aria-label="Управление слайдами">
     <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
     <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
     <div class="radio-group">
       {% for event in eventpages %}
         <button class="button button-radio" type="button" 
           aria-label="Показать {{ forloop.counter }} из {{ eventpages.count }}"
-          {% if forloop.first %} aria-current='true' {% endif %} slide-num="{{ forloop.counter }}"></button>
+          {% if forloop.first %} aria-current='true' {% endif %} 
+          slide-num="{{ forloop.counter }}"></button>
       {% endfor %}
     </div>
   </div>
-  <div slider>
+  <div slider
+      aria-live="off">
     
     {% for event in eventpages %}
       <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
@@ -139,7 +142,7 @@
 
 </div>
 {% endif %}
-<div id="coord" style="color: black;">Координаты: X - <span id="x"></span>, Y - <span id="y"></span></div>
+
 <script>
   // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
   function debounce(callee, timeoutMs) {
@@ -154,17 +157,7 @@
   }
   
   let current = 1; // текущий слайд
-  // обновляет позиции на событие скролл
-  function onScrollEnd(event) {
-    let position = event.scrollLeft;
-    let elementWidth = event.offsetWidth;
-    current = parseInt((elementWidth - 5 + position) / elementWidth) + 1;
-    document.getElementById('x').innerText = current; // текущий слайд 0....n
-    document.getElementById('y').innerText = event.offsetWidth;
-  };
-  const onScrollEndDebounce = debounce(onScrollEnd, 200);
-
-  document.querySelector('[slider]').addEventListener('scroll', function() {onScrollEndDebounce(this)});
+  let runtimer = 0; // для ссылки на таймер, чтобы его перезапускать
   
   function setSlideControls() {
     const slider = document.querySelector('[slider]');
@@ -191,6 +184,12 @@
       document.querySelector('.button-next').setAttribute('aria-disabled', false);
     }
     setCurrentRadio(current);
+    resetRunTimer();
+  }
+
+  const getPosition = () => {
+    const slide = document.querySelector(`#carousel-item-${current}`);
+    return slide.offsetWidth * (current - 1);
   }
   
   // step - это шаг куда смещаемся (1 | -1)
@@ -198,7 +197,8 @@
     const slider = document.querySelector('[slider]');
     current += step;
     setSlideControls();
-    slider.querySelector(`#carousel-item-${current}`).scrollIntoView({ behavior: 'smooth' });
+    // slider.querySelector(`#carousel-item-${current}`).scrollTo({top: 0, left: getPosition(), behavior: 'smooth'}); // scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
+    slider.scrollTo({top: 0, left: getPosition(), behavior: 'smooth'});
   };
   document.querySelector('.button-next').addEventListener('click', () => slide(1));
   document.querySelector('.button-prev').addEventListener('click', () => slide(-1));
@@ -211,6 +211,22 @@
     });
   };
   radioAction();
+  // обновляет позиции на событие скролл
+  function onScrollEnd(event) {
+    const position = event.scrollLeft;
+    const elementWidth = event.offsetWidth;
+    current = parseInt((elementWidth - 5 + position) / elementWidth) + 1; // начинаем счет с единицы
+    setSlideControls();
+  };
+  const onScrollEndDebounce = debounce(onScrollEnd, 200);
+  document.querySelector('[slider]').addEventListener('scroll', function() {onScrollEndDebounce(this)});
+
+  runtimer = setInterval(slide, 6000, 1);
+  function resetRunTimer() {
+    clearInterval(runtimer);
+    runtimer = setInterval(slide, 6000, 1);
+  }
+  
 </script>
 </section>
 
