@@ -33,79 +33,10 @@
   {{ page.body|richtext }}
 </section>
 <section class="section">
+
 {% comment %} Слайдер {% endcomment %}
 {% if eventpages.count > 0 %}
-
-<style>
-  [slider], [slide], [controls] {
-    max-width: 1304px;
-    aspect-ratio: 2.7/1;    
-  }
-  [controls] {
-    margin: 0 auto;
-    position: relative;
-  }
-  [slider] {
-    scroll-snap-type: x mandatory;
-    display: flex;
-    -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
-    scrollbar-width: none; /* Для браузера FireFox */
-    border-radius: 1em;
-    box-shadow: 0 0 6px white, 0 0 2px black;
-  }
-  [slider]::-webkit-scrollbar {
-    height: 0;
-    width: 0;
-  }
-  [slide] {
-    display: block; 
-    scroll-snap-align: start;
-    position: relative;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  [slide] > * {
-    position: absolute;
-    color: var(--body-color);
-  }
-  [slide] > img {
-    width: 100%;
-    height: 100%;
-  }
-  [slide] > h2, time {
-    left: 1rem;
-  }
-  [slide] > h2 {
-    bottom: 1.8rem;
-    font-size: 1.2em;
-    font-family: inherit;
-  }
-  [slide] > time, [slide] > div {
-    background-color: var(--body-color);
-    border-radius: 1em;
-    color: var(--body-bgcolor);
-    padding: .5em 1em;
-    font-size: .7em;
-  }
-  [slide] > time {
-    bottom: 1rem;
-  }
-  [slide] > div {
-    bottom: 1rem;
-    right: 1rem;
-  }
-  [controls] button > i {
-    color: var(--body-color);
-    mix-blend-mode: difference;
-    font-size: 1.5em;
-    font-weight: bold;
-    transform: translateY(50%);
-  }
-</style>
-
-
-<div controls 
-    role="region" aria-label="Слайдер">
+<div id="sl" role="region" aria-label="Слайдер">
   <div role="group" aria-label="Управление слайдами">
     <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
     <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
@@ -118,11 +49,9 @@
       {% endfor %}
     </div>
   </div>
-  <div slider
-      aria-live="off">
-    
+  <div id="sl-slides" aria-live="off">
     {% for event in eventpages %}
-      <a slide role="group" aria-labelledby="item-{{ forloop.counter }}-label"
+      <a class="sl-slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label"
         id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
         {% with event.image as image %}
           {% if image %} {% image image fill-1304x483 %} {% endif %}
@@ -139,93 +68,11 @@
       </a>
     {% endfor %}
   </div>
-
 </div>
 {% endif %}
 
 <script>
-  // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
-  function debounce(callee, timeoutMs) {
-    return function perform(...args) {
-      let previousCall = this.lastCall
-      this.lastCall = Date.now()
-      if (previousCall && this.lastCall - previousCall <= timeoutMs) {
-        clearTimeout(this.lastCallTimer)
-      }
-      this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs)
-    }
-  }
-  
-  let current = 1; // текущий слайд
-  let runtimer = 0; // для ссылки на таймер, чтобы его перезапускать
-  
-  function setSlideControls() {
-    const slider = document.querySelector('[slider]');
-    const slides = slider.querySelectorAll('a');
-
-    function setCurrentRadio(num) {
-      document.querySelectorAll('.button.button-radio').forEach(radio => {
-        if (radio.getAttribute('aria-label') == `Показать ${num} из ${slides.length}`) radio.setAttribute('aria-current', true)
-        else radio.setAttribute('aria-current', false);
-      });
-    }
     
-    if (current <= slides.length) { // значит листаем следующий
-      document.querySelector('.button-prev').setAttribute('aria-disabled', false);
-      // а теперь проверим, что это не последний слайд
-      if (current == slides.length) document.querySelector('.button-next').setAttribute('aria-disabled', true)
-      else {
-        document.querySelector('.button-next').setAttribute('aria-disabled', false);
-        if (current == 1) document.querySelector('.button-prev').setAttribute('aria-disabled', true);
-      }
-    } else {   // листаем сначала
-      current = 1;
-      document.querySelector('.button-prev').setAttribute('aria-disabled', true);
-      document.querySelector('.button-next').setAttribute('aria-disabled', false);
-    }
-    setCurrentRadio(current);
-    resetRunTimer();
-  }
-
-  const getPosition = () => {
-    const slide = document.querySelector(`#carousel-item-${current}`);
-    return slide.offsetWidth * (current - 1);
-  }
-  
-  // step - это шаг куда смещаемся (1 | -1)
-  function slide(step) {
-    const slider = document.querySelector('[slider]');
-    current += step;
-    setSlideControls();
-    // slider.querySelector(`#carousel-item-${current}`).scrollTo({top: 0, left: getPosition(), behavior: 'smooth'}); // scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
-    slider.scrollTo({top: 0, left: getPosition(), behavior: 'smooth'});
-  };
-  document.querySelector('.button-next').addEventListener('click', () => slide(1));
-  document.querySelector('.button-prev').addEventListener('click', () => slide(-1));
-  function radioAction() {
-    document.querySelectorAll('.button.button-radio').forEach(radio => {
-      radio.addEventListener('click', function() {
-        current = parseInt(this.getAttribute('slide-num')); 
-        slide(0);
-      });
-    });
-  };
-  radioAction();
-  // обновляет позиции на событие скролл
-  function onScrollEnd(event) {
-    const position = event.scrollLeft;
-    const elementWidth = event.offsetWidth;
-    current = parseInt((elementWidth - 5 + position) / elementWidth) + 1; // начинаем счет с единицы
-    setSlideControls();
-  };
-  const onScrollEndDebounce = debounce(onScrollEnd, 200);
-  document.querySelector('[slider]').addEventListener('scroll', function() {onScrollEndDebounce(this)});
-
-  runtimer = setInterval(slide, 6000, 1);
-  function resetRunTimer() {
-    clearInterval(runtimer);
-    runtimer = setInterval(slide, 6000, 1);
-  }
   
 </script>
 </section>
@@ -475,5 +322,5 @@
 {% endif %}
 {% endblock %}
 {% block extra_js %}
-{% comment %} <script type="text/javascript" src="{% static 'js/home_page.js' %}"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
 {% endblock %}
