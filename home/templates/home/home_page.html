@@ -84,14 +84,15 @@
     /* background-color: aqua; */
     font-family: Arial, Helvetica, sans-serif;
   }
-  [cal] {
+  #cal {
     width: 100%;
     max-width: var(--content-max-width);
     margin: 0 auto;
     /* box-shadow: 0 0 2px red inset; */
     position: relative;
+    font-size: 1.5rem;
   }
-  [cal-start], [cal-end] {
+  #cal-start, #cal-end {
     position: absolute;
     top: 0;
     width: 5rem;
@@ -100,42 +101,41 @@
     /* box-shadow: 0 0 2px blue inset; */
     z-index: 1;
   }
-  [cal-start] {
+  #cal-start {
     left: 0;
     background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 60%);
+    display: none;  /* начальное значение */
   }
-  [cal-end] {
+  #cal-end {
     right: 0;
     background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 60%);
   }
-  [cal-start] > i, [cal-end] > i {
+  #cal-start > i, #cal-end > i {
     position: absolute;
     top: 50%;
     transform: translateY(-10%);
   }
-  [cal-start] > i {
+  #cal-start > i {
     left: .4em;
   }
-  [cal-end] > i {
+  #cal-end > i {
     right: .4em;
   }
-  .cal-container {
-    /* width: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto; */
-    /* display: flex; */
+  #cal-container {
+    scrollbar-width: none; /* Для браузера FireFox скрытие scrollbar */
     padding: .5em 0;
-    /* box-shadow: 0 0 5px red; */
-    /* overflow-x: hidden; */
     position: relative;
-    /* background-image: linear-gradient(transparent, white), */
     scroll-snap-type: x mandatory;
     display: flex;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
-    @media (hover: hover) and (pointer: fine) {
-      overflow-x: hidden;
-    };
+  }
+  #cal-container::-webkit-scrollbar { /* Для webkit скрытие scrollbar */
+    width: 0;
+    height: 0;
+  }
+  .cal-month {
+    border-radius: .5em;
   }
   .cal-month + .cal-month {
     margin-left: .5em;
@@ -145,9 +145,13 @@
     font-variant: small-caps;
     font-weight: bold;
     opacity: .5;
+    padding-left: .5em;
     position: sticky;
     z-index: 2;
   }
+  /* .cal-month:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+  } */
   .cal-month:hover > time {
     opacity: .7;
   }
@@ -163,11 +167,11 @@
   .cal-day + .cal-day {
     margin-left: .1em;
   }
-  .cal-day-active {
+  .cal-day[aria-current='true'] {
     background-color: rgba(0, 0, 0, .1);
   }
-  .cal-day:hover {
-    box-shadow: 0 0 1px var(--body-bgcolor);
+  .cal-day:hover > p {
+    opacity: .9;
     transition: all 300ms;
   }
   .cal-day > time {
@@ -184,20 +188,37 @@
   .cal-day .red {
     color: red;
   }
+  #cal-last {
+    border-radius: 50%;
+    box-shadow: 0 0 .5em #dcdcdc;
+    font-size: .9em;
+    text-align: center;
+    margin: auto 1em .5em;
+    padding: .5em;
+    white-space: nowrap;
+  }
+  #cal-last:hover, #cal-last:focus {
+    box-shadow: 0 0 1.5em #dcdcdc;
+    transform: translateY(-4px);
+  }
+  #cal-last > div {
+    width: 1em;
+    height: 1em;
+  }
 </style>
 <section class="cal">
-  <div cal>
-    <a cal-start><i class="fa-light fa-chevron-left"></i></a>
-    <a cal-end><i class="fa-light fa-chevron-right"></i></a>
-    <div class="cal-container">
-      <div class="cal-month">
+  <div id="cal">
+    <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
+    <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
+    <div id="cal-container">
+      <div class="cal-month" id="month-12">
         <time datetime="декабрь">декабрь</time>
         <div>
           <a class="cal-day">
             <time datetime="24 12.1024">24</time>
             <p>вт</p>
           </a>
-          <a class="cal-day cal-day-active">
+          <a class="cal-day" aria-current="true">
             <time datetime="24 12.1024">25</time>
             <p>ср</p>
           </a>
@@ -227,7 +248,7 @@
           </a>
         </div>
       </div>
-      <div class="cal-month">
+      <div class="cal-month" id="month-1">
         <time datetime="январь">январь</time>
         <div>
           <a class="cal-day">
@@ -310,12 +331,122 @@
             <time datetime="24 12.1024">20</time>
             <p>пн</p>
           </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">21</time>
+            <p>вт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">22</time>
+            <p>ср</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">24</time>
+            <p>чт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">25</time>
+            <p>пт</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">26</time>
+            <p class="red">сб</p>
+          </a>
+          <a class="cal-day">
+            <time datetime="24 12.1024">27</time>
+            <p class="red">вс</p>
+          </a>
+          <a id="cal-last">
+            <div><i class="fa-light fa-plus"></i></div>
+          </a>
         </div>
       </div>
     </div>
   </div>
-  
+  <div id="datestring">##</div>
 </section>
+
+<script>
+  // const calmonth = 12;
+  const calcontainer = document.getElementById(`cal-container`);
+  const num = 5; // шаг, сколько прокрутить на клик (в днях)
+  const getPosition = () => { // позиция прокрутки ленты дней календаря
+    return calcontainer.scrollLeft;
+  }
+  const calDayWidth = () => { // ширина элемента .cal-day
+    return calcontainer.querySelector(".cal-day").clientWidth;
+  }
+  // Показать|убрать стрелки перемотки ленты
+  document.getElementById("cal-container").addEventListener('scroll', function() {
+    const position = getPosition();
+
+    let widthall = 0;
+    document.querySelectorAll(".cal-month").forEach(_month => {
+      widthall += _month.clientWidth;
+    });
+    endposition = widthall - this.clientWidth - position;
+    if (position == 0) document.getElementById('cal-start').style.display = 'none' // начало ленты
+    else document.getElementById('cal-start').style.display = 'block';
+    if (endposition <= 0) document.getElementById('cal-end').style.display = 'none' // конец ленты
+    else document.getElementById('cal-end').style.display = 'block';
+  });
+  // Прокрутить ленту через num дней;
+  function scrollDate(num) {
+    calcontainer.scrollTo({top: 0, left: (getPosition() + num * calDayWidth()), behavior: 'smooth'});
+  }
+  document.getElementById('cal-start').addEventListener('click', () => scrollDate(-num)); // назад
+  document.getElementById('cal-end').addEventListener('click', () => scrollDate(num));  // вперед
+  function setDayHandlers() { // назначить обработчики клика на .cal-day ссылки
+    calcontainer.querySelectorAll('.cal-day').forEach(calday => {
+      calday.addEventListener("click", function() {
+        let _status = "true";
+        if (this.getAttribute('aria-current') == "true") _status = "false"; // getAttribute даёт строку
+        this.setAttribute('aria-current', _status);
+        _setDate("11.12.2024");//this.firstChild.getAttribute('datetime'));
+      });
+    });
+  }; setDayHandlers();
+  // начнем считать диапазон
+  const dateOject = {
+    _start: new Date(2024, 12, 10),
+    _end: new Date(2024, 12, 11),
+    set start(day) {
+      if (day) { // dd.mm.YYYY|false
+        this._start = new Date('');
+      }
+      else {
+        this._start = false;
+      }
+    },
+    get start() {
+      return this._start;
+    },
+    set end(day) {
+      if (day) { // dd.mm.YYYY|false
+        this._end = new Date(day);
+      }
+      else {
+        this._end = false;
+      };
+    },
+    get end() {
+      return this._end;
+    },
+    get prn() {
+      _r = this.start ? this.start.toLocaleDateString() : "##";
+      _r += " --- " + this.end ? this.end.toLocaleDateString() : "##";
+      return _r;
+    }
+  }
+  function _setDate(day) {
+    if (!dateOject.start) dateOject.start = day;
+    else if (!dateOject.end) dateOject.end = day;
+    else {
+      dateOject.start = day;
+      dateOject.end = false;
+    }
+    document.getElementById('datestring').innerText = dateOject.prn;
+  }
+</script>
 
 {% if self.hero_video %}
   {% video self.hero_video muted loop playsinline autoplay id=bg_video %}
