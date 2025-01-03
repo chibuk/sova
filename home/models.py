@@ -4,7 +4,7 @@ from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from event.models import EventPage
-
+from datetime import date, timedelta
 from wagtailvideos.edit_handlers import VideoChooserPanel
 
 
@@ -41,6 +41,30 @@ class HomePage(Page):
         context = super().get_context(request)
         eventpages = EventPage.objects.live().order_by('date_on').filter(is_for_slider=True) # записи только для слайдера
         context['eventpages'] = eventpages
+        date_ = date.today() # начало календаря с сегодняшней даты
+        days = [] # дни месяца
+        months = [] # иесяцы
+        month_ = '' # месяц, дни которого заполняем дни
+        str_weekdays = [ "пн", "вт", "ср", "чт", "пт", "сб", "вс",]
+        str_months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'авеуст', 'сентябпь', 'октяюрь', 'ноябрь', 'декабрь']
+        i = 40 # столько дней календаря соьытий будем выводить
+        month_ = str_months[date_.month - 1] # начнем с текущего
+        while i:
+            if (str_months[date_.month - 1] != month_): # если не текущий месяц, то начинаем новый
+                months += [
+                    [month_, {'days': days}],    # сохраняем дни этого месяца
+                ]
+                days = [] # обнуляем
+            month_ = str_months[date_.month - 1] # начинаем новый месяц
+            days += [   # прибавим день вв текущий месяц
+                [date_.__str__(), date_.day, str_weekdays[date_.weekday()]]
+                ]
+            date_ += timedelta(days=1) 
+            i -= 1
+        months += [ # по завершении цикла сохраним данные последнего набора
+            [month_, {'days': days}],    # сохраняем дни этого месяца
+        ]
+        context['calendar'] = months
         return context
 
     content_panels = Page.content_panels + [

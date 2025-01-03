@@ -95,7 +95,7 @@
   #cal-start, #cal-end {
     position: absolute;
     top: 0;
-    width: 5rem;
+    width: 7rem;
     height: 100%;
     position: absolute;
     /* box-shadow: 0 0 2px blue inset; */
@@ -103,12 +103,12 @@
   }
   #cal-start {
     left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 60%);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 40%);
     display: none;  /* начальное значение */
   }
   #cal-end {
     right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 60%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 40%);
   }
   #cal-start > i, #cal-end > i {
     position: absolute;
@@ -160,7 +160,7 @@
   }
   .cal-day {
     padding: .3em;
-    border-radius: 45%;
+    border-radius: 1em;
     width: 2em;
     text-align: center;
   }
@@ -189,21 +189,18 @@
     color: red;
   }
   #cal-last {
-    border-radius: 50%;
-    box-shadow: 0 0 .5em #dcdcdc;
-    font-size: .9em;
+    border-radius: 1.2em;
+    box-shadow: 0 0 10px rgba(50, 50, 50, .2);
+    font-size: .7em;
+    font-weight: bold;
     text-align: center;
-    margin: auto 1em .5em;
-    padding: .5em;
+    margin: auto 1em;
+    padding: .6em .8em;
     white-space: nowrap;
   }
   #cal-last:hover, #cal-last:focus {
-    box-shadow: 0 0 1.5em #dcdcdc;
-    transform: translateY(-4px);
-  }
-  #cal-last > div {
-    width: 1em;
-    height: 1em;
+    box-shadow: 0 3px 15px rgba(50, 50, 50, .3);
+    transform: translateY(-3px);
   }
 </style>
 <section class="cal">
@@ -211,162 +208,30 @@
     <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
     <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
     <div id="cal-container">
-      <div class="cal-month" id="month-12">
-        <time datetime="декабрь">декабрь</time>
+      {% for month, days in calendar %}
+      <div class="cal-month">
+        <time datetime="{{ month }}">{{ month }}</time>
         <div>
+          {% for date_, day, weekday in days.days %}
           <a class="cal-day">
-            <time datetime="24 12.1024">24</time>
-            <p>вт</p>
+            <time datetime="{{ date_ }}">{{ day }}</time>
+            <p>{{ weekday }}</p>
           </a>
-          <a class="cal-day" aria-current="true">
-            <time datetime="24 12.1024">25</time>
-            <p>ср</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">26</time>
-            <p>чт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">27</time>
-            <p>пт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">28</time>
-            <p class="red">сб</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">29</time>
-            <p class="red">вс</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">30</time>
-            <p>пн</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">31</time>
-            <p>вт</p>
-          </a>
-        </div>
-      </div>
-      <div class="cal-month" id="month-1">
-        <time datetime="январь">январь</time>
-        <div>
-          <a class="cal-day">
-            <time datetime="24 12.1024">1</time>
-            <p>ср</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">2</time>
-            <p>чт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">3</time>
-            <p>пт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">4</time>
-            <p class="red">сб</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">5</time>
-            <p class="red">вс</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">6</time>
-            <p>пн</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">7</time>
-            <p>вт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">8</time>
-            <p>ср</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">9</time>
-            <p>чт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">10</time>
-            <p>пт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">11</time>
-            <p class="red">сб</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">12</time>
-            <p class="red">вс</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">13</time>
-            <p>пн</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">14</time>
-            <p>вт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">15</time>
-            <p>ср</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">16</time>
-            <p>чт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">17</time>
-            <p>пт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">18</time>
-            <p class="red">сб</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">19</time>
-            <p class="red">вс</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">20</time>
-            <p>пн</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">21</time>
-            <p>вт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">22</time>
-            <p>ср</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">24</time>
-            <p>чт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">25</time>
-            <p>пт</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">26</time>
-            <p class="red">сб</p>
-          </a>
-          <a class="cal-day">
-            <time datetime="24 12.1024">27</time>
-            <p class="red">вс</p>
-          </a>
+          {% endfor %}
+          {% if forloop.last %}
           <a id="cal-last">
-            <div><i class="fa-light fa-plus"></i></div>
+            Другая дата&nbsp; <i class="fa-sharp fa-light fa-caret-down"></i>
           </a>
+          {% endif %}
         </div>
       </div>
+      {% endfor %}
     </div>
   </div>
   <div id="datestring">##</div>
 </section>
 
 <script>
-  // const calmonth = 12;
   const calcontainer = document.getElementById(`cal-container`);
   const num = 5; // шаг, сколько прокрутить на клик (в днях)
   const getPosition = () => { // позиция прокрутки ленты дней календаря
@@ -375,23 +240,38 @@
   const calDayWidth = () => { // ширина элемента .cal-day
     return calcontainer.querySelector(".cal-day").clientWidth;
   }
-  // Показать|убрать стрелки перемотки ленты
-  document.getElementById("cal-container").addEventListener('scroll', function() {
-    const position = getPosition();
-
+  // Ширина всей ленты с датами, которая прокручивается
+  const widthDays = () => {
     let widthall = 0;
     document.querySelectorAll(".cal-month").forEach(_month => {
       widthall += _month.clientWidth;
     });
-    endposition = widthall - this.clientWidth - position;
+    return widthall;
+  }
+  // Показать|убрать стрелки перемотки ленты
+  function reDrowArrows() {
+    const position = getPosition();
+    endposition = widthDays() - calcontainer.clientWidth - position;
     if (position == 0) document.getElementById('cal-start').style.display = 'none' // начало ленты
     else document.getElementById('cal-start').style.display = 'block';
     if (endposition <= 0) document.getElementById('cal-end').style.display = 'none' // конец ленты
     else document.getElementById('cal-end').style.display = 'block';
+  }
+  document.getElementById("cal-container").addEventListener('scroll', reDrowArrows);
+  const resizeObserver = new ResizeObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      reDrowArrows();
+    });
   });
+  resizeObserver.observe(calcontainer);
+
   // Прокрутить ленту через num дней;
   function scrollDate(num) {
-    calcontainer.scrollTo({top: 0, left: (getPosition() + num * calDayWidth()), behavior: 'smooth'});
+    let _left = getPosition() + num * calDayWidth();
+    const calLsatWidth = document.getElementById('cal-last').clientWidth; 
+    // alert('widthDays: ' + widthDays() + ' _left:' + _left + ' clientWidth: ' + calcontainer.clientWidth + ', calLsatWidth: ' + calLsatWidth);
+    if (widthDays() - _left - calLsatWidth < calcontainer.clientWidth) _left = widthDays() - calcontainer.clientWidth;
+    calcontainer.scrollTo({top: 0, left: _left, behavior: 'smooth'});
   }
   document.getElementById('cal-start').addEventListener('click', () => scrollDate(-num)); // назад
   document.getElementById('cal-end').addEventListener('click', () => scrollDate(num));  // вперед
@@ -401,17 +281,17 @@
         let _status = "true";
         if (this.getAttribute('aria-current') == "true") _status = "false"; // getAttribute даёт строку
         this.setAttribute('aria-current', _status);
-        _setDate("11.12.2024");//this.firstChild.getAttribute('datetime'));
+        _setDate(this.querySelector('time').getAttribute('datetime'));
       });
     });
   }; setDayHandlers();
   // начнем считать диапазон
   const dateOject = {
-    _start: new Date(2024, 12, 10),
-    _end: new Date(2024, 12, 11),
+    _start: false,
+    _end: false,
     set start(day) {
-      if (day) { // dd.mm.YYYY|false
-        this._start = new Date('');
+      if (day) { // YYYY-mm-dd|false
+        this._start = new Date(Date.parse(day));
       }
       else {
         this._start = false;
@@ -421,8 +301,8 @@
       return this._start;
     },
     set end(day) {
-      if (day) { // dd.mm.YYYY|false
-        this._end = new Date(day);
+      if (day) { // YYYY-mm-dd|false
+        this._end = new Date(Date.parse(day));
       }
       else {
         this._end = false;
@@ -433,7 +313,7 @@
     },
     get prn() {
       _r = this.start ? this.start.toLocaleDateString() : "##";
-      _r += " --- " + this.end ? this.end.toLocaleDateString() : "##";
+      _r += " --- " + (this.end ? this.end.toLocaleDateString() : "##");
       return _r;
     }
   }
