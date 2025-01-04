@@ -278,23 +278,31 @@
   function setDayHandlers() { // назначить обработчики клика на .cal-day ссылки
     calcontainer.querySelectorAll('.cal-day').forEach(calday => {
       calday.addEventListener("click", function() {
-        let _status = "true";
-        if (this.getAttribute('aria-current') == "true") _status = "false"; // getAttribute даёт строку
-        this.setAttribute('aria-current', _status);
-        _setDate(this.querySelector('time').getAttribute('datetime'));
+        _setDate(this);
       });
     });
   }; setDayHandlers();
   // начнем считать диапазон
   const dateOject = {
     _start: false,
+    _start_element: false,
     _end: false,
+    _end_element: false,
+    _setDate(calDayElement) { 
+      const day = calDayElement.querySelector('time').getAttribute('datetime');
+      return new Date(Date.parse(day)) 
+    },
     set start(day) {
       if (day) { // YYYY-mm-dd|false
-        this._start = new Date(Date.parse(day));
+        if (this._start_element && this._start_element != day) this._start_element.setAttribute('aria-current', 'false');
+        this._start = this._setDate(day);
+        this._start_element = day;
+        day.setAttribute('aria-current', 'true');
       }
       else {
         this._start = false;
+        this._start_element.setAttribute('aria-current', 'false');
+        this._start_element = false;
       }
     },
     get start() {
@@ -302,27 +310,39 @@
     },
     set end(day) {
       if (day) { // YYYY-mm-dd|false
-        this._end = new Date(Date.parse(day));
+        if (day == this._start_element) return;
+        if (this._end_element) this._end_element.setAttribute('aria-current', 'false');
+        this._end = this._setDate(day);
+        this._end_element = day;
+        day.setAttribute('aria-current', 'true');
       }
       else {
         this._end = false;
-      };
+        this._end_element.setAttribute('aria-current', 'false');
+        this._end_element = false;
+      }
     },
     get end() {
       return this._end;
     },
     get prn() {
-      _r = this.start ? this.start.toLocaleDateString() : "##";
-      _r += " --- " + (this.end ? this.end.toLocaleDateString() : "##");
+      let start = this.start;
+      let end = this.end;
+      if (this.start > this.end) {
+        start = this.end;
+        end = this.start;
+      };
+      _r = start ? start.toLocaleDateString() : "##";
+      _r += " --- " + (end ? end.toLocaleDateString() : "##");
       return _r;
     }
   }
-  function _setDate(day) {
-    if (!dateOject.start) dateOject.start = day;
-    else if (!dateOject.end) dateOject.end = day;
+  function _setDate(calDayElement) {
+    if (!dateOject.start) dateOject.start = calDayElement;
+    else if (!dateOject.end) dateOject.end = calDayElement;
     else {
-      dateOject.start = day;
       dateOject.end = false;
+      dateOject.start = calDayElement;
     }
     document.getElementById('datestring').innerText = dateOject.prn;
   }
