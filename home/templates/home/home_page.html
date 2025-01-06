@@ -77,137 +77,12 @@
 </script>
 </section>
 
-<style>
-  .cal {
-    width: 100%;
-    /* background-color: var(--body-color); */
-    /* background-color: aqua; */
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  #cal {
-    width: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    /* box-shadow: 0 0 2px red inset; */
-    position: relative;
-    font-size: 1.5rem;
-  }
-  #cal-start, #cal-end {
-    position: absolute;
-    top: 0;
-    width: 7rem;
-    height: 100%;
-    position: absolute;
-    /* box-shadow: 0 0 2px blue inset; */
-    z-index: 1;
-  }
-  #cal-start {
-    left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 40%);
-    display: none;  /* начальное значение */
-  }
-  #cal-end {
-    right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 40%);
-  }
-  #cal-start > i, #cal-end > i {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-10%);
-  }
-  #cal-start > i {
-    left: .4em;
-  }
-  #cal-end > i {
-    right: .4em;
-  }
-  #cal-container {
-    scrollbar-width: none; /* Для браузера FireFox скрытие scrollbar */
-    padding: .5em 0;
-    position: relative;
-    scroll-snap-type: x mandatory;
-    display: flex;
-    -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
-  }
-  #cal-container::-webkit-scrollbar { /* Для webkit скрытие scrollbar */
-    width: 0;
-    height: 0;
-  }
-  .cal-month {
-    border-radius: .5em;
-  }
-  .cal-month + .cal-month {
-    margin-left: .5em;
-  }
-  .cal-month > time {
-    font-size: .8em;
-    font-variant: small-caps;
-    font-weight: bold;
-    opacity: .5;
-    padding-left: .5em;
-    position: sticky;
-    z-index: 2;
-  }
-  /* .cal-month:hover {
-    box-shadow: 0 0 5px rgba(0, 0, 0, .5);
-  } */
-  .cal-month:hover > time {
-    opacity: .7;
-  }
-  .cal-month > div {
-    display: flex;
-  }
-  .cal-day {
-    padding: .3em;
-    border-radius: 1em;
-    width: 2em;
-    text-align: center;
-  }
-  .cal-day + .cal-day {
-    margin-left: .1em;
-  }
-  .cal-day[aria-current='true'] {
-    background-color: rgba(0, 0, 0, .1);
-  }
-  .cal-day:hover > p {
-    opacity: .9;
-    transition: all 300ms;
-  }
-  .cal-day > time {
-    font-weight: bold;
-    font-size: .9em;
-  }
-  .cal-day > p {
-    margin: 0;
-    font-variant: small-caps;
-    font-weight: bold;
-    opacity: .6;
-    font-size: .8em;
-  }
-  .cal-day .red {
-    color: red;
-  }
-  #cal-last {
-    border-radius: 1.2em;
-    box-shadow: 0 0 10px rgba(50, 50, 50, .2);
-    font-size: .7em;
-    font-weight: bold;
-    text-align: center;
-    margin: auto 1em;
-    padding: .6em .8em;
-    white-space: nowrap;
-  }
-  #cal-last:hover, #cal-last:focus {
-    box-shadow: 0 3px 15px rgba(50, 50, 50, .3);
-    transform: translateY(-3px);
-  }
-</style>
 <section class="cal">
   <div id="cal">
     <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
     <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
     <div id="cal-container">
+      <div id='cal-marker'></div>
       {% for month, days in calendar %}
       <div class="cal-month">
         <time datetime="{{ month }}">{{ month }}</time>
@@ -215,7 +90,7 @@
           {% for date_, day, weekday in days.days %}
           <a class="cal-day">
             <time datetime="{{ date_ }}">{{ day }}</time>
-            <p>{{ weekday }}</p>
+            <p {% if weekday == "сб" or weekday == "вс" %}class='red'{% endif %}>{{ weekday }}</p>
           </a>
           {% endfor %}
           {% if forloop.last %}
@@ -232,22 +107,22 @@
 </section>
 
 <script>
-  const calcontainer = document.getElementById(`cal-container`);
-  const num = 5; // шаг, сколько прокрутить на клик (в днях)
-  const getPosition = () => { // позиция прокрутки ленты дней календаря
+  const calcontainer = document.getElementById(`cal-container`),
+        getPosition = () => { // позиция прокрутки ленты дней календаря
     return calcontainer.scrollLeft;
-  }
-  const calDayWidth = () => { // ширина элемента .cal-day
+  },
+        calDayWidth = () => { // ширина элемента .cal-day
     return calcontainer.querySelector(".cal-day").clientWidth;
-  }
+  },
   // Ширина всей ленты с датами, которая прокручивается
-  const widthDays = () => {
+        widthDays = () => {
     let widthall = 0;
     document.querySelectorAll(".cal-month").forEach(_month => {
       widthall += _month.clientWidth;
     });
     return widthall;
-  }
+  };
+  const num = () => {return Math.floor(calcontainer.clientWidth / calDayWidth() / 2) - 1};// 5; // шаг, сколько прокрутить на клик (в днях)
   // Показать|убрать стрелки перемотки ленты
   function reDrowArrows() {
     const position = getPosition();
@@ -273,8 +148,8 @@
     if (widthDays() - _left - calLsatWidth < calcontainer.clientWidth) _left = widthDays() - calcontainer.clientWidth;
     calcontainer.scrollTo({top: 0, left: _left, behavior: 'smooth'});
   }
-  document.getElementById('cal-start').addEventListener('click', () => scrollDate(-num)); // назад
-  document.getElementById('cal-end').addEventListener('click', () => scrollDate(num));  // вперед
+  document.getElementById('cal-start').addEventListener('click', () => scrollDate(-num())); // назад
+  document.getElementById('cal-end').addEventListener('click', () => scrollDate(num()));  // вперед
   function setDayHandlers() { // назначить обработчики клика на .cal-day ссылки
     calcontainer.querySelectorAll('.cal-day').forEach(calday => {
       calday.addEventListener("click", function() {
@@ -309,28 +184,54 @@
       return this._start;
     },
     set end(day) {
+      const cal_marker = document.getElementById('cal-marker');
       if (day) { // YYYY-mm-dd|false
         if (day == this._start_element) return;
         if (this._end_element) this._end_element.setAttribute('aria-current', 'false');
         this._end = this._setDate(day);
         this._end_element = day;
         day.setAttribute('aria-current', 'true');
+        let start = this.start,
+          start_element = this._start_element,
+          end = this.end,
+          end_element = this._end_element;
+        if (this.start > this.end) {
+          start = this.end;
+          start_element = this._end_element;
+          end = this.start;
+          end_element = this._start_element;
+        };
+        const top = start_element.offsetTop,
+              left = start_element.offsetLeft,
+              height = start_element.offsetHeight,
+              width = (end_element.offsetLeft + end_element.offsetWidth) - left;
+        cal_marker.style.cssText = `
+          top: ${top}px; 
+          left: ${left}px; 
+          display: block;
+          width: ${width}px; 
+          height: ${height}px;`;
       }
       else {
         this._end = false;
         this._end_element.setAttribute('aria-current', 'false');
         this._end_element = false;
+        cal_marker.style.display = "none";
       }
     },
     get end() {
       return this._end;
     },
     get prn() {
-      let start = this.start;
-      let end = this.end;
+      let start = this.start,
+          start_element = this._start_element,
+          end = this.end,
+          end_element = this._end_element;
       if (this.start > this.end) {
         start = this.end;
+        start_element = this._end_element;
         end = this.start;
+        end_element = this._start_element;
       };
       _r = start ? start.toLocaleDateString() : "##";
       _r += " --- " + (end ? end.toLocaleDateString() : "##");
