@@ -285,3 +285,33 @@
     box-shadow: 0 0 10px rgba(10, 10, 10, .15) inset;
     border-radius: 1em;
   }
+
+/* Timer component */
+.timer {
+  display: grid;
+  grid-template-columns: 4.5rem 0.5rem 4.5rem 0.5rem 4.5rem 0.5rem 4.5rem;
+  font-size: 3rem;
+  justify-items: center;
+  margin-bottom: .4em;
+  mix-blend-mode: difference;
+}
+
+.timer__item {
+  position: relative;
+}
+
+.timer__item::before {
+  content: attr(data-title);
+  display: block;
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  color: var(--body-bgcolor);
+}
+.timer__text {
+  text-indent: 1em;
+  font-weight: bold;
+  mix-blend-mode: difference;
+}
