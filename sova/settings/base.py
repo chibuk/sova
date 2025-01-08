@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     "portfolio",
     "base",
     "home",
+    'wagtail.api.v2',
+    "rest_framework",
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",

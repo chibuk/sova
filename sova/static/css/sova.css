@@ -286,21 +286,6 @@ section#content {
   height: 100%;
 }
 
-/* .box {
-  // box-shadow: var(--box-shadow);
-  border-radius: calc(var(--border-radius) / 2);
-  border: 1px solid var(--brand-bgcolor);
-  padding: 1em;
-  margin: 0 1em 1em 0;
-  width: 15em;
-  aspect-ratio: .8;
-  color: var(--body-bgcolor);
-}
-.box:hover {
-  border-color: var(--body-bgcolor);
-  transition: all 300ms;
-} */
-
 .flex-row {
   display: flex;
   flex-wrap: wrap;

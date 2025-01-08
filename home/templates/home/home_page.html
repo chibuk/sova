@@ -43,7 +43,7 @@
   {% endif %}
 </section>
 <section id='content'>
-  {{ page.body|richtext }}
+  <div class="content">{{ page.body|richtext }}</div>
 </section>
 <section class="section">
 
@@ -83,15 +83,10 @@
   </div>
 </div>
 {% endif %}
-
-<script>
-    
-  
-</script>
 </section>
 
 <section class="cal">
-  <div id="cal">
+  <div id="cal" class="content">
     <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
     <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
     <div id="cal-container">
@@ -116,7 +111,8 @@
       {% endfor %}
     </div>
   </div>
-  <div id="datestring">##</div>
+  <div id="cal__content" class="content">.</div>
+  <div id="datestring" class="content">##</div>
 </section>
 
 {% if self.hero_video %}

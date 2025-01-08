@@ -172,7 +172,10 @@ const calCalendar = () => {
     set end(day) {
       const cal_marker = document.getElementById('cal-marker');
       if (day) { // YYYY-mm-dd|false
-        if (day == this._start_element) return;
+        if (day == this._start_element) { // Отмена выбора даты (повторный клик на элементе)
+          this.start = false;
+          return;
+        }
         if (this._end_element) this._end_element.setAttribute('aria-current', 'false');
         this._end = this._setDate(day);
         this._end_element = day;
@@ -209,6 +212,8 @@ const calCalendar = () => {
       return this._end;
     },
     get prn() {
+      let _r = "";
+      if (!this.start) return _r; // Отмена выбора даты (повторный клик на элементе)
       let start = this.start,
           start_element = this._start_element,
           end = this.end,
@@ -219,19 +224,96 @@ const calCalendar = () => {
         end = this.start;
         end_element = this._start_element;
       };
-      _r = start ? start.toLocaleDateString() : "##";
-      _r += " --- " + (end ? end.toLocaleDateString() : "##");
-      return _r;
+      _r += start ? start.toISOString().split("T")[0] : "";
+      _r += "&" + (end ? end.toISOString().split("T")[0] : "");
+      loadContent(start, end);
+      return  _r + " Даты: " + datesToStrArray(start, end);
     }
   }
-  function _setDate(calDayElement) {
+  async function loadContent (start, end) {
+    // Запускаем цикл прохода по каждой дате из выбранного диапазона
+    const datesArr = datesToStrArray(start, end);
+    const container = document.getElementById("cal__content");
+    container.innerHTML = "";
+    for (let day of datesArr) {
+      // получаем массив, ссылки для загрузки данных по каждому объекту
+      const urls = await fetchURLs(day);//getUrls();
+        for (let url of urls) {
+          const data = await fetchData(url);//getData();
+          if (!data) break;
+          container.innerHTML += `<p>${data.h1}</p>`
+        };
+    };
+  }
+  function datesToStrArray(start, end) {
+    let dates = [];
+    if (!start) {
+      dates = [end.toISOString().split("T")[0]];
+      return dates;
+    }
+    let _start = new Date(Date.parse(start));
+    let _end = new Date(Date.parse(end))
+    let i = 0;
+    do {
+      i += 1;
+      dates.push(_start.toISOString().split("T")[0]);
+      _start.setDate(_start.getDate() + 1);
+    } while (_start < _end);
+    dates.push(_end.toISOString().split("T")[0]);
+    return dates;
+  };
+  
+  async function fetchURLs(dateString) {
+    const url = `/jsonapi/v2/pages/?type=event.EventPage&date_on=${dateString}`; // Замените на ваш URL
+    const data = await fetchData(url);
+    if (data) {
+      const itemsURL = data.items.map(item => item.meta.detail_url);
+      return itemsURL;
+    }
+    else return [];
+    // try {
+    //     const response = await fetch(url);
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
+    //     const data = await response.json();
+    //     const totalCount = data.meta.total_count;
+
+    //     // Формируем массив из всех значений объектов items[].id
+    //     const itemsURL = data.items.map(item => item.meta.detail_url);
+        
+    //     return itemsURL;
+    // } catch (error) {
+    //     console.error('Ошибка:', error);
+    //     return []; // Возвращаем пустой массив в случае ошибки
+    // } // Пример использования
+  }   // fetchData('2025-01-08').then(ids => console.log(ids));
+  async function fetchData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // Формируем массив из всех значений объектов items[].id
+        const pageData = data;
+        
+        return pageData;
+    } catch (error) {
+        console.error('Ошибка:', error);
+        return false; // в случае ошибки
+    }
+  }
+
+  async function _setDate(calDayElement) {
     if (!dateOject.start) dateOject.start = calDayElement;
     else if (!dateOject.end) dateOject.end = calDayElement;
     else {
       dateOject.end = false;
       dateOject.start = calDayElement;
     }
-    document.getElementById('datestring').innerText = dateOject.prn;
+    document.getElementById('datestring').innerText = dateOject.prn; // + " -- " + JSON.stringify(await fetchData('2024-12-17'));
   }
 }; 
 calCalendar();

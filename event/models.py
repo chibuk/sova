@@ -7,6 +7,8 @@ from taggit.models import TaggedItemBase
 from wagtail.search import index
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
+from wagtail.api import APIField
+from wagtail.images.api.fields import ImageRenditionField
 
 
 
@@ -55,6 +57,19 @@ class EventPage(Page):
     
     subpage_types = []
     parent_page_types = ['event.EventIndexPage']
+
+    api_fields = [
+        APIField('date_on'),
+        APIField('date_end'),
+        APIField('h1'),
+        APIField('h2'),
+        APIField('body'),
+        APIField('image'),
+        APIField('image_thumbnail', serializer=ImageRenditionField('fill-380x220', source='image')),    # 19/11 соотношение картинки 380|290х..
+        APIField('tags'),
+        APIField('founder'),
+        APIField('location'),
+    ]
     
     content_panels = Page.content_panels + [
         FieldPanel('h1'),

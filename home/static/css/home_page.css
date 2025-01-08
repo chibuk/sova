@@ -153,138 +153,141 @@
     right: 0;
 }
 
+section > .content {
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
 /* Calendar component */
 .cal {
-    width: 100%;
-    /* background-color: var(--body-color); */
-    /* background-color: aqua; */
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  #cal {
-    width: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    /* box-shadow: 0 0 2px red inset; */
-    position: relative;
-    font-size: 1.5rem;
-  }
-  #cal-start, #cal-end {
-    position: absolute;
-    top: 0;
-    width: 7rem;
-    height: 100%;
-    position: absolute;
-    /* box-shadow: 0 0 2px blue inset; */
-    z-index: 2;
-  }
-  #cal-start {
-    left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 40%);
-    display: none;  /* начальное значение */
-  }
-  #cal-end {
-    right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 40%);
-  }
-  #cal-start > i, #cal-end > i {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-10%);
-  }
-  #cal-start > i {
-    left: .4em;
-  }
-  #cal-end > i {
-    right: .4em;
-  }
-  #cal-container {
-    scrollbar-width: none; /* Для браузера FireFox скрытие scrollbar */
-    padding: .5em 0;
-    position: relative;
-    scroll-snap-type: x mandatory;
-    display: flex;
-    -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
-  }
-  #cal-container::-webkit-scrollbar { /* Для webkit скрытие scrollbar */
-    width: 0;
-    height: 0;
-  }
-  .cal-month {
-    border-radius: .5em;
-  }
-  .cal-month + .cal-month {
-    margin-left: .5em;
-  }
-  .cal-month > time {
-    font-size: .8em;
-    font-variant: small-caps;
-    font-weight: bold;
-    opacity: .5;
-    padding-left: .5em;
-    position: sticky;
-    z-index: 2;
-  }
-  .cal-month:hover > time {
-    opacity: .7;
-  }
-  .cal-month > div {
-    display: flex;
-  }
-  .cal-day {
-    padding: .3em;
-    border-radius: 1em;
-    width: 2em;
-    text-align: center;
-    z-index: 1;
-  }
-  .cal-day + .cal-day {
-    margin-left: .1em;
-  }
-  .cal-day[aria-current='true'] {
-    background-color: rgba(0, 0, 0, .05);
-  }
-  .cal-day:hover > p {
-    opacity: .9;
-    transition: all 300ms;
-  }
-  .cal-day > time {
-    font-weight: bold;
-    font-size: .9em;
-  }
-  .cal-day > p {
-    margin: 0;
-    font-variant: small-caps;
-    font-weight: bold;
-    opacity: .6;
-    font-size: .8em;
-  }
-  .cal-day > p.red {
-    color: red;
-  }
-  #cal-last {
-    border-radius: 1.2em;
-    box-shadow: 0 0 10px rgba(50, 50, 50, .2);
-    font-size: .7em;
-    font-weight: bold;
-    text-align: center;
-    margin: auto 1em;
-    padding: .6em .8em;
-    white-space: nowrap;
-  }
-  #cal-last:hover, #cal-last:focus {
-    box-shadow: 0 3px 15px rgba(50, 50, 50, .3);
-    transform: translateY(-3px);
-  }
-  #cal-marker {
-    position: absolute;
-    height: 100%;
-    display: none;
-    width: 15em;
-    /* background-color: rgba(10, 10, 10, .05); */
-    box-shadow: 0 0 10px rgba(10, 10, 10, .15) inset;
-    border-radius: 1em;
-  }
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#cal {
+  position: relative;
+  font-size: 1.5rem;
+}
+#cal-start, #cal-end {
+  position: absolute;
+  top: 0;
+  width: 7rem;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+}
+#cal-start {
+  left: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), #FFF 40%);
+  display: none;  /* начальное значение */
+}
+#cal-end {
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 40%);
+}
+#cal-start > i, #cal-end > i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-10%);
+}
+#cal-start > i {
+  left: .4em;
+}
+#cal-end > i {
+  right: .4em;
+}
+#cal-container {
+  scrollbar-width: none; /* Для браузера FireFox скрытие scrollbar */
+  padding: .5em 0;
+  position: relative;
+  scroll-snap-type: x mandatory;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+}
+#cal-container::-webkit-scrollbar { /* Для webkit скрытие scrollbar */
+  width: 0;
+  height: 0;
+}
+.cal-month {
+  border-radius: .5em;
+}
+.cal-month + .cal-month {
+  margin-left: .5em;
+}
+.cal-month > time {
+  font-size: .8em;
+  font-variant: small-caps;
+  font-weight: bold;
+  opacity: .5;
+  padding-left: .5em;
+  position: sticky;
+  z-index: 2;
+}
+.cal-month:hover > time {
+  opacity: .7;
+}
+.cal-month > div {
+  display: flex;
+}
+.cal-day {
+  padding: .3em;
+  border-radius: 1em;
+  width: 2em;
+  text-align: center;
+  z-index: 1;
+}
+.cal-day + .cal-day {
+  margin-left: .1em;
+}
+.cal-day[aria-current='true'] {
+  background-color: rgba(0, 0, 0, .05);
+}
+.cal-day:hover > p {
+  opacity: .9;
+  transition: all 300ms;
+}
+.cal-day > time {
+  font-weight: bold;
+  font-size: .9em;
+}
+.cal-day > p {
+  margin: 0;
+  font-variant: small-caps;
+  font-weight: bold;
+  opacity: .6;
+  font-size: .8em;
+}
+.cal-day > p.red {
+  color: red;
+}
+#cal-last {
+  border-radius: 1.2em;
+  box-shadow: 0 0 3px rgba(50, 50, 50, .4);
+  font-size: .7em;
+  font-weight: bold;
+  text-align: center;
+  margin: auto 1em;
+  padding: .6em .8em;
+  white-space: nowrap;
+}
+#cal-last:hover, #cal-last:focus {
+  box-shadow: 0 3px 15px rgba(50, 50, 50, .3);
+  transform: translateY(-3px);
+}
+#cal-marker {
+  position: absolute;
+  height: 100%;
+  display: none;
+  width: 15em;
+  /* background-color: rgba(10, 10, 10, .05); */
+  box-shadow: 0 0 10px rgba(10, 10, 10, .15) inset;
+  border-radius: 1em;
+}
+#cal__content {
+  box-shadow: 0 0 3px red inset;
+}
 
 /* Timer component */
 .timer {
