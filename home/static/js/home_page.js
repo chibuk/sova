@@ -264,29 +264,13 @@ const calCalendar = () => {
   };
   
   async function fetchURLs(dateString) {
-    const url = `/jsonapi/v2/pages/?type=event.EventPage&date_on=${dateString}`; // Замените на ваш URL
+    const url = `/jsonapi/v2/pages/?type=event.EventPage&date_on=${dateString}&fields=date_on,date_end,h1,h2,body,image_thumbnail,tags,founder,location`;
     const data = await fetchData(url);
     if (data) {
       const itemsURL = data.items.map(item => item.meta.detail_url);
       return itemsURL;
     }
     else return [];
-    // try {
-    //     const response = await fetch(url);
-    //     if (!response.ok) {
-    //         throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     const data = await response.json();
-    //     const totalCount = data.meta.total_count;
-
-    //     // Формируем массив из всех значений объектов items[].id
-    //     const itemsURL = data.items.map(item => item.meta.detail_url);
-        
-    //     return itemsURL;
-    // } catch (error) {
-    //     console.error('Ошибка:', error);
-    //     return []; // Возвращаем пустой массив в случае ошибки
-    // } // Пример использования
   }   // fetchData('2025-01-08').then(ids => console.log(ids));
   async function fetchData(url) {
     try {

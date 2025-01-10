@@ -9,12 +9,15 @@ from wagtail.documents import urls as wagtaildocs_urls
 from search import views as search_views
 from .api import api_router
 
+from event import views as events_views
+
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path('jsonapi/v2/', api_router.urls),
+    # path('jsonapi/v2own/events/', events_views.EventPageAPIListView.as_view({'get': 'list'}))
 ]
 
 
