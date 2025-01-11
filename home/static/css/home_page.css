@@ -286,7 +286,24 @@ section > .content {
   border-radius: 1em;
 }
 #cal__content {
-  box-shadow: 0 0 3px red inset;
+  /* box-shadow: 0 0 3px red inset; */
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1.5em;
+  min-height: 400px;
+}
+.event {
+  width: 380px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+.event__img {
+  width: inherit;
+  height: 220px;
+  border-radius: .6em;
+}
+.event__text {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 1) inset;
 }
 
 /* Timer component */

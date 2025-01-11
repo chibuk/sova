@@ -212,8 +212,8 @@ const calCalendar = () => {
       return this._end;
     },
     get prn() {
-      let _r = "";
-      if (!this.start) return _r; // Отмена выбора даты (повторный клик на элементе)
+      // let _r = "";
+      if (!this.start) return; // Отмена выбора даты (повторный клик на элементе)
       let start = this.start,
           start_element = this._start_element,
           end = this.end,
@@ -224,26 +224,45 @@ const calCalendar = () => {
         end = this.start;
         end_element = this._start_element;
       };
-      _r += start ? start.toISOString().split("T")[0] : "";
-      _r += "&" + (end ? end.toISOString().split("T")[0] : "");
+      // _r += start ? start.toISOString().split("T")[0] : "";
+      // _r += "&" + (end ? end.toISOString().split("T")[0] : "");
       loadContent(start, end);
-      return  _r + " Даты: " + datesToStrArray(start, end);
+      // return  _r + " Даты: " + datesToStrArray(start, end);
     }
   }
   async function loadContent (start, end) {
     // Запускаем цикл прохода по каждой дате из выбранного диапазона
-    const datesArr = datesToStrArray(start, end);
+    // const datesArr = datesToStrArray(start, end);
+    const dateToStr = (date) => {return date ? date.toISOString().split("T")[0] : ""};
     const container = document.getElementById("cal__content");
     container.innerHTML = "";
-    for (let day of datesArr) {
-      // получаем массив, ссылки для загрузки данных по каждому объекту
-      const urls = await fetchURLs(day);//getUrls();
-        for (let url of urls) {
-          const data = await fetchData(url);//getData();
-          if (!data) break;
-          container.innerHTML += `<p>${data.h1}</p>`
-        };
-    };
+    const events = await fetchEvents(dateToStr(start), dateToStr(end));
+    if (events) {
+      // const eventsObj = JSON.parse(events.items);
+      for (let event of events.items) {
+        // container.innerHTML += `<p>${event.h1}</p>`
+        const div = createTag("a", {class: "event", href: event.meta.html_url}, '');
+        container.appendChild(div);
+        div.appendChild(createTag("img", {
+          src: event.image_thumbnail.url,
+          class: "event__img"
+        }, ''));
+        const div_txt = createTag("div", {class: "event__text"}, '')
+        div.appendChild(div_txt);
+        div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
+        div_txt.appendChild(createTag("span",{class: 'event__text__date'}, (event.date_on + (event.date_end ? ' - ' + event.date_end : ''))))
+        div_txt.appendChild(createTag("span",{class: 'event__text__location'}, event.location))
+      }
+    }
+    /**Создание HTML тега */
+    function createTag (tag, attrs={}, innerText) {
+      const elem = document.createElement(tag);
+      elem.innerText = innerText;
+      for (let key in attrs) {
+          elem.setAttribute(key, attrs[key])
+      }
+      return elem
+    }
   }
   function datesToStrArray(start, end) {
     let dates = [];
@@ -262,16 +281,20 @@ const calCalendar = () => {
     dates.push(_end.toISOString().split("T")[0]);
     return dates;
   };
-  
-  async function fetchURLs(dateString) {
-    const url = `/jsonapi/v2/pages/?type=event.EventPage&date_on=${dateString}&fields=date_on,date_end,h1,h2,body,image_thumbnail,tags,founder,location`;
-    const data = await fetchData(url);
-    if (data) {
-      const itemsURL = data.items.map(item => item.meta.detail_url);
-      return itemsURL;
-    }
-    else return [];
-  }   // fetchData('2025-01-08').then(ids => console.log(ids));
+  /**
+   * Загружет объекты EventPage, пересекающиеся с диапазоном запрошеных дат
+   * @param {string} date_on 
+   * @param {string} date_end 
+   * @returns data (JSON с объектами внутри), 
+   * data.meta.total_count содержит общее количество
+   * обектов data.items
+   */
+  async function fetchEvents(date_on, date_end) {
+    const delimiter = (date_on && date_end) ? "," : "",
+          dateString = (date_on ? date_on + delimiter : '') + (date_end ? date_end : ''),
+          url = `/jsonapi/v2/events/?dates=${dateString}&fields=date_on,date_end,h1,image_thumbnail,location&order=date_on`;
+    return await fetchData(url);
+  }
   async function fetchData(url) {
     try {
         const response = await fetch(url);
@@ -279,11 +302,7 @@ const calCalendar = () => {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-
-        // Формируем массив из всех значений объектов items[].id
-        const pageData = data;
-        
-        return pageData;
+        return data;
     } catch (error) {
         console.error('Ошибка:', error);
         return false; // в случае ошибки
@@ -297,7 +316,8 @@ const calCalendar = () => {
       dateOject.end = false;
       dateOject.start = calDayElement;
     }
-    document.getElementById('datestring').innerText = dateOject.prn; // + " -- " + JSON.stringify(await fetchData('2024-12-17'));
+    // document.getElementById('datestring').innerText = dateOject.prn; // + " -- " + JSON.stringify(await fetchData('2024-12-17'));
+    dateOject.prn;
   }
 }; 
 calCalendar();
