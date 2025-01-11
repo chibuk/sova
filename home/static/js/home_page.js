@@ -143,7 +143,12 @@ const calCalendar = () => {
       });
     });
   }; setDayHandlers();
-  // начнем считать диапазон
+  /**
+   * Объект управляет состоянием диапазона дат. Тут хранится (false|date_object)
+   * начальная и конечная дата, начальный и конечный элемент, чтобы атрибутом
+   * aria-current управлять его статусом. Здесь логика реакции на клик, когда
+   * элемент выделяется или выделяется диапазон. Поле prn выдает результат.
+   */
   const dateOject = {
     _start: false,
     _start_element: false,
@@ -170,7 +175,7 @@ const calCalendar = () => {
       return this._start;
     },
     set end(day) {
-      const cal_marker = document.getElementById('cal-marker');
+      const cal_marker = document.getElementById('cal-marker'); // маркер диапазона дат
       if (day) { // YYYY-mm-dd|false
         if (day == this._start_element) { // Отмена выбора даты (повторный клик на элементе)
           this.start = false;
@@ -189,7 +194,7 @@ const calCalendar = () => {
           start_element = this._end_element;
           end = this.start;
           end_element = this._start_element;
-        };
+        }; // Берем координаты элементов start и end и располагаем маркер повех
         const top = start_element.offsetTop,
               left = start_element.offsetLeft,
               height = start_element.offsetHeight,
@@ -212,7 +217,10 @@ const calCalendar = () => {
       return this._end;
     },
     get prn() {
-      // let _r = "";
+      /**
+       * Начальная дата может быть больше кеонечной, тогда на возврат,
+       * меняем их местами.
+       */
       if (!this.start) return; // Отмена выбора даты (повторный клик на элементе)
       let start = this.start,
           start_element = this._start_element,
@@ -224,23 +232,23 @@ const calCalendar = () => {
         end = this.start;
         end_element = this._start_element;
       };
-      // _r += start ? start.toISOString().split("T")[0] : "";
-      // _r += "&" + (end ? end.toISOString().split("T")[0] : "");
-      loadContent(start, end);
-      // return  _r + " Даты: " + datesToStrArray(start, end);
+      loadContent(start, end);  // отображение квадратов событий за этот диапазон дат
     }
   }
+  /**
+   * Заполняет ленту квадратиками обытий за указанный диапазон дат
+   * @param {date} start 
+   * @param {date} end 
+   */
   async function loadContent (start, end) {
-    // Запускаем цикл прохода по каждой дате из выбранного диапазона
-    // const datesArr = datesToStrArray(start, end);
+    // dateToStr из объекта даты возвращает строку, формата YYYY-dd-mm
     const dateToStr = (date) => {return date ? date.toISOString().split("T")[0] : ""};
     const container = document.getElementById("cal__content");
     container.innerHTML = "";
     const events = await fetchEvents(dateToStr(start), dateToStr(end));
     if (events) {
-      // const eventsObj = JSON.parse(events.items);
       for (let event of events.items) {
-        // container.innerHTML += `<p>${event.h1}</p>`
+        // Создание квадратиков событий (картинка с подписью снизу, датой и местом проведения)
         const div = createTag("a", {class: "event", href: event.meta.html_url}, '');
         container.appendChild(div);
         div.appendChild(createTag("img", {
@@ -250,11 +258,30 @@ const calCalendar = () => {
         const div_txt = createTag("div", {class: "event__text"}, '')
         div.appendChild(div_txt);
         div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
-        div_txt.appendChild(createTag("span",{class: 'event__text__date'}, (event.date_on + (event.date_end ? ' - ' + event.date_end : ''))))
-        div_txt.appendChild(createTag("span",{class: 'event__text__location'}, event.location))
+        
+        const dts = (datestr) => {
+          const now = new Date();
+          if (datestr == now.toISOString().split("T")[0]) return "Сегодня";
+          // let tomorrow = new Date();
+          now.setDate(now.getDate() + 1);
+          // alert(tomorrow.toISOString().split("T")[0]);
+          if (datestr == now.toISOString().split("T")[0]) return "Завтра";
+          const date = new Date(Date.parse(datestr));
+          return date.toLocaleDateString();
+          // return date.toLocaleDateString('ru-RU', {weekday: "long", day: '2-digit', month: '2-digit', year: "numeric"});
+        }
+        
+        div_txt.appendChild(createTag("span",{class: 'event__text__date'}, (dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''))))
+        if (event.location ) div_txt.appendChild(createTag("span",{class: 'event__text__location'}, event.location));
       }
     }
-    /**Создание HTML тега */
+    /**
+     * Создание HTML тега
+     * @param {string} tag 
+     * @param {атрибут: "значение",} attrs 
+     * @param {string} innerText 
+     * @returns тег для встраивания в дерево dom
+     */
     function createTag (tag, attrs={}, innerText) {
       const elem = document.createElement(tag);
       elem.innerText = innerText;
@@ -264,25 +291,25 @@ const calCalendar = () => {
       return elem
     }
   }
-  function datesToStrArray(start, end) {
-    let dates = [];
-    if (!start) {
-      dates = [end.toISOString().split("T")[0]];
-      return dates;
-    }
-    let _start = new Date(Date.parse(start));
-    let _end = new Date(Date.parse(end))
-    let i = 0;
-    do {
-      i += 1;
-      dates.push(_start.toISOString().split("T")[0]);
-      _start.setDate(_start.getDate() + 1);
-    } while (_start < _end);
-    dates.push(_end.toISOString().split("T")[0]);
-    return dates;
-  };
+  // function datesToStrArray(start, end) {
+  //   let dates = [];
+  //   if (!start) {
+  //     dates = [end.toISOString().split("T")[0]];
+  //     return dates;
+  //   }
+  //   let _start = new Date(Date.parse(start));
+  //   let _end = new Date(Date.parse(end))
+  //   let i = 0;
+  //   do {
+  //     i += 1;
+  //     dates.push(_start.toISOString().split("T")[0]);
+  //     _start.setDate(_start.getDate() + 1);
+  //   } while (_start < _end);
+  //   dates.push(_end.toISOString().split("T")[0]);
+  //   return dates;
+  // };
   /**
-   * Загружет объекты EventPage, пересекающиеся с диапазоном запрошеных дат
+   * Загружает объекты EventPage, пересекающиеся с диапазоном запрошеных дат
    * @param {string} date_on 
    * @param {string} date_end 
    * @returns data (JSON с объектами внутри), 
@@ -295,6 +322,11 @@ const calCalendar = () => {
           url = `/jsonapi/v2/events/?dates=${dateString}&fields=date_on,date_end,h1,image_thumbnail,location&order=date_on`;
     return await fetchData(url);
   }
+  /**
+   * Запрос данных с сервера Fetch
+   * @param {URIString} url 
+   * @returns false|JSONDataObject
+   */
   async function fetchData(url) {
     try {
         const response = await fetch(url);
@@ -308,7 +340,10 @@ const calCalendar = () => {
         return false; // в случае ошибки
     }
   }
-
+  /**
+   * Обработчик кликка по ленте с датами, инициирует загрузку данных с сервера
+   * @param {HTMLTagElement} calDayElement 
+   */
   async function _setDate(calDayElement) {
     if (!dateOject.start) dateOject.start = calDayElement;
     else if (!dateOject.end) dateOject.end = calDayElement;
@@ -316,9 +351,9 @@ const calCalendar = () => {
       dateOject.end = false;
       dateOject.start = calDayElement;
     }
-    // document.getElementById('datestring').innerText = dateOject.prn; // + " -- " + JSON.stringify(await fetchData('2024-12-17'));
     dateOject.prn;
-  }
+  };
+  loadContent(new Date());
 }; 
 calCalendar();
 

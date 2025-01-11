@@ -296,6 +296,9 @@ section > .content {
   width: 380px;
   display: flex;
   flex-flow: column nowrap;
+  background-color: var(--body-color);
+  color: var(--body-bgcolor);
+  font-family: var( --body-font-family);
 }
 .event__img {
   width: inherit;
@@ -303,7 +306,22 @@ section > .content {
   border-radius: .6em;
 }
 .event__text {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 1) inset;
+  padding-top: .3em;
+  font-size: 1rem;
+}
+.event__text__h1 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: .2em;
+}
+.event__text__date {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.event__text__location::before {
+  content: "•";
+  display: inline-block;
+  margin: 0 8px;
+  color: rgb(85, 18, 18);
 }
 
 /* Timer component */
