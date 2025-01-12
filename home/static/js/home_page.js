@@ -258,21 +258,29 @@ const calCalendar = () => {
         const div_txt = createTag("div", {class: "event__text"}, '')
         div.appendChild(div_txt);
         div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
-        
+        /**
+         * Формирование строки даты
+         * @param {'YYYY-mm-dd'} datestr 
+         * @returns String(Сегодня | Завтра | dd.mm.YYYY)
+         */
         const dts = (datestr) => {
           const now = new Date();
           if (datestr == now.toISOString().split("T")[0]) return "Сегодня";
-          // let tomorrow = new Date();
           now.setDate(now.getDate() + 1);
-          // alert(tomorrow.toISOString().split("T")[0]);
           if (datestr == now.toISOString().split("T")[0]) return "Завтра";
-          const date = new Date(Date.parse(datestr));
-          return date.toLocaleDateString();
+          // const date = new Date(Date.parse(datestr));
+          const _s = datestr.split("-");
+          return `${_s[2]}.${_s[1]}.${_s[0]}`
+          // return date.toLocaleDateString();
           // return date.toLocaleDateString('ru-RU', {weekday: "long", day: '2-digit', month: '2-digit', year: "numeric"});
         }
-        
-        div_txt.appendChild(createTag("span",{class: 'event__text__date'}, (dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''))))
-        if (event.location ) div_txt.appendChild(createTag("span",{class: 'event__text__location'}, event.location));
+        const footer = createTag('div', {class: 'event__text__footer'}, '');
+        div_txt.appendChild(footer);
+        let d_interval_str = ''; // Исключим указание диапазона из одинаковых дат
+        if (event.date_on == event.date_end) d_interval_str = dts(event.date_on); // одинаковые
+        else d_interval_str = dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''); // разные
+        footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str));
+        if (event.location ) footer.appendChild(createTag("div",{class: 'event__text__footer__location'}, event.location));
       }
     }
     /**
