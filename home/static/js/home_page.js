@@ -235,6 +235,10 @@ const calCalendar = () => {
       loadContent(start, end);  // отображение квадратов событий за этот диапазон дат
     }
   }
+  // Для пауз
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   /**
    * Заполняет ленту квадратиками обытий за указанный диапазон дат
    * @param {date} start 
@@ -244,12 +248,15 @@ const calCalendar = () => {
     // dateToStr из объекта даты возвращает строку, формата YYYY-dd-mm
     const dateToStr = (date) => {return date ? date.toISOString().split("T")[0] : ""};
     const container = document.getElementById("cal__content");
+    container.classList.add('hideing');
+    await sleep(500);
     container.innerHTML = "";
+    container.classList.remove('hideing');
     const events = await fetchEvents(dateToStr(start), dateToStr(end));
     if (events) {
       for (let event of events.items) {
         // Создание квадратиков событий (картинка с подписью снизу, датой и местом проведения)
-        const div = createTag("a", {class: "event", href: event.meta.html_url}, '');
+        const div = createTag("a", {class: "event", href: event.meta.html_url, 'data-id': event.id}, '');
         container.appendChild(div);
         div.appendChild(createTag("img", {
           src: event.image_thumbnail.url,
@@ -281,6 +288,7 @@ const calCalendar = () => {
         else d_interval_str = dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''); // разные
         footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str));
         if (event.location ) footer.appendChild(createTag("div",{class: 'event__text__footer__location'}, event.location));
+        await sleep(100);
       }
     }
     /**

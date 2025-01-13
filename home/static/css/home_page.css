@@ -291,6 +291,15 @@ section > .content {
   flex-flow: row wrap;
   gap: 1.5em;
   min-height: 400px;
+  overflow: hidden;
+}
+.hideing {
+  opacity: 1;
+  animation: off .5s forwards;
+}
+@keyframes off {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
 }
 .event {
   width: 380px;
@@ -299,6 +308,12 @@ section > .content {
   background-color: var(--body-color);
   color: var(--body-bgcolor);
   font-family: var( --body-font-family);
+  opacity: 0;
+  animation: on .4s forwards;
+}
+@keyframes on {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 .event__img {
   width: inherit;
