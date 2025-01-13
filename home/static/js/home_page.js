@@ -143,6 +143,7 @@ const calCalendar = () => {
       });
     });
   }; setDayHandlers();
+  let evensIdSet = new Set(); // Коллекция с id объектов EventPages для уменьшения операций с DOM
   /**
    * Объект управляет состоянием диапазона дат. Тут хранится (false|date_object)
    * начальная и конечная дата, начальный и конечный элемент, чтобы атрибутом
@@ -165,7 +166,7 @@ const calCalendar = () => {
         this._start_element = day;
         day.setAttribute('aria-current', 'true');
       }
-      else {
+      else { // Римена выбора дня
         this._start = false;
         this._start_element.setAttribute('aria-current', 'false');
         this._start_element = false;
@@ -185,15 +186,24 @@ const calCalendar = () => {
         this._end = this._setDate(day);
         this._end_element = day;
         day.setAttribute('aria-current', 'true');
+        /**
+         * Начальная дата может быть больше кеонечной, тогда на возврат,
+         * меняем их местами.
+         */
         let start = this.start,
-          start_element = this._start_element,
-          end = this.end,
-          end_element = this._end_element;
+            start_element = this._start_element,
+            end = this.end,
+            end_element = this._end_element;
+        
         if (this.start > this.end) {
           start = this.end;
           start_element = this._end_element;
           end = this.start;
           end_element = this._start_element;
+          this._start = start;
+          this._start_element = start_element;
+          this._end = end;
+          this._end_element = end_element;
         }; // Берем координаты элементов start и end и располагаем маркер повех
         const top = start_element.offsetTop,
               left = start_element.offsetLeft,
@@ -211,28 +221,15 @@ const calCalendar = () => {
         this._end_element.setAttribute('aria-current', 'false');
         this._end_element = false;
         cal_marker.style.display = "none";
+        // evensIdSet.clear(); // Очисстка коллекции, т.к. начался выбор нового диапазона дат
       }
     },
     get end() {
       return this._end;
     },
     get prn() {
-      /**
-       * Начальная дата может быть больше кеонечной, тогда на возврат,
-       * меняем их местами.
-       */
-      if (!this.start) return; // Отмена выбора даты (повторный клик на элементе)
-      let start = this.start,
-          start_element = this._start_element,
-          end = this.end,
-          end_element = this._end_element;
-      if (this.start > this.end) {
-        start = this.end;
-        start_element = this._end_element;
-        end = this.start;
-        end_element = this._start_element;
-      };
-      loadContent(start, end);  // отображение квадратов событий за этот диапазон дат
+      if (!this.start) return; // Отмена выбора даты (повторный клик на то же число календаря)
+      loadContent(this.start, this.end);  // отображение квадратов событий за этот диапазон дат
     }
   }
   // Для пауз
@@ -248,15 +245,36 @@ const calCalendar = () => {
     // dateToStr из объекта даты возвращает строку, формата YYYY-dd-mm
     const dateToStr = (date) => {return date ? date.toISOString().split("T")[0] : ""};
     const container = document.getElementById("cal__content");
-    container.classList.add('hideing');
-    await sleep(500);
-    container.innerHTML = "";
-    container.classList.remove('hideing');
+    // if (evensIdSet.size == 0) { // Если в не ноль - значит то, что уже есть надо оставить
+    //   // Делаем плавное исчезновение через класс css "hideing"
+    //   container.classList.add('hideing');
+    //   await sleep(500);
+    //   container.innerHTML = "";
+    //   container.classList.remove('hideing');
+    // };
+    // Занружаем объекты EventPage
     const events = await fetchEvents(dateToStr(start), dateToStr(end));
     if (events) {
+      // Соберем коллекцию id от всех полученных events для сравнения с имеющимися
+      const newEventsId = new Set(events.items.map(item => item.id));
+      const difference = evensIdSet.difference(newEventsId) // удаляемые id
+      for (let _i of difference) {  // удаление 
+        const element = container.querySelector(`[data-id='${_i}']`);
+        element.classList.add('hideing');
+        await sleep(500);
+        element.remove();
+        evensIdSet.delete(_i);
+      }
       for (let event of events.items) {
+        if (evensIdSet.has(event.id)) continue;
         // Создание квадратиков событий (картинка с подписью снизу, датой и местом проведения)
-        const div = createTag("a", {class: "event", href: event.meta.html_url, 'data-id': event.id}, '');
+        const div = createTag("a", {
+          class: "event", 
+          href: event.meta.html_url, 
+          'data-id': event.id,
+          style: `order: ${new Date(event.date_on).getTime()}`,
+        }, '');
+        // div.style.order = event.date_on;
         container.appendChild(div);
         div.appendChild(createTag("img", {
           src: event.image_thumbnail.url,
@@ -272,14 +290,11 @@ const calCalendar = () => {
          */
         const dts = (datestr) => {
           const now = new Date();
-          if (datestr == now.toISOString().split("T")[0]) return "Сегодня";
+          if (datestr <= now.toISOString().split("T")[0]) return "Сегодня";
           now.setDate(now.getDate() + 1);
           if (datestr == now.toISOString().split("T")[0]) return "Завтра";
-          // const date = new Date(Date.parse(datestr));
           const _s = datestr.split("-");
           return `${_s[2]}.${_s[1]}.${_s[0]}`
-          // return date.toLocaleDateString();
-          // return date.toLocaleDateString('ru-RU', {weekday: "long", day: '2-digit', month: '2-digit', year: "numeric"});
         }
         const footer = createTag('div', {class: 'event__text__footer'}, '');
         div_txt.appendChild(footer);
@@ -288,6 +303,7 @@ const calCalendar = () => {
         else d_interval_str = dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''); // разные
         footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str));
         if (event.location ) footer.appendChild(createTag("div",{class: 'event__text__footer__location'}, event.location));
+        evensIdSet.add(event.id); // Это чтобы если останемся в этой дате, не перегружать данный EventPage
         await sleep(100);
       }
     }
