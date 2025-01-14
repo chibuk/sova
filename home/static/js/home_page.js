@@ -1,6 +1,3 @@
-/* document.addEventListener('DOMContentLoaded', function () { }
-  */
-
 // Slider module
 const slSlider = () => {
   // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
@@ -237,74 +234,105 @@ const calCalendar = () => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   /**
+   * Получение строки даты.
+   * @param {DateObject} date 
+   * @returns "YYYY-mm-dd"
+   */
+  const dateToISO = (date) => {return date ? date.toISOString().split("T")[0] : ""};
+  /**
+   * Формирование строки даты
+   * @param {'YYYY-mm-dd'} datestr 
+   * @returns String(Сегодня | Завтра | dd.mm.YYYY)
+   */
+  const dts = (datestr) => {
+    const now = new Date();
+    if (datestr <= now.toISOString().split("T")[0]) return "Сегодня"; // Даже если событие началось вчера, вернём "Сегодня"
+    now.setDate(now.getDate() + 1);
+    if (datestr == now.toISOString().split("T")[0]) return "Завтра";
+    const _s = datestr.split("-");
+    return `${_s[2]}.${_s[1]}.${_s[0]}`
+  }
+  /**
    * Заполняет ленту квадратиками обытий за указанный диапазон дат
    * @param {date} start 
    * @param {date} end 
    */
   async function loadContent (start, end) {
-    // dateToStr из объекта даты возвращает строку, формата YYYY-dd-mm
-    const dateToStr = (date) => {return date ? date.toISOString().split("T")[0] : ""};
     const container = document.getElementById("cal__content");
-    // if (evensIdSet.size == 0) { // Если в не ноль - значит то, что уже есть надо оставить
-    //   // Делаем плавное исчезновение через класс css "hideing"
-    //   container.classList.add('hideing');
-    //   await sleep(500);
-    //   container.innerHTML = "";
-    //   container.classList.remove('hideing');
-    // };
     // Занружаем объекты EventPage
-    const events = await fetchEvents(dateToStr(start), dateToStr(end));
+    const events = await fetchEvents(dateToISO(start), dateToISO(end));
     if (events) {
-      // Соберем коллекцию id от всех полученных events для сравнения с имеющимися
+      // Соберём коллекцию id от всех полученных events для сравнения с имеющимися
       const newEventsId = new Set(events.items.map(item => item.id));
-      const difference = evensIdSet.difference(newEventsId) // удаляемые id
-      for (let _i of difference) {  // удаление 
-        const element = container.querySelector(`[data-id='${_i}']`);
-        element.classList.add('hideing');
-        await sleep(500);
-        element.remove();
-        evensIdSet.delete(_i);
+      // Вычитаем из существующих, коллекцию id полученных
+      const difference = evensIdSet.difference(newEventsId) // получили Set элементов, которые надо удалить
+      let elements_for_remove = [];
+      // снаяала присвоим им класс для эффекта исчезновения, потом разом удалим
+      for (let _i of difference) {
+        const element = container.querySelector(`[data-id='${_i}']`); // мученник
+        element.classList.add('hideing'); // мучается
+        // await sleep(500); // пол секунды умирает
+        // element.remove(); // скончался
+        evensIdSet.delete(_i); // стираем о нём память
+        elements_for_remove.push(element);
+      }
+      if (difference.size > 0) await sleep(1000);
+      // удаление
+      for (let _i of elements_for_remove) {
+        _i.remove(); // скончался
       }
       for (let event of events.items) {
-        if (evensIdSet.has(event.id)) continue;
+        if (evensIdSet.has(event.id)) continue; // уже есть, пропускаем
         // Создание квадратиков событий (картинка с подписью снизу, датой и местом проведения)
         const div = createTag("a", {
           class: "event", 
           href: event.meta.html_url, 
           'data-id': event.id,
-          style: `order: ${new Date(event.date_on).getTime()}`,
+          'data-date': event.date_on, // для сортировки будем, сранвнивать строки дат YYYY-mm-dd
         }, '');
-        // div.style.order = event.date_on;
-        container.appendChild(div);
         div.appendChild(createTag("img", {
           src: event.image_thumbnail.url,
           class: "event__img"
         }, ''));
-        const div_txt = createTag("div", {class: "event__text"}, '')
+        const div_txt = createTag("div", {class: "event__text"}, ''); // блок с текстами под картинкой
         div.appendChild(div_txt);
         div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
-        /**
-         * Формирование строки даты
-         * @param {'YYYY-mm-dd'} datestr 
-         * @returns String(Сегодня | Завтра | dd.mm.YYYY)
-         */
-        const dts = (datestr) => {
-          const now = new Date();
-          if (datestr <= now.toISOString().split("T")[0]) return "Сегодня";
-          now.setDate(now.getDate() + 1);
-          if (datestr == now.toISOString().split("T")[0]) return "Завтра";
-          const _s = datestr.split("-");
-          return `${_s[2]}.${_s[1]}.${_s[0]}`
-        }
-        const footer = createTag('div', {class: 'event__text__footer'}, '');
+        const footer = createTag('div', {class: 'event__text__footer'}, ''); // блок для даты и места проведения
         div_txt.appendChild(footer);
-        let d_interval_str = ''; // Исключим указание диапазона из одинаковых дат
-        if (event.date_on == event.date_end) d_interval_str = dts(event.date_on); // одинаковые
+        let d_interval_str = ''; // Исключим указание диапазона из одинаковых дат (01.01.2025 - 01.01.2025) ->
+        if (event.date_on == event.date_end) d_interval_str = dts(event.date_on); // одинаковые -> (01.01.2025)
         else d_interval_str = dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''); // разные
         footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str));
         if (event.location ) footer.appendChild(createTag("div",{class: 'event__text__footer__location'}, event.location));
-        evensIdSet.add(event.id); // Это чтобы если останемся в этой дате, не перегружать данный EventPage
-        await sleep(100);
+        /**
+         * Из коллекции детей container'а проверять, начиная с последнего, сравнивать data-date,
+         * если дата имеющегося больше, то пропустить и перейти к предыдущему элементу, если
+         * равна или меньше, то вернуть текущий элемент, для вставки после него. Короче сортировка.
+         * @param {'YYYY-mm-dd'} _dateString // такие даты можно сравнивать :) 
+         */
+        function findPosition(_dateString) {
+          let _rez = false;
+          if (container.hasChildNodes()){
+            const children = container.children;
+            const childrenReverse = ([...children]).reverse();
+            for (let child of childrenReverse) {
+              if (child.dataset.date > _dateString) _rez = child;
+            };
+          };
+          return _rez; // false | positionElement
+        };
+        const beforeElement = findPosition(event.date_on);
+        div.classList.add('showing'); // клвсс появления 400мсек
+        if (beforeElement) {
+          container.insertBefore(div, beforeElement);
+          // alert("Пропуск: " + beforeElement.dataset.date);
+        } else {
+          container.appendChild(div);
+        }
+        evensIdSet.add(event.id); // Собираем id коллекцию имеющихся событий (EvenPage)
+        setTimeout(() => { // пусть появление успеет сработать, потом убираем .showing
+          div.classList.remove('showing'); // иначе потом .hideing не сработает
+        }, 500);
       }
     }
     /**
@@ -323,23 +351,6 @@ const calCalendar = () => {
       return elem
     }
   }
-  // function datesToStrArray(start, end) {
-  //   let dates = [];
-  //   if (!start) {
-  //     dates = [end.toISOString().split("T")[0]];
-  //     return dates;
-  //   }
-  //   let _start = new Date(Date.parse(start));
-  //   let _end = new Date(Date.parse(end))
-  //   let i = 0;
-  //   do {
-  //     i += 1;
-  //     dates.push(_start.toISOString().split("T")[0]);
-  //     _start.setDate(_start.getDate() + 1);
-  //   } while (_start < _end);
-  //   dates.push(_end.toISOString().split("T")[0]);
-  //   return dates;
-  // };
   /**
    * Загружает объекты EventPage, пересекающиеся с диапазоном запрошеных дат
    * @param {string} date_on 

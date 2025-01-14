@@ -286,19 +286,26 @@ section > .content {
   border-radius: 1em;
 }
 #cal__content {
-  /* box-shadow: 0 0 3px red inset; */
   display: flex;
   flex-flow: row wrap;
   min-height: 400px;
   overflow: hidden;
 }
-.hideing {
+.hideing {  /*при подключении эффект исчезновения элемента*/
   opacity: 1;
-  animation: off .5s forwards;
+  animation: hideoff 1s forwards;
 }
-@keyframes off {
+@keyframes hideoff {
   0% {opacity: 1;}
   100% {opacity: 0;}
+}
+.showing {  /*при подключении эффект появления элемента*/
+  opacity: 0;
+  animation: showon .4s forwards;
+}
+@keyframes showon {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 .event {
   width: 380px;
@@ -308,12 +315,6 @@ section > .content {
   background-color: var(--body-color);
   color: var(--body-bgcolor);
   font-family: var( --body-font-family);
-  opacity: 0;
-  animation: on .4s forwards;
-}
-@keyframes on {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
 }
 .event__img {
   width: inherit;
