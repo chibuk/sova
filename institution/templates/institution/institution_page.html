@@ -15,7 +15,11 @@
     <h2>{{ page.name }}</h2>
     <div>{% if page.logo %} {% image page.logo fill-50x50 %} {% endif %}</div>
     <div>Сайт: <a href="{{ page.site }}">{{ page.site }}</a></div>
-
+    <div>
+    {% for index in indexpages %}
+        <a href="{% pageurl index %}">{{ index.title }}</a>
+    {% endfor %}
+    </div>
     {{ page.description|richtext }}
 
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>

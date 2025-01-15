@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
+{% endblock %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block body_class %}template-blogndexpage{% endblock %}
+{% block content %}
+<section class='container'>
+    <h1>{{ page.title }}</h1>
+    <div>{{ page.body|richtext }}</div>
+    {% for trainer in trainerpages %}
+        <h2><a href="{% pageurl trainer %}">{{ trainer.title }}</a></h2>
+        {{ trainer.specific.surname }} {{ trainer.specific.name }} {{ trainer.specific.name2 }}
+        {% comment %} {{ trainer.specific.description|richtext }} {% endcomment %}
+
+        {% with trainer.specific.foto as foto %}
+            {% if foto %} {% image foto fill-80x80 %} {% endif %}
+        {% endwith %}
+    {% endfor %}
+    <div><a href="{{ page.get_parent.url }}">Домой</a></div>
+</section>
+{% endblock %}

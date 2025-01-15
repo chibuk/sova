@@ -29,6 +29,12 @@ class InstitutionPage(Page):
         FieldPanel('description'),
         FieldPanel('site'),
     ]
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        pages = self.get_children().live()
+        context['indexpages'] = pages
+        return context
 
 
 class InstitutionIndexPage(Page):
@@ -83,8 +89,8 @@ class TrainerIndexPage(Page):
     
     def get_context(self, request):
         context = super().get_context(request)
-        pages = self.get_children().live().order_by('institutionpage__name')
-        context['institutionpages'] = pages
+        pages = self.get_children().live().order_by('trainerpage__name')
+        context['trainerpages'] = pages
         return context
     
     subpage_types = ['institution.TrainerPage']
