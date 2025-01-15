@@ -158,7 +158,7 @@
 
 body {
   margin: 0;
-  background-color: var(--body-bgcolor);
+  /* background-color: var(--body-bgcolor); */
   font-family: var(--body-font-family);
   font-size: var(--base-font-size);
   line-height: var(--base-line-height);
