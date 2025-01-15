@@ -72,16 +72,16 @@ const slSlider = () => {
     const elementWidth = event.offsetWidth;
     current = parseInt((elementWidth - 5 + position) / elementWidth) + 1; // начинаем счет с единицы
     setSlideControls();
+    resetRunTimer();
   };
-  const onScrollEndDebounce = debounce(onScrollEnd, 200);
+  const onScrollEndDebounce = debounce(onScrollEnd, 200); // все вызовы за 200мс обрабатываем как один
   document.querySelector('#sl-slides').addEventListener('scroll', function() {onScrollEndDebounce(this)});
-
+  // Запуск
   runtimer = setInterval(slide, 6000, 1);
   function resetRunTimer() {
     clearInterval(runtimer);
     runtimer = setInterval(slide, 6000, 1);
   }
-
 };  
 slSlider();
 
@@ -122,9 +122,7 @@ const calCalendar = () => {
     });
   });
   resizeObserver.observe(calcontainer);
-
-  // Прокрутить ленту через num дней;
-  function scrollDate(num) {
+  function scrollDate(num) {  // Прокрутить ленту через num дней;
     let _left = getPosition() + num * calDayWidth();
     const calLsatWidth = document.getElementById('cal-last').clientWidth;
     if (widthDays() - _left - calLsatWidth < calcontainer.clientWidth) 
@@ -140,7 +138,8 @@ const calCalendar = () => {
       });
     });
   }; setDayHandlers();
-  let evensIdSet = new Set(); // Коллекция с id объектов EventPages для уменьшения операций с DOM
+  // Коллекция id объектов EventPages, которые уже отображены (для уменьшения операций с DOM)
+  let evensIdSet = new Set();
   /**
    * Объект управляет состоянием диапазона дат. Тут хранится (false|date_object)
    * начальная и конечная дата, начальный и конечный элемент, чтобы атрибутом
@@ -229,12 +228,11 @@ const calCalendar = () => {
       loadContent(this.start, this.end);  // отображение квадратов событий за этот диапазон дат
     }
   }
-  // Для пауз
-  function sleep(ms) {
+  function sleep(ms) {  // Для пауз await sleep(1000)
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   /**
-   * Получение строки даты.
+   * Получение строки даты ISO формата, такие даты можно сравнивать как строки
    * @param {DateObject} date 
    * @returns "YYYY-mm-dd"
    */
@@ -245,12 +243,28 @@ const calCalendar = () => {
    * @returns String(Сегодня | Завтра | dd.mm.YYYY)
    */
   const dts = (datestr) => {
-    const now = new Date();
-    if (datestr <= now.toISOString().split("T")[0]) return "Сегодня"; // Даже если событие началось вчера, вернём "Сегодня"
+    if (!datestr) return '';
+    const now = (new Date());
+    if (datestr <= dateToISO(now)) return "Сегодня"; // Даже если событие началось вчера, вернём "Сегодня"
     now.setDate(now.getDate() + 1);
-    if (datestr == now.toISOString().split("T")[0]) return "Завтра";
+    if (datestr == dateToISO(now)) return "Завтра";
     const _s = datestr.split("-");
     return `${_s[2]}.${_s[1]}.${_s[0]}`
+  }
+  /**
+   * Получение строки интервала для вывода (Сегодня | Завтра | Завтра - dd-mm-YYYY)
+   * @param {DateISOStr} date_on 
+   * @param {DateISOStr} date_end 
+   * @returns String
+   */
+  function d_interval_str(date_on, date_end) {
+    if (!date_end || date_on == date_end) return dts(date_on);
+    let d1 = dts(date_on);
+    let d2 = dts(date_end);
+    // После приведения dts (обраезает прошлый период, выдает "Сегодня" или "Завтра"), 
+    // значения d1, d2 могут совпасть
+    if (d1 == d2) return d1; 
+    else return d1 + ' ‒ ' + d2;
   }
   /**
    * Заполняет ленту квадратиками обытий за указанный диапазон дат
@@ -270,16 +284,13 @@ const calCalendar = () => {
       // снаяала присвоим им класс для эффекта исчезновения, потом разом удалим
       for (let _i of difference) {
         const element = container.querySelector(`[data-id='${_i}']`); // мученник
-        element.classList.add('hideing'); // мучается
-        // await sleep(500); // пол секунды умирает
-        // element.remove(); // скончался
+        element.classList.add('hideing'); // исчезает
         evensIdSet.delete(_i); // стираем о нём память
         elements_for_remove.push(element);
       }
-      if (difference.size > 0) await sleep(1000);
-      // удаление
-      for (let _i of elements_for_remove) {
-        _i.remove(); // скончался
+      if (difference.size > 0) await sleep(1000); // время на исчезание удаляемых
+      for (let _i of elements_for_remove) { // удаление
+        _i.remove();
       }
       for (let event of events.items) {
         if (evensIdSet.has(event.id)) continue; // уже есть, пропускаем
@@ -299,10 +310,7 @@ const calCalendar = () => {
         div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
         const footer = createTag('div', {class: 'event__text__footer'}, ''); // блок для даты и места проведения
         div_txt.appendChild(footer);
-        let d_interval_str = ''; // Исключим указание диапазона из одинаковых дат (01.01.2025 - 01.01.2025) ->
-        if (event.date_on == event.date_end) d_interval_str = dts(event.date_on); // одинаковые -> (01.01.2025)
-        else d_interval_str = dts(event.date_on) + (event.date_end ? ' - ' + dts(event.date_end) : ''); // разные
-        footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str));
+        footer.appendChild(createTag("div",{class: 'event__text__footer__date nowrap'}, d_interval_str(event.date_on, event.date_end)));
         if (event.location ) footer.appendChild(createTag("div",{class: 'event__text__footer__location'}, event.location));
         /**
          * Из коллекции детей container'а проверять, начиная с последнего, сравнивать data-date,
@@ -325,7 +333,6 @@ const calCalendar = () => {
         div.classList.add('showing'); // клвсс появления 400мсек
         if (beforeElement) {
           container.insertBefore(div, beforeElement);
-          // alert("Пропуск: " + beforeElement.dataset.date);
         } else {
           container.appendChild(div);
         }
