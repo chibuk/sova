@@ -261,6 +261,9 @@ a {
 .hero_button {
   /* box-shadow: inset; */
   padding: 0 3em;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: .5em;
 }
 .hero_button > a {
   display: block;

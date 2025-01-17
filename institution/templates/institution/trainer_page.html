@@ -17,6 +17,12 @@
     <div>{% if page.education %} {{ page.education }} {% endif %}</div>
     <div>{% if page.ranks %} {{ page.ranks }} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
+    {% for cat in page.category.all %}
+    <div>
+        <span>{{ cat.category }},</span>
+        <span>категория действует до {{ cat.end_date }}</span>
+    </div>
+    {% endfor %}
 
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>
 </section>

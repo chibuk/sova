@@ -12,9 +12,9 @@
 {% block content %}
 
 <section id='hero'>
-  {% if page.hero_text %}
+  {% if page.slogan %}
     <div id="hero_text">
-      <h1>{{ page.hero_text }}</h1>
+      <h1>{{ page.slogan }}</h1>
       <div>
         <p class='timer__text'>До начала</p>
         <div class="timer">
@@ -29,8 +29,8 @@
       </div>
     </div>
   {% endif %}
-  {% if page.link_register %}
   <div class="hero_button">
+  {% if page.link_register %}
       <a href="{% pageurl page.link_register %}">
           {% if page.button_register %}
               {{ page.button_register|lower }}
@@ -38,10 +38,8 @@
               регистрация
           {% endif %} 
       </a>
-  </div>
   {% endif %}
   {% if page.link_info %}
-  <div class="hero_button">
       <a href="{% pageurl page.link_info %}">
           {% if page.button_info %}
               {{ page.button_info|lower }}
@@ -49,8 +47,8 @@
               подробнее
           {% endif %} 
       </a>
-  </div>
   {% endif %}
+</div>
 </section>
 <section id='content'>
   <div class="content">{{ page.body|richtext }}</div>
@@ -125,8 +123,8 @@
   <!-- <div id="datestring" class="content">##</div> -->
 </section>
 
-{% if self.hero_video %}
-  {% video self.hero_video muted loop playsinline autoplay id=bg_video %}
+{% if self.video %}
+  {% video self.video muted loop playsinline autoplay id=bg_video %}
 {% endif %}
 {% endblock %}
 {% block extra_js %}
