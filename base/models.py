@@ -31,6 +31,7 @@ class BrandSettings(BaseGenericSetting):
     class Meta:
         verbose_name = "Логотип и футер"
 
+
 @register_snippet
 class FooterText(
     DraftStateMixin, 
@@ -86,3 +87,9 @@ class FormPage(AbstractEmailForm):
             FieldPanel('subject'),
         ], 'Email'),
     ]
+
+    subpage_types = []
+    parent_page_types = ['home.HomePage', "event.EventPage", 'portfolio.PortfolioPage']
+
+    class Meta:
+        verbose_name = "Форма для подачи заявки"

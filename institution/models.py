@@ -25,7 +25,7 @@ class InstitutionPage(Page):
         index.SearchField('name'),
         index.SearchField('description'),
     ]
-    subpage_types = ['institution.TrainerIndexPage', 'institution.TrainerPage']
+    subpage_types = ['institution.TrainerIndexPage']
     parent_page_types = ['institution.InstitutionIndexPage']
     
     content_panels = Page.content_panels + [
@@ -33,20 +33,20 @@ class InstitutionPage(Page):
         FieldPanel('logo'),
         FieldPanel('description'),
         FieldPanel('site'),
-        InlinePanel('trainer'),
     ]
     
     def get_context(self, request):
         context = super().get_context(request)
-        pages = self.get_children().live().not_type(TrainerPage) # в not_type добавляем всех неиндексных детей
+        pages = self.get_children().live() #.not_type(TrainerPage) # в not_type добавляем всех неиндексных детей
         context['indexpages'] = pages
         return context
+
+    class Meta:
+        verbose_name = "Учреждение"
 
 
 class InstitutionIndexPage(Page):
     body = RichTextField(blank=True)
-    
-    parent_page_types = ['home.HomePage']
     
     def get_context(self, request):
         context = super().get_context(request)
@@ -54,11 +54,15 @@ class InstitutionIndexPage(Page):
         context['institutionpages'] = pages
         return context
     
+    parent_page_types = ['home.HomePage']
     subpage_types = ['institution.InstitutionPage']
     
     content_panels = Page.content_panels + [
         FieldPanel("body"),
     ]
+
+    class Meta:
+        verbose_name = "Учреждения"
 
 
 class TrainerPage(Page):
@@ -71,18 +75,18 @@ class TrainerPage(Page):
     education = models.CharField('Образование', max_length=128, null=True, blank=True)
     ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
     # category = тренерская катергория со сроком действия
-    institution = ParentalKey(
-        'institution.InstitutionPage', 
-        on_delete=models.PROTECT, 
+    institution = models.ForeignKey(
+        InstitutionPage,
+        on_delete=models.SET_NULL, null=True, blank=True, 
         related_name='trainer', 
-        verbose_name='Организация',) # default=)
+        verbose_name='Организация') # default=)
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
         index.SearchField('surname'),
     ]
     subpage_types = []
-    parent_page_types = ['institution.InstitutionPage']
+    parent_page_types = ['institution.TrainerIndexPage']
     
     content_panels = Page.content_panels + [
         # FieldPanel('institution'),
@@ -96,15 +100,15 @@ class TrainerPage(Page):
     ]
 
     def save(self, *args, **kwargs):
-        # Здесь указываем логику для нахождения родительской страницы
-        parent_page_id = self.get_institution_instance()
-        self.institution = parent_page_id
+        # Здесь указываем логику для нахождения "деда"
+        self.institution = self.get_institution() #institution_page
         super().save(*args, **kwargs)
 
-    def get_institution_instance(self):
-        parent = self.get_parent()
-        instance = parent.specific_class.objects.get(id=parent.id)
-        return instance
+    def get_institution(self):
+        return InstitutionPage.objects.ancestor_of(self, inclusive=False).last()
+
+    class Meta:
+        verbose_name = "Тренер"
 
 
 class TrainerIndexPage(Page):
@@ -116,9 +120,12 @@ class TrainerIndexPage(Page):
         context['trainerpages'] = pages
         return context
     
-    subpage_types = []
+    subpage_types = ['institution.TrainerPage']
     parent_page_types = ['institution.InstitutionPage']
     
     content_panels = Page.content_panels + [
         FieldPanel("body"),
     ]
+
+    class Meta:
+        verbose_name = "Тренеры"

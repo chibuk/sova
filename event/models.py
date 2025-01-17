@@ -23,10 +23,14 @@ class EventIndexPage(Page):
         return context
     
     subpage_types = ['event.EventPage']
-    
+    parent_page_types = ['home.HomePage']
+
     content_panels = Page.content_panels + [
         FieldPanel("body"),
     ]
+
+    class Meta:
+        verbose_name = "Афиша. Индексная страница событий"
 
 
 class EventTagPage(TaggedItemBase):
@@ -55,7 +59,7 @@ class EventPage(Page):
         index.SearchField('location'),
     ]
     
-    subpage_types = []
+    subpage_types = ['base.FormPage']
     parent_page_types = ['event.EventIndexPage']
 
     api_fields = [
@@ -84,6 +88,9 @@ class EventPage(Page):
         FieldPanel('location'),
     ]
     
+    class Meta:
+        verbose_name = 'Событие'
+
     
     class EventTagIndexPage(Page):
         
@@ -95,3 +102,9 @@ class EventPage(Page):
             context = super().get_context(requesst)
             context['eventpages'] = eventpages
             return context
+
+        subpage_types = []
+        parent_page_types = ['event.EventIndexPage']
+
+        class Meta:
+            verbose_name = 'Индекс тегов событий'

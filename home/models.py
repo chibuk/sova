@@ -1,5 +1,4 @@
 from django.db import models
-
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -10,32 +9,15 @@ from wagtailvideos.edit_handlers import VideoChooserPanel
 
 class HomePage(Page):
     
-    # image = models.ForeignKey(
-    #     'wagtailimages.Image', 
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     related_name='+',
-    #     help_text='Изображение домашней страницы',
-    # )
-    hero_video = models.ForeignKey('wagtailvideos.Video',
-                                   related_name='+', null=True, blank=True, on_delete=models.SET_NULL)
-    hero_text = models.CharField(blank=True, max_length=255, help_text='Слоган на фоне видео')
-    hero_button = models.CharField(blank=True, verbose_name="Текст кнопки", max_length=16,
-        help_text="Текст кнопки",
-    )
-    hero_link = models.ForeignKey(
-        'wagtailcore.Page',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name='Hero ссылка',
-        help_text='Выбрать страницу, для перехода по кнопке на фоне видео'
-    )    
+    video = models.ForeignKey('wagtailvideos.Video', related_name='+', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Видео секции HERO")
+    slogan = models.CharField(blank=True, max_length=255, verbose_name="Слоган на видео", help_text='Текст на фоне видео')
+    button_register = models.CharField(blank=True, verbose_name="Кнопка регистрации", max_length=16, help_text="Регистрация")
+    link_register = models.ForeignKey('wagtailcore.Page', null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name='Hero ссылка для регистрации', help_text='Выбрать страницу, для перехода по кнопке')
+    button_info = models.CharField(blank=True, verbose_name="Кнопка информации", max_length=16, help_text="Подробнее")
+    link_info = models.ForeignKey('wagtailcore.Page', null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name='Hero ссылка "Подробнее"', help_text='Выбрать страницу, для перехода по кнопке')
     body = RichTextField(blank=True)
     
-    # parent_page_types = ['root']
+    max_count = 1   # Всего одна домашняя страница, всего один сайт
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -70,12 +52,16 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
-                # FieldPanel("image"),
-                FieldPanel("hero_text"),
-                VideoChooserPanel('hero_video'),
-                FieldPanel("hero_button"),
-                FieldPanel("hero_link"),
+                FieldPanel("slogan"),
+                VideoChooserPanel('video'),
+                FieldPanel("button_register"),
+                FieldPanel("link_register"),
+                FieldPanel("button_info"),
+                FieldPanel("link_info"),
             ], heading="Раздел Hero"
         ),
-        FieldPanel('body'),
+        FieldPanel('body', heading='Произвольное содержимое', help_text="Не желательно, только если очень важно"),
     ]
+
+    class Meta:
+        verbose_name= 'Домашняя страница'

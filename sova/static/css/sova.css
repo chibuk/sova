@@ -258,11 +258,11 @@ a {
       font-size: 3.5em;
   }
 }
-#hero_button {
+.hero_button {
   /* box-shadow: inset; */
   padding: 0 3em;
 }
-#hero_button > a {
+.hero_button > a {
   display: block;
   border: 1px solid var(--brand-bgcolor);
   font: 1em "Cruinn Black", sans-serif;
@@ -274,7 +274,7 @@ a {
   opacity: 85%;
   text-align: center;
 }
-#hero_button > a:hover {
+.hero_button > a:hover {
   background-color: var(--brand-bgcolor);
   color: var(--body-color);
   opacity: 100%;

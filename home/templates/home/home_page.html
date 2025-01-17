@@ -15,9 +15,8 @@
   {% if page.hero_text %}
     <div id="hero_text">
       <h1>{{ page.hero_text }}</h1>
-    
       <div>
-        <p class='timer__text'>До старта сталось</p>
+        <p class='timer__text'>До начала</p>
         <div class="timer">
           <div class="timer__item timer__days">00</div>
           <div class="separator">:</div>
@@ -30,13 +29,24 @@
       </div>
     </div>
   {% endif %}
-  {% if page.hero_link %}
-  <div id="hero_button">
-      <a href="{% pageurl page.hero_link %}">
-          {% if page.hero_button %}
-              {{ page.hero_button|lower }}
+  {% if page.link_register %}
+  <div class="hero_button">
+      <a href="{% pageurl page.link_register %}">
+          {% if page.button_register %}
+              {{ page.button_register|lower }}
           {% else %}
-              перейти
+              регистрация
+          {% endif %} 
+      </a>
+  </div>
+  {% endif %}
+  {% if page.link_info %}
+  <div class="hero_button">
+      <a href="{% pageurl page.link_info %}">
+          {% if page.button_info %}
+              {{ page.button_info|lower }}
+          {% else %}
+              подробнее
           {% endif %} 
       </a>
   </div>

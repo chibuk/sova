@@ -25,8 +25,14 @@ class BlogIndexPage(Page):
         FieldPanel('intro'),
     ]
 
+    subpage_types = ['blog.BlogPage', 'blog.BlogTagIndexPage']
+    parent_page_types = ['home.HomePage']
 
-class BlogPageTag(TaggedItemBase):
+    class Meta:
+        verbose_name = "Блог, индексная страница"
+
+
+class BlogTagPage(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tegged_items', on_delete=models.CASCADE)
 
 
@@ -35,7 +41,10 @@ class BlogPage(Page):
     intro = models.CharField('Заголовок', max_length=250)
     body = RichTextField('Текст', blank=True)
     authors = ParentalManyToManyField('blog.Author', blank=True)
-    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    tags = ClusterTaggableManager(through=BlogTagPage, blank=True)
+
+    subpage_types = []
+    parent_page_types = ['blog.BlogIndexPage']
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -59,6 +68,9 @@ class BlogPage(Page):
         FieldPanel('body'),
         InlinePanel('gallery_images', label='Галерея изображений'),
     ]
+
+    class Meta:
+        verbose_name = "Запись блога"
 
 
 class BlogPageGalleryImage(Orderable):
@@ -89,6 +101,9 @@ class Author(models.Model):
 
 
 class BlogTagIndexPage(Page):
+
+    subpage_types = []
+    parent_page_types = ['blog.BlogIndexPage']
     
     def get_context(self, requesst):
         tag = requesst.GET.get('tag')
@@ -96,3 +111,6 @@ class BlogTagIndexPage(Page):
         context = super().get_context(requesst)
         context['blogpages'] = blogpages
         return context
+
+    class Meta:
+        verbose_name = "Индексная страница тегов блога"
