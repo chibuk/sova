@@ -199,7 +199,7 @@ class LocationPage(Page, InstitutionMixin):
         verbose_name = "Объект"
 
 
-class ДщсфешщтIndexPage(Page):
+class LocationIndexPage(Page):
     # body = RichTextField(blank=True)
     
     # def get_context(self, request):
