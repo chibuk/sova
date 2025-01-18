@@ -38,10 +38,23 @@
 
     <body class="{% block body_class %}{% endblock %}">
         <div id="container">
-                
             {% include "includes/header.html" %}
-
             <main>
+                <div class="breadcrumb-content">
+                    {% if self.get_ancestors|length > 2 %}
+                        <ul class="breadcrumb">
+                            {% for p in self.get_ancestors %}
+                                {% if forloop.counter != 2 %}
+                                    {% if p.is_root == False %}
+                                        <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                
+                            {% comment %} <li class="active">{{ self.title }}</li> {% endcomment %}
+                        </ul>
+                    {% endif %}
+                </div>
                 {% block content %}{% endblock %}
             </main>
 

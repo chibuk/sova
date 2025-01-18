@@ -1,5 +1,4 @@
 {% load wagtailcore_tags navigation_tags wagtailuserbar %}
-{% comment %} {% load static wagtailcore_tags %} {% endcomment %}
 {% load navigation_tags %}
 {% load wagtailimages_tags %}
 
@@ -14,7 +13,6 @@
                 {% else %}
                 <span alt="Загрузите логотип в панели управления">Логотип</span>
                 {% endif %}
-                
             </a>
         </div>
         <nav>
@@ -30,5 +28,5 @@
             </ul>
         </nav>
     </div>
-    {% wagtailuserbar "top-right" %}
+    {% wagtailuserbar "bottom-right" %}
 </header>

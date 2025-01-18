@@ -22,7 +22,7 @@ class InstitutionPage(Page):
         index.SearchField('name'),
         index.SearchField('description'),
     ]
-    subpage_types = ['institution.TrainerIndexPage']
+    subpage_types = ['institution.TrainerIndexPage','institution.LocationIndexPage']
     parent_page_types = ['institution.InstitutionIndexPage']
     
     content_panels = Page.content_panels + [
@@ -31,26 +31,14 @@ class InstitutionPage(Page):
         FieldPanel('description'),
         FieldPanel('site'),
     ]
-    
-    def get_context(self, request):
-        context = super().get_context(request)
-        pages = self.get_children().live() #.not_type(TrainerPage) # в not_type добавляем всех неиндексных детей
-        context['indexpages'] = pages
-        return context
 
     class Meta:
         verbose_name = "Учреждение"
 
 
+
 class InstitutionIndexPage(Page):
-    
     body = RichTextField(blank=True)
-    
-    def get_context(self, request):
-        context = super().get_context(request)
-        pages = self.get_children().live().order_by('institutionpage__name')
-        context['institutionpages'] = pages
-        return context
     
     parent_page_types = ['home.HomePage']
     subpage_types = ['institution.InstitutionPage']
@@ -60,88 +48,7 @@ class InstitutionIndexPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Учреждения"
-
-
-class TrainerPage(Page):
-    surname = models.CharField('Фамилия', max_length=64)
-    name = models.CharField('Имя', max_length=64)
-    name2 = models.CharField('Отчество', max_length=64, null=True, blank=True)
-    foto = models.ForeignKey('wagtailimages.Image', null=True, blank=True, verbose_name="Фото",
-                                   on_delete=models.SET_NULL, related_name='+', help_text='Фотография')
-    birth = models.DateField('Дата рождения', blank=True, null=True)
-    education = models.CharField('Образование', max_length=128, null=True, blank=True)
-    ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
-    
-    institution = models.ForeignKey(
-        InstitutionPage,
-        on_delete=models.SET_NULL, null=True, blank=True, 
-        related_name='trainer', 
-        verbose_name='Организация') # default=)
-
-    search_fields = Page.search_fields + [
-        index.SearchField('name'),
-        index.SearchField('surname'),
-    ]
-    subpage_types = []
-    parent_page_types = ['institution.TrainerIndexPage']
-    
-    content_panels = Page.content_panels + [
-        FieldPanel('surname'),
-        FieldPanel('name'),
-        FieldPanel('name2'),
-        FieldPanel('foto'),
-        FieldPanel('birth'),
-        FieldPanel('education'),
-        FieldPanel('ranks'),
-        InlinePanel('category', label="Категория"),
-    ]
-
-    def save(self, *args, **kwargs):
-        # Здесь указываем логику для нахождения "деда"
-        self.institution = self.get_institution() #institution_page
-        super().save(*args, **kwargs)
-
-    def get_institution(self):
-        return InstitutionPage.objects.ancestor_of(self, inclusive=False).last()
-
-    class Meta:
-        verbose_name = "Тренер"
-
-
-class TrainerCategory(Orderable):
-    page = ParentalKey(TrainerPage, on_delete=models.CASCADE, related_name='category')
-    category = models.CharField('Категория', max_length=256, choices=[
-        ('Тренер высшей квалификационной категории', 'Тренер высшей квалификационной категории'),
-        ('Тренер первой квалификационной категории', 'Тренер первой квалификационной категории'),
-        ('Тренер второй квалификационной категории', 'Тренер второй квалификационной категории'),
-    ])
-    end_date = models.DateField("Срок до", blank=True, help_text="Введите дату")
-
-    panels = [
-        FieldPanel('category'),
-        FieldPanel('end_date'),
-    ]
-
-
-class TrainerIndexPage(Page):
-    body = RichTextField(blank=True)
-    
-    def get_context(self, request):
-        context = super().get_context(request)
-        pages = TrainerPage.objects.live().filter(institution=self.get_parent()).order_by('name')
-        context['trainerpages'] = pages
-        return context
-    
-    subpage_types = ['institution.TrainerPage']
-    parent_page_types = ['institution.InstitutionPage']
-    
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    class Meta:
-        verbose_name = "Тренеры"
+        verbose_name = "Индексная страница Учреждений"
 
 
 
@@ -164,56 +71,128 @@ class InstitutionMixin(models.Model):
 
 
 
-class LocationPage(Page, InstitutionMixin):
-    """Объекты, здания, катки, арены.
-    Поля: фото объекта и залов, адрес, описание, контакты, режим работы"""
-    # surname = models.CharField('Фамилия', max_length=64)
-    # name = models.CharField('Имя', max_length=64)
-    # name2 = models.CharField('Отчество', max_length=64, null=True, blank=True)
-    # foto = models.ForeignKey('wagtailimages.Image', null=True, blank=True, verbose_name="Фото",
-    #                                on_delete=models.SET_NULL, related_name='+', help_text='Фотография')
-    # birth = models.DateField('Дата рождения', blank=True, null=True)
-    # education = models.CharField('Образование', max_length=128, null=True, blank=True)
-    # ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
+class TrainerPage(Page, InstitutionMixin):
+    surname = models.CharField('Фамилия', max_length=64)
+    name = models.CharField('Имя', max_length=64)
+    name2 = models.CharField('Отчество', max_length=64, null=True, blank=True)
+    photo = models.ForeignKey('wagtailimages.Image', null=True, blank=True, verbose_name="Фото",
+                                   on_delete=models.SET_NULL, related_name='+', help_text='Фотография')
+    birth = models.DateField('Дата рождения', blank=True, null=True)
+    education = models.CharField('Образование', max_length=128, null=True, blank=True)
+    ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
 
-    # search_fields = Page.search_fields + [
-    #     index.SearchField('name'),
-    #     index.SearchField('surname'),
-    # ]
-
-    # subpage_types = []
-    # parent_page_types = ['institution.TrainerIndexPage']
+    search_fields = Page.search_fields + [
+        index.SearchField('name'),
+        index.SearchField('surname'),
+    ]
+    subpage_types = []
+    parent_page_types = ['institution.TrainerIndexPage']
     
-    # content_panels = Page.content_panels + [
-    #     FieldPanel('surname'),
-    #     FieldPanel('name'),
-    #     FieldPanel('name2'),
-    #     FieldPanel('foto'),
-    #     FieldPanel('birth'),
-    #     FieldPanel('education'),
-    #     FieldPanel('ranks'),
-    #     InlinePanel('category', label="Категория"),
-    # ]
+    content_panels = Page.content_panels + [
+        FieldPanel('surname'),
+        FieldPanel('name'),
+        FieldPanel('name2'),
+        FieldPanel('photo'),
+        FieldPanel('birth'),
+        FieldPanel('education'),
+        FieldPanel('ranks'),
+        InlinePanel('category', label="Категория"),
+    ]
 
     class Meta:
-        verbose_name = "Объект"
+        verbose_name = "Тренер"
+
+
+
+class TrainerCategory(Orderable):
+    page = ParentalKey(TrainerPage, on_delete=models.CASCADE, related_name='category')
+    name = models.CharField('Категория', max_length=256, choices=[
+        ('Тренер высшей квалификационной категории', 'Тренер высшей квалификационной категории'),
+        ('Тренер первой квалификационной категории', 'Тренер первой квалификационной категории'),
+        ('Тренер второй квалификационной категории', 'Тренер второй квалификационной категории'),
+    ])
+    end_date = models.DateField("Срок до", blank=True, help_text="Введите дату")
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('end_date'),
+    ]
+
+
+
+class TrainerIndexPage(Page):
+    body = RichTextField(blank=True)
+    
+    subpage_types = ['institution.TrainerPage']
+    parent_page_types = ['institution.InstitutionPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    class Meta:
+        verbose_name = "Индексная страница Тренеров"
+
+
+
+class LocationPage(Page, InstitutionMixin):
+    """Объекты, базы, катки, арены.
+    Поля: фото объекта, фотографии залов, адрес, описание, контакты, режим работы"""
+    name = models.CharField('Наименование', max_length=128)
+    photo = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=True,
+                              related_name='+', verbose_name="Главное фото объекта")
+    address = models.CharField(max_length=255, verbose_name="Адрес", null=True, blank=True)
+    body = RichTextField(blank=True)
+    contacts = models.CharField(max_length=255, verbose_name="Контакты", null=True, blank=True)
+    opening_hours = models.CharField(max_length=255, verbose_name="Режим работы", null=True, blank=True)
+
+    search_fields = Page.search_fields + [
+        index.SearchField('name'),
+        index.SearchField('address'),
+        index.SearchField('body'),
+    ]
+
+    subpage_types = []
+    parent_page_types = ['institution.LocationIndexPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('name'),
+        FieldPanel('photo'),
+        FieldPanel('address'),
+        FieldPanel('body'),
+        FieldPanel('contacts'),
+        FieldPanel('opening_hours'),
+        InlinePanel('photos', label="Фтографии залов, арен, катков"),
+    ]
+
+    class Meta:
+        verbose_name = "Страница объекта"
+        verbose_name_plural = "Страницы объектов"
+
+
+
+class LocationPhotos(Orderable):
+    """Фотографии залов объекта"""
+    page = ParentalKey(LocationPage, on_delete=models.CASCADE, related_name='photos')
+    photo = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, related_name='+', verbose_name="Фотография")
+    description = models.CharField('Описание', max_length=256, null=True, blank=True)
+
+    panels = [
+        FieldPanel('photo'),
+        FieldPanel('description'),
+    ]
+
 
 
 class LocationIndexPage(Page):
-    # body = RichTextField(blank=True)
+    body = RichTextField(blank=True)
     
-    # def get_context(self, request):
-    #     context = super().get_context(request)
-    #     pages = TrainerPage.objects.live().filter(institution=self.get_parent()).order_by('name')
-    #     context['trainerpages'] = pages
-    #     return context
+    subpage_types = ['institution.LocationPage']
+    parent_page_types = ['institution.InstitutionPage']
     
-    # subpage_types = ['institution.TrainerPage']
-    # parent_page_types = ['institution.InstitutionPage']
-    
-    # content_panels = Page.content_panels + [
-    #     FieldPanel("body"),
-    # ]
-
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+        
     class Meta:
-        verbose_name = "Объекты"
+        verbose_name = "Индексная страница Объектов (Здания, Базы и т.п.)"

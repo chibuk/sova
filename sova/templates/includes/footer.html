@@ -1,8 +1,6 @@
 {% load navigation_tags %}
 
 <footer>
-    <p>Создано с помощью Wagtail.</p>
-
     {% with vk_url=settings.base.BrandSettings.vk_url github_url=settings.base.BrandSettings.github_url %}
         {% if vk_url or github_url %}
             <p>
@@ -16,6 +14,6 @@
             </p>
         {% endif %}
     {% endwith %}
-
     {% get_footer_text %}
+    <p style='font-size: .6rem; text-align: right'>Powered by Wagtail.</p>
 </footer>

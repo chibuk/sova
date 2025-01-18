@@ -16,7 +16,7 @@
     <div>{% if page.logo %} {% image page.logo fill-50x50 %} {% endif %}</div>
     <div>Сайт: <a href="{{ page.site }}">{{ page.site }}</a></div>
     <div>
-    {% for index in indexpages %}
+    {% for index in page.get_children.live %}
         <a href="{% pageurl index %}">{{ index.title }}</a>
     {% endfor %}
     </div>

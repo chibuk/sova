@@ -11,7 +11,7 @@ def get_footer_text(context):
     footer_text = context.get('footer_text', "")
     
     if not footer_text:
-        instance = FooterText.objects.filter(live=True).first()
+        instance = FooterText.objects.filter(live=True).last()
         footer_text = instance.body if instance else ""
         
     return { "footer_text": footer_text }

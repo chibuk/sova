@@ -12,16 +12,15 @@
 {% block content %}
 <section class='container'>
     <h1>{{ page.title }}</h1>
-    <h2>{{ page.surname }} {{ page.name }} {% if page.name2 %}{{ page.name2 }}{% endif %}</h2>
-    <div>{% if page.photo %} {% image page.photo fill-90x90 %} {% endif %}</div>
-    <div>{% if page.education %} {{ page.education }} {% endif %}</div>
-    <div>{% if page.ranks %} {{ page.ranks }} {% endif %}</div>
+    <h2>{{ page.name }}</h2>
+    <div>{% if page.photo %} {% image page.photo fill-160x90 %} {% endif %}</div>
+    <div>{% if page.address %} {{ page.address }} {% endif %}</div>
+    <div>{% if page.contacts %} {{ page.contacts }} {% endif %}</div>
+    <div>{% if page.opening_hours %} {{ page.opening_hours }} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
-    {% for cat in page.category.all %}
-    <div>
-        <span>{{ cat.name }},</span>
-        <span>категория действует до {{ cat.end_date }}</span>
-    </div>
+    {% for photo in page.photos.all %}
+    <div>{% image photo.photo fill-200x160 %}</div>
+    <div>{{ photo.description }}</div>
     {% endfor %}
 
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>

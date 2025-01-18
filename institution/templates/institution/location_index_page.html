@@ -10,11 +10,12 @@
 <section class='container'>
     <h1>{{ page.title }}</h1>
     <div>{{ page.body|richtext }}</div>
-    {% for trainer in page.get_children.live %}
-        <h2><a href="{% pageurl trainer %}">{{ trainer.title }}</a></h2>
-        {{ trainer.specific.surname }} {{ trainer.specific.name }} {{ trainer.specific.name2 }}
-        {% with trainer.specific.photo as photo %}
-            {% if photo %} {% image photo fill-80x80 %} {% endif %}
+    {% for location in page.get_children.live %}
+        <h2><a href="{% pageurl location %}">{{ location.title }}</a></h2>
+        {{ location.specific.name }} {{ location.specific.address }}
+
+        {% with location.specific.photo as photo %}
+            {% if photo %} {% image photo fill-160x80 %} {% endif %}
         {% endwith %}
     {% endfor %}
     <div><a href="{{ page.get_parent.url }}">Домой</a></div>

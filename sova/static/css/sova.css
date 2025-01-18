@@ -192,10 +192,6 @@ header {
   box-shadow: var(--box-shadow);
   display: flex;
   justify-content: center;
-  /* padding: 0 15%;
-  @media only screen and (max-width: 768px) {
-      padding: 0 5%;
-  }; */
   z-index: 100;
 }
 header > div {
@@ -218,6 +214,56 @@ footer {
   background-color: var(--footer-bgcolor);
   color: var(--body-bgcolor);
 }
+/* Bread crumb module [ */
+.breadcrumb-content {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    white-space: nowrap; /* Запрещаем перенос строк */
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-size: 1rem;
+}
+
+.breadcrumb {
+    list-style: none;
+    margin: 0;
+    padding: .5em;
+    display: inline-block; /* Делаем список строчным блоком для горизонтального расположения */
+    /* Стили для тач сколла */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Для браузера FireFox */
+}
+
+.breadcrumb li {
+    display: inline-block; /* Устанавливаем элементы списка в ряд */
+    margin-right: .2em; /* Отступ справа для разделения элементов */
+    scroll-snap-align: start; /* Стили для тач сколла */
+}
+
+.breadcrumb li::after {
+  content: " : ";
+}
+
+.breadcrumb li a {
+    color: var(--brand-bgcolor);
+}
+
+.breadcrumb li a:hover {
+    color: var(--body-bgcolor);
+}
+
+/* .breadcrumb li:last-child {
+    margin-right: 0; /* Убираем отступ у последнего элемента
+    font-weight: bold; /* Выделяем последний элемент
+    color: #333; /* Цвет для активного элемента
+} */
+.breadcrumb li:last-child::after {
+  content: '';
+}
+/* ] */
+
 #bg_video {
   position: fixed;
   top: calc(var(--header-height) - 1rem);
