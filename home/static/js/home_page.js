@@ -14,10 +14,11 @@ const slSlider = () => {
   
   let current = 1; // текущий слайд
   let runtimer = 0; // для ссылки на таймер, чтобы его перезапускать
+  const interval = 8000 // миллисекунд интервал прокрутки слайдов
   
   function setSlideControls() {
     const slider = document.querySelector('#sl-slides');
-    const slides = slider.querySelectorAll('a');
+    const slides = slider.querySelectorAll('.sl-slide');
 
     function setCurrentRadio(num) {
       document.querySelectorAll('#sl .button.button-radio').forEach(radio => {
@@ -60,7 +61,7 @@ const slSlider = () => {
   function radioAction() {
     document.querySelectorAll('.button.button-radio').forEach(radio => {
       radio.addEventListener('click', function() {
-        current = parseInt(this.getAttribute('slide-num')); 
+        current = parseInt(this.getAttribute('data-num')); 
         slide(0);
       });
     });
@@ -77,10 +78,10 @@ const slSlider = () => {
   const onScrollEndDebounce = debounce(onScrollEnd, 200); // все вызовы за 200мс обрабатываем как один
   document.querySelector('#sl-slides').addEventListener('scroll', function() {onScrollEndDebounce(this)});
   // Запуск
-  runtimer = setInterval(slide, 6000, 1);
+  runtimer = setInterval(slide, interval, 1);
   function resetRunTimer() {
     clearInterval(runtimer);
-    runtimer = setInterval(slide, 6000, 1);
+    runtimer = setInterval(slide, interval, 1);
   }
 };  
 slSlider();

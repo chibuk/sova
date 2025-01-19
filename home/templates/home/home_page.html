@@ -54,42 +54,28 @@
   <div class="content">{{ page.body|richtext }}</div>
 </section>
 <section class="section">
-
-{% comment %} Слайдер {% endcomment %}
-{% if eventpages.count > 0 %}
-<div id="sl" role="region" aria-label="Слайдер">
-  <div role="group" aria-label="Управление слайдами">
-    <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
-    <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
-    <div class="radio-group">
-      {% for event in eventpages %}
-        <button class="button button-radio" type="button" 
-          aria-label="Показать {{ forloop.counter }} из {{ eventpages.count }}"
-          {% if forloop.first %} aria-current='true' {% endif %} 
-          slide-num="{{ forloop.counter }}"></button>
-      {% endfor %}
+{% if page.slider.all.count > 0 %}
+  <div id="sl" role="region" aria-label="Слайдер">
+    <div role="group" aria-label="Управление слайдами">
+      <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
+      <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
+      <div class="radio-group">
+        {% for slide in page.slider.all %}
+          <button class="button button-radio" type="button" 
+            aria-label="Показать {{ forloop.counter }} из {{ page.slider.all.count }}"
+            {% if forloop.first %} aria-current='true' {% endif %} 
+            data-num="{{ forloop.counter }}"></button>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="sl-slides" aria-live="off">
+    {% for slide in page.slider.all %}
+      <div class="sl-slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" id="carousel-item-{{ forloop.counter }}">
+        <div class='sl__content'>{{ slide.content|richtext }}</div>
+      </div>
+    {% endfor %}
     </div>
   </div>
-  <div id="sl-slides" aria-live="off">
-    {% for event in eventpages %}
-      <a class="sl-slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label"
-        id="carousel-item-{{ forloop.counter }}" href="{% pageurl event %}">
-        {% with event.image as image %}
-          {% if image %} {% image image fill-1304x483 %} {% endif %}
-        {% endwith %}
-        <h2 id="item-{{ forloop.counter }}-label">{{ event.h1 }}</h2>
-        <time>
-          {{ event.date_on|date:"d.m.Y" }}
-          {% comment %}
-            TODO: Проверку дат ниже надо реализовать на стороне сервера при сохранении записи события
-          {% endcomment %}
-          {% if event.date_end > event.date_on %} - {{ event.date_end|date:"d.m.Y" }} {% endif %}
-        </time>
-        {% if event.location %} <div>{{ event.location }}</div> {% endif %}
-      </a>
-    {% endfor %}
-  </div>
-</div>
 {% endif %}
 </section>
 
@@ -120,7 +106,6 @@
     </div>
   </div>
   <div id="cal__content" class="content">.</div>
-  <!-- <div id="datestring" class="content">##</div> -->
 </section>
 
 {% if self.video %}

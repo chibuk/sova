@@ -1,14 +1,21 @@
 from django.db import models
-from wagtail.models import Page
+from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
 from event.models import EventPage
 from datetime import date, timedelta
 from wagtailvideos.edit_handlers import VideoChooserPanel
+from modelcluster.fields import ParentalKey
+
 
 
 class HomePage(Page):
-    
+    """
+    Домашняя страница: 
+        - раздел hero с фоновым видео, слоганом (текст) и двумя (или одной) кнопками;
+        - слайдер с блоком произвольного RichText содержимого в каждом слайде;
+        - строка дней календаря для отображения событий (EventPage) за период (JavaCript & Fetch JsonAPI)
+    """    
     video = models.ForeignKey('wagtailvideos.Video', related_name='+', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Видео секции HERO")
     slogan = models.CharField(blank=True, max_length=255, verbose_name="Слоган на видео", help_text='Текст на фоне видео')
     button_register = models.CharField(blank=True, verbose_name="Кнопка регистрации", max_length=16, help_text="Регистрация")
@@ -21,8 +28,8 @@ class HomePage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        eventpages = EventPage.objects.live().order_by('date_on').filter(is_for_slider=True) # записи только для слайдера
-        context['eventpages'] = eventpages
+        # eventpages = EventPage.objects.live().order_by('date_on').filter(is_for_slider=True) # записи только для слайдера
+        # context['eventpages'] = eventpages
         date_ = date.today() # начало календаря с сегодняшней даты
         days = [] # дни месяца
         months = [] # иесяцы
@@ -60,8 +67,20 @@ class HomePage(Page):
                 FieldPanel("link_info"),
             ], heading="Раздел Hero"
         ),
+        InlinePanel('slider', heading='Слайдер', label="Слайд"),
         FieldPanel('body', heading='Произвольное содержимое', help_text="Не желательно, только если очень важно"),
     ]
 
     class Meta:
         verbose_name= 'Домашняя страница'
+
+
+
+class Slider(Orderable):
+    """ Страницы слайдера, внутри RichText блок произвольного содержимого """
+    page = ParentalKey(HomePage, on_delete=models.CASCADE, related_name='slider')
+    content = RichTextField(blank=False, verbose_name='Содержимое')
+    
+    panels = [
+        FieldPanel('content'),
+    ]

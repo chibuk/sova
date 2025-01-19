@@ -14,22 +14,27 @@
 }
 
 /* Стили для слайдера обернуты в div#sl */
-#sl-slides, .sl-slide, #sl {
-    max-width: 1304px;
-    aspect-ratio: 2.7/1;    
-}
 #sl {
+    max-width: var(--content-max-width);
+    aspect-ratio: 2.7/1;
     margin: 0 auto;
     position: relative;
 }
+
+#sl-slides, .sl-slide {
+    min-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+}
+
 #sl-slides {
     scroll-snap-type: x mandatory;
     display: flex;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
     scrollbar-width: none; /* Для браузера FireFox */
-    border-radius: 1em;
-    box-shadow: 0 0 6px white, 0 0 2px black;
+    border-radius: 1rem;
+    box-shadow: 0 0 2px rgba(100,100,100, 0.5), 0 0 25px rgba(100,100,100, 0.2);
 }
 #sl-slides::-webkit-scrollbar {
     height: 0;
@@ -38,41 +43,13 @@
 .sl-slide {
     display: block; 
     scroll-snap-align: start;
-    position: relative;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.sl-slide > * {
-    position: absolute;
-    color: var(--body-color);
-}
-.sl-slide > img {
-    width: 100%;
-    height: 100%;
-}
-.sl-slide > h2, time {
-    left: 1rem;
-}
-.sl-slide > h2 {
-    bottom: 1.8rem;
-    font-size: 1.2em;
-    font-family: inherit;
-}
-.sl-slide > time, .sl-slide > div {
-    background-color: var(--body-color);
-    border-radius: 1em;
     color: var(--body-bgcolor);
-    padding: .5em 1em;
-    font-size: .7em;
-}
-.sl-slide > time {
-    bottom: 1rem;
-}
-.sl-slide > div {
-    bottom: 1rem;
-    right: 1rem;
+    padding: 1em;
+    background-color: var(--body-color);
+    box-shadow: 0 0 1px grey inset;
 }
 #sl button > i {
-    color: var(--body-color);
+    color: var(--brand-bgcolor);
     mix-blend-mode: difference;
     font-size: 1.5em;
     font-weight: bold;
@@ -94,14 +71,13 @@
 }
 
 #sl .button-radio {
-    background-color: transparent;
     margin: 0;
     padding: 0;
     width: .6rem;
     height: .6rem;
     border-radius: 50%;
     background-color: var(--button-radio-border-color);
-    border: none;
+    border: 1px solid var(--brand-bgcolor);
 }
 
 #sl .button-radio + .button-radio {
@@ -132,7 +108,7 @@
 
 #sl .button-prev:hover,
 #sl .button-next:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #sl .button-prev[aria-disabled="true"],
@@ -147,10 +123,24 @@
 
 #sl .button-prev {
     left: 0;
+    border-radius: 1rem 0 0 1rem;
 }
 
 #sl .button-next {
     right: 0;
+    border-radius: 0 1rem 1rem 0;
+}
+.sl__content {
+  padding: 0 1em;
+}
+.sl__content h2, .sl__content h3, .sl__content h4 {
+  margin: .5em 0 0;
+}
+.sl__content a {
+  color: var(--brand-bgcolor);
+}
+.sl__content a:hover, .sl__content a:focus {
+  color: var(--body-bgcolor);
 }
 
 section > .content {
@@ -158,6 +148,10 @@ section > .content {
   width: 100%;
   margin: 0 auto;
   padding: 0 1em;
+}
+
+section.section {
+  padding: 15px 0;
 }
 
 /* Calendar component */
@@ -222,6 +216,7 @@ section > .content {
   font-weight: bold;
   opacity: .5;
   padding-left: .5em;
+  left: 0;  /* без этого не работает sticky */
   position: sticky;
   z-index: 2;
 }
