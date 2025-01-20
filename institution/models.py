@@ -84,6 +84,8 @@ class TrainerPage(Page, InstitutionMixin):
     birth = models.DateField('Дата рождения', blank=True, null=True)
     education = models.CharField('Образование', max_length=128, null=True, blank=True)
     ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
+    sports_m = models.ManyToManyField('institution.SportPage', blank=True, verbose_name="Виды спорта", related_name='trainers')
+    locations_m = models.ManyToManyField('institution.LocationPage', blank=True, verbose_name="Объекты", related_name='trainers')
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
@@ -101,6 +103,8 @@ class TrainerPage(Page, InstitutionMixin):
         FieldPanel('education'),
         FieldPanel('ranks'),
         InlinePanel('category', label="Категория"),
+        FieldPanel('sports_m'),
+        FieldPanel('locations_m'),
     ]
 
     class Meta:
@@ -149,6 +153,8 @@ class LocationPage(Page, InstitutionMixin):
     body = RichTextField(blank=True)
     contacts = models.CharField(max_length=255, verbose_name="Контакты", null=True, blank=True)
     opening_hours = models.CharField(max_length=255, verbose_name="Режим работы", null=True, blank=True)
+    trainers_m = models.ManyToManyField('institution.TrainerPage', blank=True, verbose_name="Тренеры", related_name='locations')
+    sports_m = models.ManyToManyField("institution.SportPage", blank=True, verbose_name="Виды спорта", related_name='locations')
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
@@ -167,6 +173,8 @@ class LocationPage(Page, InstitutionMixin):
         FieldPanel('contacts'),
         FieldPanel('opening_hours'),
         InlinePanel('photos', label="Фтографии залов, арен, катков"),
+        FieldPanel('trainers_m'),
+        FieldPanel('sports_m'),
     ]
 
     class Meta:
@@ -207,8 +215,8 @@ class SportPage(Page, InstitutionMixin):
     ''' Виды спорта, наименование, тренеры, объекты '''
     name = models.CharField('Наименование', max_length=128)
     logo = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=True, related_name='+', verbose_name="Логотип 60х60")
-    trainers = models.ManyToManyField(TrainerPage, blank=True, verbose_name="Тренеры", related_name='sports')
-    locations = models.ManyToManyField(LocationPage, blank=True, verbose_name="Объекты", related_name='sports')
+    trainers_m = models.ManyToManyField(TrainerPage, blank=True, verbose_name="Тренеры", related_name='sports')
+    locations_m = models.ManyToManyField(LocationPage, blank=True, verbose_name="Объекты", related_name='sports')
     
     subpage_types = []
     parent_page_types = ['institution.SportIndexPage']
@@ -216,8 +224,8 @@ class SportPage(Page, InstitutionMixin):
     content_panels = Page.content_panels + [
         FieldPanel('name'),
         FieldPanel('logo'),
-        FieldPanel('trainers'),
-        FieldPanel('locations'),
+        FieldPanel('trainers_m'),
+        FieldPanel('locations_m'),
     ]
     
     def get_context(self, request):

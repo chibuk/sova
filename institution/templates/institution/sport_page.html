@@ -15,15 +15,15 @@
     <p>{{ page.name }}</p>
     <div>{% if page.logo %} {% image page.logo fill-60x60 %} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
-    {% for location in page.locations.all %}
-    {% if location.is_published %}
+    {% for location in page.locations_m.all %}
+    {% comment %} {% if location.is_published %} {% endcomment %}
     <div>
-        <span>Объект: {{ location.name }},</span><br>
+        <span>Объект: {{ location.specific.name }},</span><br>
         <span>Адрес: {{ location.address }}</span>
     </div>
-    {% endif %}
+    {% comment %} {% endif %} {% endcomment %}
     {% endfor %}
-    {% for trainer in page.trainers.live.all %}
+    {% for trainer in page.trainers_m.all %}
     <div>
         <span>Тренер: {{ trainer.surname }} {{ trainer.name }},</span>
     </div>
