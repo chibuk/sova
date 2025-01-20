@@ -47,6 +47,7 @@
     padding: 1em;
     background-color: var(--body-color);
     box-shadow: 0 0 1px grey inset;
+    overflow: hidden;
 }
 #sl button > i {
     color: var(--brand-bgcolor);

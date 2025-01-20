@@ -12,15 +12,20 @@
 {% block content %}
 <section class='container'>
     <h1>{{ page.title }}</h1>
-    <h2>{{ page.surname }} {{ page.name }} {% if page.name2 %}{{ page.name2 }}{% endif %}</h2>
-    <div>{% if page.photo %} {% image page.photo fill-90x90 %} {% endif %}</div>
-    <div>{% if page.education %} {{ page.education }} {% endif %}</div>
-    <div>{% if page.ranks %} {{ page.ranks }} {% endif %}</div>
+    <p>{{ page.name }}</p>
+    <div>{% if page.logo %} {% image page.logo fill-60x60 %} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
-    {% for cat in page.category.all %}
+    {% for location in page.locations.all %}
+    {% if location.is_published %}
     <div>
-        <span>{{ cat.name }},</span>
-        <span>категория действует до {{ cat.end_date }}</span>
+        <span>Объект: {{ location.name }},</span><br>
+        <span>Адрес: {{ location.address }}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% for trainer in page.trainers.live.all %}
+    <div>
+        <span>Тренер: {{ trainer.surname }} {{ trainer.name }},</span>
     </div>
     {% endfor %}
 

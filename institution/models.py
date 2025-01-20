@@ -1,4 +1,4 @@
-'''Учреждения'''
+'''Учреждения -> Объекты, Тренеры, Виды спорта, Услуги'''
 from django.db import models
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
@@ -22,7 +22,11 @@ class InstitutionPage(Page):
         index.SearchField('name'),
         index.SearchField('description'),
     ]
-    subpage_types = ['institution.TrainerIndexPage','institution.LocationIndexPage']
+    subpage_types = [
+        'institution.TrainerIndexPage',
+        'institution.LocationIndexPage',
+        'institution.SportIndexPage',
+    ]
     parent_page_types = ['institution.InstitutionIndexPage']
     
     content_panels = Page.content_panels + [
@@ -48,7 +52,7 @@ class InstitutionIndexPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Индексная страница Учреждений"
+        verbose_name = "Индекс Учреждений"
 
 
 
@@ -131,7 +135,7 @@ class TrainerIndexPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Индексная страница Тренеров"
+        verbose_name = "Индекс Тренеров"
 
 
 
@@ -166,8 +170,8 @@ class LocationPage(Page, InstitutionMixin):
     ]
 
     class Meta:
-        verbose_name = "Страница объекта"
-        verbose_name_plural = "Страницы объектов"
+        verbose_name = "Объект"
+        verbose_name_plural = "Объекты"
 
 
 
@@ -195,4 +199,47 @@ class LocationIndexPage(Page):
     ]
         
     class Meta:
-        verbose_name = "Индексная страница Объектов (Здания, Базы и т.п.)"
+        verbose_name = "Индекс Объектов (Здания, Базы и т.п.)"
+
+
+
+class SportPage(Page, InstitutionMixin):
+    ''' Виды спорта, наименование, тренеры, объекты '''
+    name = models.CharField('Наименование', max_length=128)
+    logo = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=True, related_name='+', verbose_name="Логотип 60х60")
+    trainers = models.ManyToManyField(TrainerPage, blank=True, verbose_name="Тренеры", related_name='sports')
+    locations = models.ManyToManyField(LocationPage, blank=True, verbose_name="Объекты", related_name='sports')
+    
+    subpage_types = []
+    parent_page_types = ['institution.SportIndexPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('name'),
+        FieldPanel('logo'),
+        FieldPanel('trainers'),
+        FieldPanel('locations'),
+    ]
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        blogpages = self.get_children().live().order_by('-first_published_at')
+        context['blogpages'] = blogpages
+        return context
+    
+    class Meta:
+        verbose_name = 'Вид спорта'
+
+
+
+class SportIndexPage(Page):
+    body = RichTextField(blank=True)
+    
+    subpage_types = ['institution.SportPage']
+    parent_page_types = ['institution.InstitutionPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+    
+    class Meta:
+        verbose_name = "Индекс Видов спорта"
