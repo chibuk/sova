@@ -1,3 +1,4 @@
 Django>=5.1,<5.2
 wagtail>=6.3.2,<6.4
 wagtailvideos
+python-dotenv
