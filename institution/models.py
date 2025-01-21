@@ -26,6 +26,7 @@ class InstitutionPage(Page):
         'institution.TrainerIndexPage',
         'institution.LocationIndexPage',
         'institution.SportIndexPage',
+        'institution.ServiceIndexPage',
     ]
     parent_page_types = ['institution.InstitutionIndexPage']
     
@@ -35,6 +36,10 @@ class InstitutionPage(Page):
         FieldPanel('description'),
         FieldPanel('site'),
     ]
+    
+    def __str__(self):
+        return self.name
+    
 
     class Meta:
         verbose_name = "Учреждение"
@@ -84,8 +89,6 @@ class TrainerPage(Page, InstitutionMixin):
     birth = models.DateField('Дата рождения', blank=True, null=True)
     education = models.CharField('Образование', max_length=128, null=True, blank=True)
     ranks = models.CharField('Звания и достижения', max_length=128, null=True, blank=True)
-    sports_m = models.ManyToManyField('institution.SportPage', blank=True, verbose_name="Виды спорта", related_name='trainers')
-    locations_m = models.ManyToManyField('institution.LocationPage', blank=True, verbose_name="Объекты", related_name='trainers')
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
@@ -102,10 +105,13 @@ class TrainerPage(Page, InstitutionMixin):
         FieldPanel('birth'),
         FieldPanel('education'),
         FieldPanel('ranks'),
-        InlinePanel('category', label="Категория"),
-        FieldPanel('sports_m'),
-        FieldPanel('locations_m'),
+        InlinePanel('category', label="Тренерская категория"),
+        InlinePanel('sports', label="Вид спорта"),
     ]
+    
+    def __str__(self):
+        return self.name + ' ' + self.surname
+    
 
     class Meta:
         verbose_name = "Тренер"
@@ -124,6 +130,19 @@ class TrainerCategory(Orderable):
     panels = [
         FieldPanel('name'),
         FieldPanel('end_date'),
+    ]
+    
+    
+    
+class TrainerSport(Orderable):
+    ''' Виды спорта для тренера '''
+    page = ParentalKey(TrainerPage, on_delete=models.CASCADE, related_name='sports')
+    name = models.ForeignKey('institution.SportPage', on_delete=models.CASCADE, related_name='trainer', verbose_name='Наименование')
+    start_date = models.DateField("Дата начала", blank=True, help_text="Введите дату")
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('start_date'),
     ]
 
 
@@ -153,8 +172,6 @@ class LocationPage(Page, InstitutionMixin):
     body = RichTextField(blank=True)
     contacts = models.CharField(max_length=255, verbose_name="Контакты", null=True, blank=True)
     opening_hours = models.CharField(max_length=255, verbose_name="Режим работы", null=True, blank=True)
-    trainers_m = models.ManyToManyField('institution.TrainerPage', blank=True, verbose_name="Тренеры", related_name='locations')
-    sports_m = models.ManyToManyField("institution.SportPage", blank=True, verbose_name="Виды спорта", related_name='locations')
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
@@ -173,9 +190,11 @@ class LocationPage(Page, InstitutionMixin):
         FieldPanel('contacts'),
         FieldPanel('opening_hours'),
         InlinePanel('photos', label="Фтографии залов, арен, катков"),
-        FieldPanel('trainers_m'),
-        FieldPanel('sports_m'),
+        InlinePanel('sports', label="Виды спорта"),
     ]
+    
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = "Объект"
@@ -192,6 +211,17 @@ class LocationPhotos(Orderable):
     panels = [
         FieldPanel('photo'),
         FieldPanel('description'),
+    ]
+
+
+
+class LocationSport(Orderable):
+    ''' Виды спорта для объекта '''
+    page = ParentalKey(LocationPage, on_delete=models.CASCADE, related_name='sports')
+    name = models.ForeignKey('institution.SportPage', on_delete=models.CASCADE, related_name='location', verbose_name='Наименование')
+
+    panels = [
+        FieldPanel('name'),
     ]
 
 
@@ -215,8 +245,6 @@ class SportPage(Page, InstitutionMixin):
     ''' Виды спорта, наименование, тренеры, объекты '''
     name = models.CharField('Наименование', max_length=128)
     logo = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=True, related_name='+', verbose_name="Логотип 60х60")
-    trainers_m = models.ManyToManyField(TrainerPage, blank=True, verbose_name="Тренеры", related_name='sports')
-    locations_m = models.ManyToManyField(LocationPage, blank=True, verbose_name="Объекты", related_name='sports')
     
     subpage_types = []
     parent_page_types = ['institution.SportIndexPage']
@@ -224,15 +252,11 @@ class SportPage(Page, InstitutionMixin):
     content_panels = Page.content_panels + [
         FieldPanel('name'),
         FieldPanel('logo'),
-        FieldPanel('trainers_m'),
-        FieldPanel('locations_m'),
     ]
     
-    def get_context(self, request):
-        context = super().get_context(request)
-        blogpages = self.get_children().live().order_by('-first_published_at')
-        context['blogpages'] = blogpages
-        return context
+    def __str__(self):
+        return self.name
+    
     
     class Meta:
         verbose_name = 'Вид спорта'
@@ -251,3 +275,58 @@ class SportIndexPage(Page):
     
     class Meta:
         verbose_name = "Индекс Видов спорта"
+
+
+
+class ServicePage(Page, InstitutionMixin):
+    ''' Услуга '''
+    name = models.CharField('Наименование', max_length=128)
+    description = RichTextField('Описание', blank=True)
+    is_free = models.BooleanField('Бесплатная услуга', default=False)
+    schedule = models.CharField('Расписание', max_length=255, blank=True)
+    discounts = models.CharField('Скидки', max_length=255, blank=True)
+    
+    subpage_types = []
+    parent_page_types = ['institution.ServiceIndexPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('name'),
+        FieldPanel('description'),
+        FieldPanel('is_free'),
+        FieldPanel('schedule'),
+        FieldPanel('discounts'),
+        InlinePanel('locations', heading='Объекты')
+    ]
+    
+    def __str__(self):
+        return self.name
+    
+    
+    class Meta:
+        verbose_name = 'Услуга'
+
+
+
+class ServiceLocation(Orderable):
+    ''' Объекты для услсг '''
+    page = ParentalKey(ServicePage, on_delete=models.CASCADE, related_name='locations')
+    name = models.ForeignKey('institution.LocationPage', on_delete=models.CASCADE, related_name='service', verbose_name='Наименование')
+
+    panels = [
+        FieldPanel('name'),
+    ]
+
+
+
+class ServiceIndexPage(Page):
+    body = RichTextField(blank=True)
+    
+    subpage_types = ['institution.ServicePage']
+    parent_page_types = ['institution.InstitutionPage']
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+    
+    class Meta:
+        verbose_name = "Индекс Услуг"

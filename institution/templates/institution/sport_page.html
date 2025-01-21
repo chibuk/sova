@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
 {% endblock %}
-{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -15,20 +14,26 @@
     <p>{{ page.name }}</p>
     <div>{% if page.logo %} {% image page.logo fill-60x60 %} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
-    {% for location in page.locations_m.all %}
-    {% comment %} {% if location.is_published %} {% endcomment %}
-    <div>
-        <span>Объект: {{ location.specific.name }},</span><br>
-        <span>Адрес: {{ location.address }}</span>
+    <div> Тренеры: 
+        <ul>
+            <li>
+                {% for trainer in page.trainer.all %}
+                    {{ trainer.page }}
+                    <div>{% if trainer.page.photo %}{% image trainer.page.photo fill-90x90 %}</div>{% endif %}
+                {% endfor %}
+            </li>
+        </ul>
     </div>
-    {% comment %} {% endif %} {% endcomment %}
-    {% endfor %}
-    {% for trainer in page.trainers_m.all %}
-    <div>
-        <span>Тренер: {{ trainer.surname }} {{ trainer.name }},</span>
+    <div>Объекты:
+        <ul>
+            <li>
+                {% for location in page.location.all %}
+                    {{ location.page }}
+                    <div>{% if location.page.photo %}{% image location.page.photo fill-90x90 %}</div>{% endif %}
+                {% endfor %}
+            </li>
+        </ul>
     </div>
-    {% endfor %}
-
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>
 </section>
 {% endblock %}

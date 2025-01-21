@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
 {% endblock %}
-{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -19,8 +18,11 @@
     <div>{% if page.opening_hours %} {{ page.opening_hours }} {% endif %}</div>
     <div>Организация: {{ page.institution }}</div>
     {% for photo in page.photos.all %}
-    <div>{% image photo.photo fill-200x160 %}</div>
-    <div>{{ photo.description }}</div>
+        <div>{% image photo.photo fill-200x160 %}</div>
+        <div>{{ photo.description }}</div>
+    {% endfor %}
+    {% for sport in page.sports.all %}
+        <div>{{ sport.name }}</div>
     {% endfor %}
 
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>

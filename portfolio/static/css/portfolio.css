@@ -1,9 +1,5 @@
-.container {
-    width: 100%;
+section.portfolio {
     max-width: var(--content-max-width);
     margin: 0 auto;
     padding: 0 1em;
-}
-.container>* {
-    padding: 0 .5em;
 }

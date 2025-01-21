@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
+{% endblock %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+<section class='container'>
+    <h1>{{ page.title }}</h1>
+    <h2>{{ page.name }}</h2>
+    <h2>{{ page.description|richtext }}</h2>
+    <div>Услуга 
+        {% if page.is_free %}бесплатная.</div>
+        {% else %}платная.</div>
+            {% if page.discounts %}<div>Скидки: {{ page.discounts }}</div>{% endif %}
+        {% endif %}
+    {% if page.shedule %}<div>Расписание: {{ page.shedule }}</div>{% endif %}
+    <div>Организация: {{ page.institution }}</div>
+    <div>Объекты:
+        <ul>
+            <li>
+                {% for location in page.locations.all %}
+                    <div>{{ location.name }}<a href="{% pageurl location.name %}"> подробнее</a></div>
+                    <div>{% if location.name.photo %}{% image location.name.photo fill-100x100 %}</div>{% endif %}
+                    <address>{{ location.name.address }}</address>
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>
+</section>
+{% endblock %}

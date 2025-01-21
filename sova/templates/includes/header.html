@@ -1,8 +1,6 @@
 {% load wagtailcore_tags navigation_tags wagtailuserbar %}
 {% load navigation_tags %}
 {% load wagtailimages_tags %}
-
-
 <header>
     {% get_site_root as site_root %}
     <div>  
@@ -22,8 +20,11 @@
                     <a href="{% pageurl menuitem %}">{{ menuitem.title|lower }}</a>
                 </li>
                 {% endfor %}
-                <li class="menu-item">
-                    <a href="/search/">поиск</a>
+                <li>
+                    <button id='search' class="menu-item-extra" href="#"><i class="fa-light fa-magnifying-glass"></i></button>
+                </li>
+                <li>
+                    <button id='bar' class="menu-item-extra" href="#"><i class="fa-light fa-bars"></i></button>
                 </li>
             </ul>
         </nav>

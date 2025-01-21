@@ -9,13 +9,13 @@
 <section class='container'>
     <h1>{{ page.title }}</h1>
     <div>{{ page.body|richtext }}</div>
-    {% for sport in page.get_children.live %}
-        <h2><a href="{% pageurl sport %}">{{ sport.title }}</a></h2>
-        {{ sport.specific.name }}
-        {% with sport.specific.logo as logo %}
+    {% for service in page.get_children.live %}
+        <h2><a href="{% pageurl service %}">{{ service }}</a></h2>
+        {{ service.specific.name }}
+        {% with service.specific.logo as logo %}
             {% if logo %} {% image logo fill-60x60 %} {% endif %}
         {% endwith %}
     {% endfor %}
-    <div><a href="{{ page.get_parent.url }}">Домой</a></div>
+    <div><a href="{{ page.get_parent.url }}">Назад к {{ page.get_parent }}</a></div>
 </section>
 {% endblock %}

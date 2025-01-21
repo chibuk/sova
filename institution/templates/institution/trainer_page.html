@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
 {% endblock %}
-{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -22,6 +21,9 @@
         <span>{{ cat.name }},</span>
         <span>категория действует до {{ cat.end_date }}</span>
     </div>
+    {% endfor %}
+    {% for sport in page.sports.all %}
+    <div>{{ sport.name }}</div>
     {% endfor %}
 
     <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>
