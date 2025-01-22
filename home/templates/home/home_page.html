@@ -17,7 +17,7 @@
       <h1>{{ page.slogan }}</h1>
       <div>
         <p class='timer__text'>До начала</p>
-        <div class="timer" data-datetime='{{ page.timer_date }}'>
+        <div class="timer" data-datetime='{{ page.timer_date.isoformat }}'>
           <div class="timer__item timer__days">00</div>
           <div class="separator">:</div>
           <div class="timer__item timer__hours">00</div>
