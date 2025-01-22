@@ -84,8 +84,8 @@ function runTimer() {
   const elSeconds = timer_container.querySelector('.timer__seconds');
 
   // Конечная дата
-  const now = new Date(timer_container.dataset.datetime);
-  const deadline = new Date(`${now.getFullYear()}-01-31T23:59:59`);
+  const now = new Date();
+  const deadline = new Date(timer_container.dataset.datetime);
 
   // Создание нового таймера
   const timer = new CountdownTimer(
