@@ -20,7 +20,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -91,17 +90,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "sova.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -168,7 +156,6 @@ STORAGES = {
 
 
 # Wagtail settings
-
 WAGTAIL_SITE_NAME = "sport-nur.ru"
 
 # Search
@@ -187,6 +174,6 @@ WAGTAILADMIN_BASE_URL = "https://sport-nur.ru"
 # This can be omitted to allow all files, but note that this may present a security risk
 # if untrusted users are allowed to upload files -
 # see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
-WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
+WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip', 'doc', 'xls', 'ppt']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
