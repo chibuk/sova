@@ -48,8 +48,8 @@ class EventPage(Page):
     tags = ClusterTaggableManager(through=EventTagPage, blank=True)
     founder = models.CharField('Организатор', max_length=256, blank=True)
     location = models.CharField('Место проведения', max_length=256, blank=True)
-    is_for_slider = models.BooleanField("Включить в слайдер", default=False, 
-        help_text="На домашней странице слайдер с самыми актуальными событиями. Поля выше отобразятся в слайдере.")
+    # is_for_slider = models.BooleanField("Включить в слайдер", default=False, 
+    #     help_text="На домашней странице слайдер с самыми актуальными событиями. Поля выше отобразятся в слайдере.")
     
     search_fields = Page.search_fields + [
         index.SearchField('h1'),
@@ -81,7 +81,7 @@ class EventPage(Page):
         FieldPanel('tags'),
         FieldPanel('date_on'),
         FieldPanel('date_end'),
-        FieldPanel("is_for_slider"),
+        # FieldPanel("is_for_slider"),
         FieldPanel('h2'),
         FieldPanel('body'),
         FieldPanel('founder'),

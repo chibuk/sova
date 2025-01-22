@@ -18,6 +18,7 @@ class HomePage(Page):
     """    
     video = models.ForeignKey('wagtailvideos.Video', related_name='+', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Видео секции HERO")
     slogan = models.CharField(blank=True, max_length=255, verbose_name="Слоган на видео", help_text='Текст на фоне видео')
+    timer_date = models.DateTimeField('Дата и время наступления события', blank=True, null=True)
     button_register = models.CharField(blank=True, verbose_name="Кнопка регистрации", max_length=16, help_text="Регистрация")
     link_register = models.ForeignKey('wagtailcore.Page', null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name='Hero ссылка для регистрации', help_text='Выбрать страницу, для перехода по кнопке')
     button_info = models.CharField(blank=True, verbose_name="Кнопка информации", max_length=16, help_text="Подробнее")
@@ -60,6 +61,7 @@ class HomePage(Page):
         MultiFieldPanel(
             [
                 FieldPanel("slogan"),
+                FieldPanel('timer_date'),
                 VideoChooserPanel('video'),
                 FieldPanel("button_register"),
                 FieldPanel("link_register"),
