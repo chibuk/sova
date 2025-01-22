@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = False
+#DEBUG = False
 
 try:
    from .local import *

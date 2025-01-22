@@ -4,5 +4,7 @@ __pycache__
 /media/
 /static/
 /manage.py
-migrations/
+/migrations/
 migrations
+/manage.py
+.env
