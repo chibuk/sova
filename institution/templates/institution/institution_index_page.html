@@ -24,6 +24,6 @@
     </a>
     {% endfor %}
     </div>
-    <div><a href="{{ page.get_parent.url }}">Вернуться {{ page.get_parent.title }}</a></div>
+    <div class='container__backlink'> <a href="{{ page.get_parent.url }}">{{ page.get_parent.title }}</a></div>
 </section>
 {% endblock %}
