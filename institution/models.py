@@ -17,6 +17,7 @@ class InstitutionPage(Page):
                                    on_delete=models.SET_NULL, related_name='+', help_text='Логотип')
     description = RichTextField('Описание', blank=True)
     site = models.CharField('Сайт', max_length=512, blank=True)
+    address = models.CharField('Адрес', max_length=512, blank=True)
 
     search_fields = Page.search_fields + [
         index.SearchField('name'),
@@ -35,6 +36,7 @@ class InstitutionPage(Page):
         FieldPanel('logo'),
         FieldPanel('description'),
         FieldPanel('site'),
+        FieldPanel('address'),
     ]
     
     def __str__(self):

@@ -7,3 +7,39 @@
 .container>* {
     padding: 0 .5em;
 }
+.content {
+    display: flex;
+    flex-flow: row wrap;
+}
+.box {
+    box-shadow: 0 0 2px rgba(100,100,100,0.5),
+    0 0 12px rgba(150,150,150,0.2),
+    0 0 1px black inset;
+    border-radius: .5em;
+    min-width: 20em;
+    min-height: 15em;
+    max-width: 20em;
+    max-height: 15em;
+    padding: 1em;
+    background-color: var(--body-color);
+    color: var(--body-bgcolor);
+    display: flex;
+    flex-flow: column nowrap;
+}
+.box__caption{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.box__caption > img {
+    margin: .2em;
+}
+.box__caption > h2 {
+    flex-grow: 1;
+    text-indent: .5em;
+}
+.box__body {
+    flex-grow: 1;
+}
+.box__footer {
+    background-color: blue;
+}
