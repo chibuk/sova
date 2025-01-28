@@ -9,14 +9,18 @@
 <section class='container'>
     <h1>{{ page.title }}</h1>
     <div>{{ page.body|richtext }}</div>
+    <div class="content">
     {% for location in page.get_children.live %}
-        <h2><a href="{% pageurl location %}">{{ location.title }}</a></h2>
-        {{ location.specific.name }} {{ location.specific.address }}
-
-        {% with location.specific.photo as photo %}
-            {% if photo %} {% image photo fill-160x80 %} {% endif %}
-        {% endwith %}
+        <a class='box' href="{% pageurl location %}">
+            <div class='box__caption'><h2>{{ location.title }}</h2></div>
+            {% with location.specific.photo as photo %}
+                {% if photo %} {% image photo fill-200x100 %} {% endif %}
+            {% endwith %}
+            <div class='box__body'>{{ location.specific.name }}</div>
+            <div class='box__footer'>{{ location.specific.address }}</div>
+        </a>
     {% endfor %}
-    <div><a href="{{ page.get_parent.url }}">Домой</a></div>
+    </div>
+    <div class='container__backlink'><a href="{% pageurl page.get_parent %}">{{ page.get_parent }}</a></div>
 </section>
 {% endblock %}

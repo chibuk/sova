@@ -25,6 +25,8 @@
         <div>{{ sport.name }}</div>
     {% endfor %}
 
-    <p><a href="{{ page.get_parent.url }}">Вернуться</a></p>
+    <div class='container__backlink'>
+        <a href="{% pageurl page.get_parent %}">{{ page.get_parent }}</a>
+    </div>
 </section>
 {% endblock %}

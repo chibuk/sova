@@ -14,8 +14,7 @@
 }
 .box {
     box-shadow: 0 0 2px rgba(100,100,100,0.5),
-    0 0 12px rgba(150,150,150,0.2),
-    0 0 1px black inset;
+    0 0 12px rgba(150,150,150,0.2);
     border-radius: .5em;
     min-width: 18em;
     min-height: 15em;
@@ -32,7 +31,6 @@
     transform: translateY(-2px);
     box-shadow: 0 0 2px rgba(100,100,100,0.5),
     0 0 12px rgba(150,150,150,0.2),
-    0 0 1px black inset,
     0 3px 5px rgba(150,150,150,0.5);
 }
 .box__caption{
