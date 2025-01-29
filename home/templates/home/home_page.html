@@ -11,10 +11,11 @@
 
 {% block content %}
 
-<section id='hero'>
+<section id='hero' data-datetime='{{ page.timer_date.isoformat }}'>
   {% if page.slogan %}
     <div id="hero_text">
       <h1>{{ page.slogan }}</h1>
+      {% if page.timer_date %}
       <div>
         <p class='timer__text'>До начала</p>
         <div class="timer" data-datetime='{{ page.timer_date.isoformat }}'>
@@ -27,6 +28,7 @@
           <div class="timer__item timer__seconds">00</div>
         </div>
       </div>
+      {% endif %}
     </div>
   {% endif %}
   <div class="hero_button">
@@ -113,7 +115,7 @@
 {% endif %}
 {% endblock %}
 {% block extra_js %}
-<script async type="text/javascript" src="{% static 'js/timer.js' %}"></script>
+{% if page.timer_date %}<script async type="text/javascript" src="{% static 'js/timer.js' %}"></script>{% endif %}
 <script async type="text/javascript" src="{% static 'js/slider.js' %}"></script>
 <script async type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
 {% endblock %}

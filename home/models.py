@@ -3,9 +3,10 @@ from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
 from event.models import EventPage
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from wagtailvideos.edit_handlers import VideoChooserPanel
 from modelcluster.fields import ParentalKey
+import pytz
 
 
 
@@ -29,15 +30,13 @@ class HomePage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        # eventpages = EventPage.objects.live().order_by('date_on').filter(is_for_slider=True) # записи только для слайдера
-        # context['eventpages'] = eventpages
         date_ = date.today() # начало календаря с сегодняшней даты
         days = [] # дни месяца
         months = [] # иесяцы
         month_ = '' # месяц, дни которого заполняем дни
         str_weekdays = [ "пн", "вт", "ср", "чт", "пт", "сб", "вс",]
-        str_months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'авеуст', 'сентябпь', 'октяюрь', 'ноябрь', 'декабрь']
-        i = 40 # столько дней календаря соьытий будем выводить
+        str_months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
+        i = 40 # столько дней календаря событий будем выводить
         month_ = str_months[date_.month - 1] # начнем с текущего
         while i:
             if (str_months[date_.month - 1] != month_): # если не текущий месяц, то начинаем новый
@@ -55,6 +54,9 @@ class HomePage(Page):
             [month_, {'days': days}],    # сохраняем дни этого месяца
         ]
         context['calendar'] = months
+        if (datetime.now().replace(tzinfo=pytz.timezone('Asia/Yekaterinburg')) > context['page'].timer_date):
+            context['page'].link_register = None
+            # context['page'].timer_date = None
         return context
 
     content_panels = Page.content_panels + [
