@@ -1,6 +1,163 @@
 {% load wagtailcore_tags navigation_tags wagtailuserbar %}
 {% load navigation_tags %}
 {% load wagtailimages_tags %}
+<style>
+    .nav {
+        width: 10em;
+        min-width: 10em;
+        position: absolute;
+        top: 2.5em;
+        left: 16em;
+        margin: 0;
+        padding: 1em;
+        /* плавный переход смещения панели */
+        -webkit-transition: left 0.3s;
+        -moz-transition: left 0.3s;
+        transition: left 0.3s;
+        background: var(--brand-bgcolor);
+        z-index: 2;
+    }
+    .nav-toggle {
+        position: relative;
+        padding: 0.5em;
+        background: inherit;
+        color: var(--body-color);
+        cursor: pointer;
+        font-size: 1.5em;
+        line-height: 1;
+        z-index: 3;
+        -webkit-transition: opacity .25s ease-in-out;
+        -moz-transition: opasity .25s ease-in-out;
+        transition: opacity .25s ease-in-out;
+    }
+    /* определяем текст кнопки символ Unicode (TRIGRAM FOR HEAVEN) 
+    .nav-toggle:after {
+        content: '\2630';
+        text-decoration: none;
+    } */
+    .nav-toggle:hover {
+        opacity: 0.7;
+    }
+    [id='nav-toggle'] {
+        position: absolute;
+        display: none;
+    }
+    /**
+    * изменение положения переключателя 
+    * при просмотре на мобильных устройствах
+    * когда навигация раскрыта, распологаем внутри панели
+    */
+    [id='nav-toggle']:checked ~ .nav > .nav-toggle {
+        left: auto;
+        right: 2px;
+        top: 1em;
+    }
+    /**
+    * Когда флажок установлен, открывается панель
+    * используем псевдокласс:checked
+    */
+    
+    [id='nav-toggle']:checked ~ .nav {
+        left: -7.5em;
+        /* box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
+        -moz-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
+        -webkit-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5); 
+        */
+        overflow-y: auto;
+    }
+    /*
+    * изменение символа переключателя,
+    * привычный крестик (MULTIPLICATION X), 
+    * вы можете испльзовать любой другой значок
+    */
+    
+    [id='nav-toggle']:checked ~ .nav > .nav-toggle:after {
+        content: '\2715';
+    }
+    /**
+    * профиксим баг в Android <= 4.1.2
+    * см: http://timpietrusky.com/advanced-checkbox-hack
+    */
+    
+    body {
+        -webkit-animation: bugfix infinite 1s;
+    }
+    
+    @-webkit-keyframes bugfix {
+        to {
+        padding: 0;
+        }
+    }
+    
+    /**
+    * позаботьтимся о средних и маленьких экранах
+    * мобильных устройств
+    */
+    
+    @media screen and (min-width: 320px) {
+        html,
+        body {
+        margin: 0;
+        overflow-x: hidden;
+        }
+    }
+    
+    @media screen and (max-width: 320px) {
+        html,
+        body {
+        margin: 0;
+        overflow-x: hidden;
+        }
+        .nav {
+        width: 100%;
+        box-shadow: none
+        }
+    }
+    .nav > ul {
+        display: block;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .nav > ul > li {
+        line-height: 2;
+        opacity: 0;
+        transition: opacity .5s .1s;
+    }
+    [id='nav-toggle']:checked ~ .nav > ul > li {
+        opacity: 1;
+    }
+    /**
+    * оформление ссылок пунктов меню
+    */
+    
+    .nav > ul > li > a {
+        display: inline-block;
+        position: relative;
+        padding: 0;
+        /* font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.2em;
+        color: #dadada; */
+        width: 100%;
+        text-decoration: none;
+        /* плавный переход 
+        -webkit-transition: color .5s ease, padding .5s ease;
+        -moz-transition: color .5s ease, padding .5s ease;
+        transition: color .5s ease, padding .5s ease; */
+        -webkit-transition: color .5s ease;
+        -moz-transition: color .5s ease;
+        transition: color .5s ease;
+    }
+    /**
+    * состояние ссылок меню при наведении
+    */
+    
+    .nav > ul > li > a:hover,
+    .nav > ul > li > a:focus {
+        color: grey;
+    }
+</style>
 <header>
     {% get_site_root as site_root %}
     <div>  
@@ -23,8 +180,24 @@
                 <li>
                     <button id='search' class="menu-item-extra" href="#"><i class="fa-light fa-magnifying-glass"></i></button>
                 </li>
-                <li>
-                    <button id='bar' class="menu-item-extra" href="#"><i class="fa-light fa-bars"></i></button>
+                <li style='position: relative;'>
+                    <input type="checkbox" id="nav-toggle" hidden>
+                    {% comment %} <button id='bar' class="menu-item-extra" href="#"><i class="fa-light fa-bars"></i></button> {% endcomment %}
+                    <label for="nav-toggle" class="nav-toggle" onclick>
+                        <i class="fa-light fa-bars"></i>
+                    </label>
+                    <nav class='nav'>
+                        
+                        <ul>
+                            <li><a href="#1">Один</a>
+                            <li><a href="#2">Два</a>
+                            <li><a href="#3">Три</a>
+                            <li><a href="#4">Четыре</a>
+                            <li><a href="#5">Пять</a>
+                            <li><a href="#6">Шесть</a>
+                            <li><a href="#7">Семь</a> 
+                         </ul>
+                    </nav>
                 </li>
             </ul>
         </nav>
