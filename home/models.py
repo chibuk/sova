@@ -32,8 +32,8 @@ class HomePage(Page):
         context = super().get_context(request)
         date_ = date.today() # начало календаря с сегодняшней даты
         days = [] # дни месяца
-        months = [] # иесяцы
-        month_ = '' # месяц, дни которого заполняем дни
+        months = [] # месяцы
+        month_ = '' # месяц, дни которого заполняем
         str_weekdays = [ "пн", "вт", "ср", "чт", "пт", "сб", "вс",]
         str_months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
         i = 40 # столько дней календаря событий будем выводить
@@ -45,7 +45,7 @@ class HomePage(Page):
                 ]
                 days = [] # обнуляем
             month_ = str_months[date_.month - 1] # начинаем новый месяц
-            days += [   # прибавим день вв текущий месяц
+            days += [   # прибавим день в текущий месяц
                 [date_.__str__(), date_.day, str_weekdays[date_.weekday()]]
                 ]
             date_ += timedelta(days=1) 
@@ -54,9 +54,6 @@ class HomePage(Page):
             [month_, {'days': days}],    # сохраняем дни этого месяца
         ]
         context['calendar'] = months
-        if (datetime.now().replace(tzinfo=pytz.timezone('Asia/Yekaterinburg')) > context['page'].timer_date):
-            context['page'].link_register = None
-            # context['page'].timer_date = None
         return context
 
     content_panels = Page.content_panels + [

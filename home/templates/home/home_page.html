@@ -11,29 +11,31 @@
 
 {% block content %}
 
-<section id='hero' data-datetime='{{ page.timer_date.isoformat }}'>
+<section id='hero'>
   {% if page.slogan %}
     <div id="hero_text">
       <h1>{{ page.slogan }}</h1>
-      {% if page.timer_date %}
-      <div>
-        <p class='timer__text'>До начала</p>
-        <div class="timer" data-datetime='{{ page.timer_date.isoformat }}'>
-          <div class="timer__item timer__days">00</div>
-          <div class="separator">:</div>
-          <div class="timer__item timer__hours">00</div>
-          <div class="separator">:</div>
-          <div class="timer__item timer__minutes">00</div>
-          <div class="separator">:</div>
-          <div class="timer__item timer__seconds">00</div>
-        </div>
+      <div id='timer'>
+        {% if page.timer_date %}
+        <template id="timer_template" data-datetime='{{ page.timer_date.isoformat }}'>
+          <p class='timer__text'>До начала</p>
+          <div class="timer">
+            <div class="timer__item timer__days">00</div>
+            <div class="separator">:</div>
+            <div class="timer__item timer__hours">00</div>
+            <div class="separator">:</div>
+            <div class="timer__item timer__minutes">00</div>
+            <div class="separator">:</div>
+            <div class="timer__item timer__seconds">00</div>
+          </div>
+        </template>
+        {% endif %}
       </div>
-      {% endif %}
     </div>
   {% endif %}
   <div class="hero_button">
   {% if page.link_register %}
-      <a href="{% pageurl page.link_register %}">
+      <a id='link_register' href="{% pageurl page.link_register %}">
           {% if page.button_register %}
               {{ page.button_register|lower }}
           {% else %}

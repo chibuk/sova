@@ -77,16 +77,27 @@ class CountdownTimer {
 };
 
 function runTimer() {
-  const timer_container = document.querySelector('.timer');
-  const elDays = timer_container.querySelector('.timer__days');
-  const elHours = timer_container.querySelector('.timer__hours');
-  const elMinutes = timer_container.querySelector('.timer__minutes');
-  const elSeconds = timer_container.querySelector('.timer__seconds');
-
-  // Конечная дата
+  const timer_container = document.querySelector('#timer'); 
+  const timer_template = timer_container.querySelector('#timer_template'); // шаблон html
+  const timer_ = timer_template.content.cloneNode(true);
+  timer_container.append(timer_); // клонировали и добавили в дерево DOM
+  const timer_tag = timer_container.querySelector('.timer');
+  const elDays = timer_tag.querySelector('.timer__days');
+  const elHours = timer_tag.querySelector('.timer__hours');
+  const elMinutes = timer_tag.querySelector('.timer__minutes');
+  const elSeconds = timer_tag.querySelector('.timer__seconds');
+  // Даты, текуший момент и назначенный
   const now = new Date();
-  const deadline = new Date(timer_container.dataset.datetime);
-
+  const deadline = new Date(timer_template.dataset.datetime);
+  // Срок вышел, убирем кнопку регистрации и таймер
+  const clear = () => {
+    timer_container.textContent = '';
+    document.querySelector('#link_register').remove();
+  }
+  if (now >= deadline) { // если срок уже вышел, то не создаём таймер
+    clear();
+    return;
+  }
   // Создание нового таймера
   const timer = new CountdownTimer(
       deadline,
@@ -101,7 +112,7 @@ function runTimer() {
       elSeconds.dataset.title = time.secondsTitle;
       },
       () => {
-      timer_container.textContent = 'Время истекло!';
+        clear();
       }
   );
 };
