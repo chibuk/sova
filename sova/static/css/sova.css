@@ -441,7 +441,7 @@ div#logo > a > img {
 * используем псевдокласс:checked
 */
 
-#nav-toggle:checked ~ header .nav {
+#nav-toggle:checked ~ .nav {
   left: calc(100vw - 20em);
   box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
   -moz-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
@@ -454,7 +454,7 @@ div#logo > a > img {
 * вы можете испльзовать любой другой значок
 */
 
-#nav-toggle:checked ~ header .nav > .nav-toggle-off:after {
+#nav-toggle:checked ~ .nav > .nav-toggle-off:after {
   content: '\2715';
   cursor: pointer;
   color: var(--body-color);
@@ -463,7 +463,7 @@ div#logo > a > img {
   height: 1.5em;
   font-size: 1.5em;
 }
-#nav-toggle:checked ~ header .nav > .nav-toggle-off:hover {
+#nav-toggle:checked ~ .nav > .nav-toggle-off:hover {
   opacity: 0.7;
 }
 /**
@@ -516,7 +516,7 @@ body {
   opacity: 0;
   transition: opacity .5s .1s;
 }
-#nav-toggle:checked ~ header .nav > ul > li {
+#nav-toggle:checked ~ .nav > ul > li {
   opacity: 1;
 }
 #nav-toggle:checked ~ #cover {
