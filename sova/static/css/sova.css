@@ -192,7 +192,7 @@ header {
   box-shadow: var(--box-shadow);
   display: flex;
   justify-content: center;
-  z-index: 100;
+  z-index: 7;
 }
 header > div {
   max-width: var(--content-max-width);
@@ -361,18 +361,6 @@ section#content {
 .menu-item-extra:hover, .menu-item-extra:focus {
   opacity: .5;
 }
-/* #search {
-  background-color: transparent;
-  border: none;
-} */
-/* #bar {
-  background-color: var(--body-color);
-  border: none;
-  color: var(--brand-bgcolor);
-  border-radius: 50%;
-  width: 1.5em;
-  height: 1.5em;
-} */
 .menu-item > a {
   color: var(--body-color);
   font-family: IntroHeadR,'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -397,4 +385,170 @@ div#logo > a {
 div#logo > a > img {
   height: inherit;
   width: auto;
+}
+
+/* Navigation panel */
+.nav {
+  width: 20em;
+  min-width: 20em;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 100vw;
+  margin: 0;
+  padding: 1em;
+  -webkit-transition: left 0.3s;
+  -moz-transition: left 0.3s;
+  transition: left 0.3s;
+  background: var(--brand-bgcolor);
+  z-index: 10;
+}
+.nav-toggle {
+  padding: 0.5em;
+  background: inherit;
+  color: var(--body-color);
+  cursor: pointer;
+  font-size: 1.5em;
+  line-height: 1;
+  -webkit-transition: opacity .25s ease-in-out;
+  -moz-transition: opasity .25s ease-in-out;
+  transition: opacity .25s ease-in-out;
+}
+/* определяем текст кнопки символ Unicode (TRIGRAM FOR HEAVEN) */
+.nav-toggle:after {
+  content: '\2630';
+  text-decoration: none;
+}
+.nav-toggle:hover {
+  opacity: 0.7;
+}
+#nav-toggle {
+  position: absolute;
+  display: none;
+}
+/**
+* изменение положения переключателя 
+* при просмотре на мобильных устройствах
+* когда навигация раскрыта, распологаем внутри панели
+
+[id='nav-toggle']:checked ~ .nav > .nav-toggle {
+  left: auto;
+  right: 2px;
+  top: 1em;
+} */
+/**
+* Когда флажок установлен, открывается панель
+* используем псевдокласс:checked
+*/
+
+#nav-toggle:checked ~ header .nav {
+  left: calc(100vw - 20em);
+  box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
+  -moz-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5);
+  -webkit-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5); 
+  overflow-y: auto;
+}
+/*
+* изменение символа переключателя,
+* привычный крестик (MULTIPLICATION X), 
+* вы можете испльзовать любой другой значок
+*/
+
+#nav-toggle:checked ~ header .nav > .nav-toggle-off:after {
+  content: '\2715';
+  cursor: pointer;
+  color: var(--body-color);
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 1.5em;
+}
+#nav-toggle:checked ~ header .nav > .nav-toggle-off:hover {
+  opacity: 0.7;
+}
+/**
+* профиксим баг в Android <= 4.1.2
+* см: http://timpietrusky.com/advanced-checkbox-hack
+*/
+
+body {
+  -webkit-animation: bugfix infinite 1s;
+}
+
+@-webkit-keyframes bugfix {
+  to {
+  padding: 0;
+  }
+}
+
+/**
+* позаботьтимся о средних и маленьких экранах
+* мобильных устройств
+*/
+
+@media screen and (min-width: 320px) {
+  html,
+  body {
+  margin: 0;
+  overflow-x: hidden;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  html,
+  body {
+  margin: 0;
+  overflow-x: hidden;
+  }
+  .nav {
+  width: 100%;
+  box-shadow: none
+  }
+}
+.nav > ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav > ul > li {
+  line-height: 2;
+  opacity: 0;
+  transition: opacity .5s .1s;
+}
+#nav-toggle:checked ~ header .nav > ul > li {
+  opacity: 1;
+}
+#nav-toggle:checked ~ #cover {
+  display: block;
+}
+/**
+* оформление ссылок пунктов меню
+*/
+
+.nav > ul > li > a {
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  width: 100%;
+  text-decoration: none;
+  -webkit-transition: opacity .3s ease;
+  -moz-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+.nav > ul > li > a:hover,
+.nav > ul > li > a:focus {
+  opacity: 0.7;
+  border-bottom: none;
+}
+
+#cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0, 0.5);
+  display: none;
+  z-index: 8;
 }
