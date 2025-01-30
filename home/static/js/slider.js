@@ -3,18 +3,18 @@ const slSlider = () => {
     // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
     function debounce(callee, timeoutMs) {
       return function perform(...args) {
-        let previousCall = this.lastCall
-        this.lastCall = Date.now()
+        let previousCall = this.lastCall;
+        this.lastCall = Date.now();
         if (previousCall && this.lastCall - previousCall <= timeoutMs) {
-          clearTimeout(this.lastCallTimer)
+          clearTimeout(this.lastCallTimer);
         }
-        this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs)
+        this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs);
       }
     }
     
     let current = 1; // текущий слайд
     let runtimer = 0; // для ссылки на таймер, чтобы его перезапускать
-    const interval = 8000 // миллисекунд интервал прокрутки слайдов
+    const interval = 8000; // миллисекунд интервал прокрутки слайдов
     
     function setSlideControls() {
       const slider = document.querySelector('#sl-slides');

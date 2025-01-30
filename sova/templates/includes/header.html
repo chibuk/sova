@@ -1,6 +1,5 @@
-{% load wagtailcore_tags navigation_tags wagtailuserbar %}
-{% load navigation_tags %}
-{% load wagtailimages_tags %}
+{% load static wagtailimages_tags wagtailcore_tags navigation_tags wagtailuserbar %}
+
 <input type="checkbox" id="nav-toggle" hidden>
 <header>
     {% get_site_root as site_root %}
@@ -21,8 +20,8 @@
                     <a href="{% pageurl menuitem %}">{{ menuitem.title|lower }}</a>
                 </li>
                 {% endfor %}
-                <li>
-                    <button id='search' class="menu-item-extra" href="#"><i class="fa-light fa-magnifying-glass"></i></button>
+                <li id='search'>
+                    <button class="menu-item-extra" href="#"><i class="fa-light fa-magnifying-glass"></i></button>
                 </li>
                 <li>
                     <label for="nav-toggle" class="nav-toggle" onclick></label>
@@ -34,14 +33,7 @@
 </header>
 <nav class='nav'>
     <label for='nav-toggle' class='nav-toggle-off' onclick></label>
-    <ul>
-        <li class="menu-item"><a href="#1">Один</a>
-        <li class="menu-item"><a href="#2">Два</a>
-        <li class="menu-item"><a href="#3">Три</a>
-        <li class="menu-item"><a href="#4">Четыре</a>
-        <li class="menu-item"><a href="#5">Пять</a>
-        <li class="menu-item"><a href="#6">Шесть</a>
-        <li class="menu-item"><a href="#7">Семь</a> 
-     </ul>
+    <ul></ul>
 </nav>
 <div id="cover"></div>
+<script async type="text/javascript" src="{% static 'js/sova.js' %}"></script>
