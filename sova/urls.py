@@ -10,6 +10,7 @@ from search import views as search_views
 from .api import api_router
 
 from event import views as events_views
+from wagtail_favicon.urls import urls as favicon_urls
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -17,7 +18,7 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path('jsonapi/v2/', api_router.urls),
-    # path('jsonapi/v2own/events/', events_views.EventPageAPIListView.as_view({'get': 'list'}))
+    path('', include(favicon_urls)),
 ]
 
 

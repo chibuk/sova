@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "blog",
     "event",
     'wagtailvideos',
+    "wagtail_favicon",
     "portfolio",
     "base",
     "home",
