@@ -38,13 +38,16 @@ function setmenu_nav (menu_len) {
 function _menu_len () {
     const header_width = document.querySelector('header').clientWidth;
     if (header_width <= 360) return 0; // mobile
-    if (header_width <= 768) return 1; // xmobile
-    if (header_width <= 1024) return 3;// tablet
-    return 4;
+    if (header_width <= 375) return 1; // xmobile
+    if (header_width <= 412) return 2; // xmobile
+    if (header_width <= 768) return 3; // xmobile
+    if (header_width <= 1024) return 4;// tablet
+    return 5;
 }
 
 function resizemenu() {
     const l = _menu_len();
+    alert(l);
     setmenu_panel(l);
     setmenu_nav(l);
 }; 
