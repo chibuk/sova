@@ -267,7 +267,7 @@ const calCalendar = () => {
       for (let key in attrs) {
           elem.setAttribute(key, attrs[key])
       }
-      return elem
+      return elem;
     }
   }
   /**

@@ -16,9 +16,15 @@
 /* Стили для слайдера обернуты в div#sl */
 #sl {
     max-width: var(--content-max-width);
-    aspect-ratio: 2.7/1;
     margin: 0 auto;
     position: relative;
+    aspect-ratio: 2.7/1;
+    @media screen and (max-width: 660px) {
+      aspect-ratio: 2/1.2;
+    }
+    @media screen and (max-width: 425px) {
+      aspect-ratio: 1/1;
+    }
 }
 
 #sl-slides, .sl-slide {
@@ -167,10 +173,13 @@ section.section {
 #cal-start, #cal-end {
   position: absolute;
   top: 0;
-  width: 7rem;
   height: 100%;
   position: absolute;
   z-index: 2;
+  width: 7rem;
+  @media screen and (max-width: 425px) {
+    width: 4rem;
+  }
 }
 #cal-start {
   left: 0;
@@ -304,18 +313,24 @@ section.section {
   100% {opacity: 1;}
 }
 .event {
-  width: 380px;
   margin: .5em;
   display: flex;
   flex-flow: column nowrap;
   background-color: var(--body-color);
   color: var(--body-bgcolor);
   font-family: var( --body-font-family);
+  width: 380px; 
+  @media screen and (max-width: 425px) {
+    width: 320px;
+  }
 }
 .event__img {
   width: inherit;
-  height: 220px;
   border-radius: .6em;
+  height: 220px;
+  @media screen and (max-width: 425px) {
+    height: 185px;
+  }
 }
 .event__text {
   padding-top: .3em;

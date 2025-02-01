@@ -331,7 +331,6 @@ section#content {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   box-shadow: var(--box-shadow);
   padding-top: 1em;
-  height: 100%;
 }
 
 .flex-row {
