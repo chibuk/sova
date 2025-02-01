@@ -3,6 +3,9 @@ document.querySelector('#cover').addEventListener('click', function(event) {
     document.querySelector('#nav-toggle').checked = false;
 });
 
+/**
+ * Перемещение пунктов оризонтального меню в меню вертикальной панели и иобратно в завиисмомти от ширины
+ */
 function modify_menu() {
     /**
      * Перемещает часть пунктов из меню горизонтального в боковую панель,
@@ -50,11 +53,18 @@ function modify_menu() {
         if (header_width <= 1024) return 4;// tablet и брокк широкие экраны
         return 5;
     }
+    /**
+     * Приводим в соответствие высоту видимой области для мобильных устройств,
+     * т.к. есть проблемы с height: 100vh;
+     */
+    function adjustViewportHeight() {
+        document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
+    }
     const l = _menu_len();
     setmenu_panel(l);
     setmenu_nav(l);
+    adjustViewportHeight();
 }; 
 modify_menu(); // отработать при загрузке
-
 window.addEventListener('resize', modify_menu);
-
+window.addEventListener('orientationchange', modify_menu);

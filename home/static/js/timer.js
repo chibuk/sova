@@ -92,7 +92,8 @@ function runTimer() {
   // Срок вышел, убирем кнопку регистрации и таймер
   const clear = () => {
     timer_container.textContent = '';
-    document.querySelector('#link_register').remove();
+    const link_register = document.querySelector('#link_register');
+    if (link_register) link_register.remove();
   }
   if (now >= deadline) { // если срок уже вышел, то не создаём таймер
     clear();
