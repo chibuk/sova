@@ -1,16 +1,77 @@
 :root {
-    --button-radio-border-color: var(--body-color);
+    --button-radio-border-color: var(--body-bgcolor);
     --button-radio-active-color: var(--brand-bgcolor);
 }
-
+video {
+  margin: 0;
+  background-color: var(--body-color);
+}
+/* Секция с синей полосой, фон для слайдера */
 .section {
     background-image:repeating-linear-gradient(
         -0deg,
-        var(--body-color) 0 40%,
+        var(--body-bgcolor) 0 40%,
         var(--brand-bgcolor) 40% 60%
       );
     color: var(--body-color);
     position: relative;
+}
+/* Оформление раздела hero (на фоне видео слоган, таймер и две кнопки) */
+#bg_video {
+  position: fixed;
+  top: calc(var(--header-height) - 1rem);
+  left: 0;
+  min-width: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+section#hero {
+  display: flex;
+  flex-direction: var(--flex-direction-row);
+  align-items:flex-end;
+  justify-content:center;
+  background-color: transparent;
+  padding: 2em;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#hero_text > h1 {
+  font: 4em "Cruinn Bold", sans-serif;
+  margin: .5em 0;
+  color: var(--body-bgcolor);
+  @media screen and (max-width: 768px) {
+      font-size: 2.5em;
+  }
+}
+.hero_button {
+  padding: 0 3em;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: .5em;
+}
+.hero_button > a {
+  display: block;
+  border: 1px solid var(--brand-bgcolor);
+  font: 1em "Cruinn Black", sans-serif;
+  font-variant: small-caps;
+  background-color: var(--body-bgcolor);
+  padding: .5em 1em;
+  border-radius: 2em;
+  color: var(--body-color);
+  opacity: 85%;
+  text-align: center;
+}
+.hero_button > a:hover {
+  background-color: var(--brand-bgcolor);
+  color: var(--body-bgcolor);
+  opacity: 100%;
+}
+/* Под hero тоже закругленные углы */
+section#content {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  box-shadow: var(--box-shadow);
+  padding-top: 1em;
 }
 
 /* Стили для слайдера обернуты в div#sl */
@@ -49,9 +110,9 @@
 .sl-slide {
     display: block; 
     scroll-snap-align: start;
-    color: var(--body-bgcolor);
+    color: var(--body-color);
     padding: 1em;
-    background-color: var(--body-color);
+    background-color: var(--body-bgcolor);
     box-shadow: 0 0 1px grey inset;
     overflow: hidden;
 }
@@ -147,7 +208,7 @@
   color: var(--brand-bgcolor);
 }
 .sl__content a:hover, .sl__content a:focus {
-  color: var(--body-bgcolor);
+  color: var(--body-color);
 }
 
 section > .content {
@@ -286,7 +347,6 @@ section.section {
   height: 100%;
   display: none;
   width: 15em;
-  /* background-color: rgba(10, 10, 10, .05); */
   box-shadow: 0 0 10px rgba(10, 10, 10, .15) inset;
   border-radius: 1em;
 }
@@ -316,8 +376,8 @@ section.section {
   margin: .5em;
   display: flex;
   flex-flow: column nowrap;
-  background-color: var(--body-color);
-  color: var(--body-bgcolor);
+  background-color: var(--body-bgcolor);
+  color: var(--body-color);
   font-family: var( --body-font-family);
   width: 380px; 
   @media screen and (max-width: 425px) {
@@ -388,7 +448,7 @@ section.section {
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.875rem;
-  color: var(--body-bgcolor);
+  color: var(--body-color);
 }
 .timer__text {
   text-indent: 1em;

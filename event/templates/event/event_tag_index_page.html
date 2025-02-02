@@ -1,19 +1,34 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
+{% endblock %}
 
 {% block content %}
 <section id='content'>
     {% if request.GET.tag %}
-        <h4>События с тегом "{{ request.GET.tag }}"</h4>
+        <h2>События с тегом</h2>
+        <span class='tag'>{{ request.GET.tag }}</span>
     {% endif %}
 
     {% for eventpage in eventpages %}
-
-          <p>
-              <strong><a href="{% pageurl eventpage %}">{{ eventpage.title }}</a></strong><br />
-              <small>Дата редактирования: {{ eventpage.latest_revision_created_at }}</small><br />
-          </p>
-
+          <div class='box__container'>
+            <a class='box' href="{% pageurl eventpage %}">
+                <h3>{{ eventpage.h1 }}</h3>
+                {% image eventpage.image original %}
+                <date>
+                    {{ eventpage.date_on }}
+                    {% if eventpage.date_end %} - {{ eventpage.date_end }} {% endif %}
+                </date>
+                {% if eventpage.location %}
+                    <h4>Место проведения</h4>
+                    <p>
+                        {{ eventpage.location }}
+                    </p>
+                {% endif %}
+                <small>Дата редактирования: {{ eventpage.latest_revision_created_at }}</small>
+            </a>
+        </div>
     {% empty %}
         Отсутствуют записи с данным тегом.
     {% endfor %}

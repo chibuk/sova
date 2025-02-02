@@ -22,7 +22,7 @@ class EventIndexPage(Page):
         context['eventpages'] = eventpages
         return context
     
-    subpage_types = ['event.EventPage']
+    subpage_types = ['event.EventPage', 'event.EventTagIndexPage']
     parent_page_types = ['home.HomePage']
 
     content_panels = Page.content_panels + [
@@ -30,7 +30,7 @@ class EventIndexPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Афиша. Индексная страница событий"
+        verbose_name = "Индексная страница событий (Афиша)"
 
 
 class EventTagPage(TaggedItemBase):
@@ -48,8 +48,6 @@ class EventPage(Page):
     tags = ClusterTaggableManager(through=EventTagPage, blank=True)
     founder = models.CharField('Организатор', max_length=256, blank=True)
     location = models.CharField('Место проведения', max_length=256, blank=True)
-    # is_for_slider = models.BooleanField("Включить в слайдер", default=False, 
-    #     help_text="На домашней странице слайдер с самыми актуальными событиями. Поля выше отобразятся в слайдере.")
     
     search_fields = Page.search_fields + [
         index.SearchField('h1'),
@@ -81,7 +79,6 @@ class EventPage(Page):
         FieldPanel('tags'),
         FieldPanel('date_on'),
         FieldPanel('date_end'),
-        # FieldPanel("is_for_slider"),
         FieldPanel('h2'),
         FieldPanel('body'),
         FieldPanel('founder'),
@@ -95,6 +92,8 @@ class EventPage(Page):
     class EventTagIndexPage(Page):
         
         subpage_types = []
+        parent_page_types = ['event.EventIndexPage']
+        max_count = 1   # Всего одна страница тегов
 
         def get_context(self, requesst):
             tag = requesst.GET.get('tag')
@@ -104,7 +103,7 @@ class EventPage(Page):
             return context
 
         subpage_types = []
-        parent_page_types = ['event.EventIndexPage']
+        parent_page_types = ['home.HomePage']
 
         class Meta:
             verbose_name = 'Индекс тегов событий'

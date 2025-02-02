@@ -21,8 +21,8 @@
     max-width: 18em;
     max-height: 15em;
     padding: 1em;
-    background-color: var(--body-color);
-    color: var(--body-bgcolor);
+    background-color: var(--body-bgcolor);
+    color: var(--body-color);
     display: flex;
     flex-flow: column nowrap;
     overflow: hidden;
@@ -63,6 +63,5 @@
     color: var(--brand-bgcolor);
 }
 .container__backlink a:hover {
-    color: var(--body-bgcolor)
+    color: var(--body-color)
 }
-

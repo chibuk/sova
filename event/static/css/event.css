@@ -1,0 +1,40 @@
+.tag {
+    padding: .2em .4em;
+    border-radius: .5em;
+    color: var(--body-bgcolor);
+    background-color: var(--body-color);
+}
+#content {
+    max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: .5em;
+}
+.box__container {
+    display: flex;
+    flex-flow: row wrap;
+}
+.box {
+    display: block;
+    padding: .5em;
+    margin: 1em 0;
+    box-shadow: 0 0 .5em rgba(0,0,0,0.2);
+    border-radius: var(--border-radius);
+    width: 20em;
+    color: var(--body-color);
+    background-color: var(--body-bgcolor);
+}
+.box h3 {
+    margin: 0;
+}
+.box small {
+    font-size: .5em;
+}
+.box:hover, .box:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 1em rgba(0,0,0,0.35);
+}
+.box img {
+    max-width: 100%;
+    height: auto;
+}
