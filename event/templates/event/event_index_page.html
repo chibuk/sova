@@ -1,33 +1,43 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
+{% endblock %}
 {% block body_class %}template-eventndexpage{% endblock %}
 {% block content %}
 <section id='content'>
-    <h1>{{ page.title }}</h1>
+    <h1>{{ page.title|lower }}</h1>
     <p>{{ page.body|richtext }}</p>
+    <div class='box__container'>
     {% for event in eventpages %}
-        <h2><a href="{% pageurl event %}">{{ event.specific.h1 }}</a></h2>
-        {% with event.specific.image as image %}
-            {% if image %} {% image image max-400x148 %} {% endif %}
-        {% endwith %}
-
+    <div class='box'>
+        <a href="{% pageurl event %}">
+            <h3>{{ event.specific.h1 }}</h3>
+            {% with event.specific.image as image %}
+                {% if image %} {% image image original %} {% endif %}
+            {% endwith %}
+        </a>
         {% with tags=event.specific.tags.all %}
             {% if tags %}
                 <div class='tags'>
                     {% for tag in tags  %}
                         <a href="{% slugurl 'event-tags' %}?tag={{ tag }}">
-                            <button type="button">{{ tag }}</button>
+                            <button type="button" class='tag'>{{ tag }}</button>
                         </a>
                     {% endfor %}
                 </div>
             {% endif %}
         {% endwith %}
-
         <div class='date'>
             {{ event.specific.date_on }}
             {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
         </div>
+        {% if event.specific.location %}
+            <div class='date'>{{ event.specific.location }}</div>
+        {% endif %}
+    </div>
     {% endfor %}
+</div>
     <div><a href="{{ page.get_parent.url }}">Домой</a></div>
 </section>
     {% endblock %}
