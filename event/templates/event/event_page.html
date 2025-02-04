@@ -16,25 +16,23 @@
             </div>
         {% endif %}
     {% endwith %}
-    {% image page.image width-650 %}
+    {% image page.image original %}
+    <div class='flex-row gap'>
+        <div class='date'>
+            <strong>Когда:</strong>
+            {{ page.date_on }}{% if page.date_end %} - {{ page.date_end }} {% endif %}
+        </div>
+        {% if page.location %}
+        <div class='location'><strong>Где:</strong>{{ page.location }}</div>
+        {% endif %}
+    </div>
     <h2>{{ page.h2 }}</h2>
-    <date>
-        {{ page.date_on }}
-        {% if page.date_end %} - {{ page.date_end }} {% endif %}
-    </date>
     {{ page.body|richtext }}
-    {% if page.founder %}
-        <h4>Организаторы</h4>
-        <p>
-            {{ page.founder }}
-        </p>
-    {% endif %}
-    {% if page.location %}
-        <h4>Место проведения</h4>
-        <p>
-            {{ page.location }}
-        </p>
-    {% endif %}
-    <p><a href="{{ page.get_parent.url }}">Вернуться в афишу</a></p>
+    {% if page.founder %}<hr>
+    <div class='flex-row gap'>    
+        <strong>Организаторы: </strong>
+        <div>{{ page.founder }}</div>
+    </div>
+    {% endif %}    
 </section>
 {% endblock %}

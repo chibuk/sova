@@ -291,7 +291,10 @@ a, a:visited, a:active, a * {
 .flex-row {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: center;
+  /* justify-content: center; */
+}
+.gap {
+  gap: 1em;
 }
 
 .menu {
