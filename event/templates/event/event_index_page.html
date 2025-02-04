@@ -1,8 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags %}
-{% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/event.css' %}">
-{% endblock %}
+{% load wagtailcore_tags wagtailimages_tags %}
 {% block body_class %}template-eventndexpage{% endblock %}
 {% block content %}
 <section id='content'>
@@ -11,12 +8,11 @@
     <div class='box__container'>
     {% for event in eventpages %}
     <div class='box box__child'>
-        <a href="{% pageurl event %}">
-            <h3>{{ event.specific.h1|upper }}</h3>
-            {% with event.specific.image as image %}
-                {% if image %} {% image image original %} {% endif %}
-            {% endwith %}
-        </a>
+        <a href="{% pageurl event %}"></a>
+        <h3>{{ event.specific.h1|upper }}</h3>
+        {% with event.specific.image as image %}
+            {% if image %} {% image image original %} {% endif %}
+        {% endwith %}
         {% with tags=event.specific.tags.all %}
             {% if tags %}
                 <div class='tags'>
@@ -36,6 +32,5 @@
     </div>
     {% endfor %}
 </div>
-<div class='tags'><a class='tag is-medium is-info' href="{{ page.get_parent.url }}"><i class="fa-light fa-backward"></i></a></div>
 </section>
     {% endblock %}

@@ -196,7 +196,6 @@ header > div {
   height: inherit;
   display: flex;
   justify-content: space-between;
-  /* padding: 0 1em; */
 }
 main {
   margin-top: var(--header-height);
@@ -217,7 +216,6 @@ footer {
     max-width: var(--content-max-width);
     margin: 0 auto;
     white-space: nowrap; /* Запрещаем перенос строк */
-    /* font-family: Arial, Helvetica, sans-serif; */
     font-size: 1rem;
 }
 
@@ -255,25 +253,6 @@ footer {
 }
 /* ] */
 
-/* #bg_video {
-  position: fixed;
-  top: calc(var(--header-height) - 1rem);
-  left: 0;
-  min-width: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
-section#hero {
-  display: flex;
-  flex-direction: var(--flex-direction-row);
-  align-items:flex-end;
-  justify-content:center;
-  background-color: transparent;
-  padding: 2em;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-} */
 section {
   background-color: var(--body-bgcolor);
   color: var(--body-color);
@@ -287,16 +266,16 @@ button, a {
 a, a:visited, a:active, a * {
   text-decoration: none;
 }
-
+/* css tools */
 .flex-row {
   display: flex;
   flex-wrap: nowrap;
-  /* justify-content: center; */
 }
 .gap {
   gap: 1em;
 }
 
+/* Главное меню сайта, горизонтальное */
 .menu {
   list-style-type: none;
   margin: 0;
@@ -444,7 +423,7 @@ div#logo > a > img {
   opacity: 0.7;
   border-bottom: none;
 }
-
+/* затеммнеение всей страницы при открытии боковой панели */
 #cover {
   position: fixed;
   top: 0;
@@ -455,6 +434,7 @@ div#logo > a > img {
   display: none;
   z-index: 8;
 }
+/* Боковая панель */
 .nav > ul {
   flex-grow: 1;
   padding: .5em 0;
@@ -487,7 +467,7 @@ div#logo > a > img {
   opacity: 0.7;
 }
 
-/* <--tags из bulma */
+/* <--tags заимствовано из bulma */
 .tags {
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -676,5 +656,80 @@ div#logo > a > img {
 a.tag:hover {
   opacity: 0.7;
 }
-
 /* tags--> */
+/* Общие стили для внутренних страниц */
+#content {
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 .5em .5em;
+  padding: .5em;
+  align-self: center;
+}
+.box {
+  margin: 0 0 1em;
+  padding: .5em;
+  box-shadow: 0 0 2px var(--body-color);
+  border-radius: var(--border-radius);
+}
+#content.box {
+  padding: 2em;
+}
+.h1 {
+  font-size: 2rem;
+  text-indent: 1em;
+}
+.box > h1 {
+  margin: 0;
+}
+.box__container {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1.5em;
+}
+.box__child {
+  display: block;
+  width: 17em;
+  color: var(--body-color);
+  background-color: var(--body-bgcolor);
+  transition: opacity 0.3s;
+  position: relative; /* 1. весь блок будет ссылкой, см. далее.. */
+}
+/* ..2. расширим ссылку на весь relative родительский блок.. */
+.box__child > a::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+/* ..3. и теперь ещё работает ссылка тега поверх блочной ссылки */
+.box__child .tags > a {
+  position: relative;
+}
+.box__child h3 {
+  margin: 0;
+  padding: .5em .1em;
+}
+.box__child small {
+  font-size: .5em;
+}
+.box__child:hover, .box__child:focus {
+  opacity: .8;
+}
+.box img {
+  max-width: 100%;
+  height: auto;
+}
+.box__child a:not(.tag) {
+  color: var(--body-color);
+}
+.date, .location {
+  font-size: 1rem;
+  padding: .5em 0 0;
+}
+.box strong {
+  padding-right: 1em;
+}
