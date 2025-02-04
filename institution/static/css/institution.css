@@ -1,14 +1,3 @@
-.box__caption{
-    display: flex;
-    flex-flow: row nowrap;
-}
-.box__caption > img {
-    margin: .2em;
-}
-.box__caption > h2 {
-    flex-grow: 1;
-    margin: auto 0 auto .5em;
-}
 .box__body {
     flex-grow: 1;
     font-family: Cruinn Thin;

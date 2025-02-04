@@ -105,6 +105,7 @@
   --content-max-width: var(--screen-xtablet);
 
   --base-font-size: 1em;
+  --slogan-font-size: 1.5em;
   --base-line-height: 1,5;
   --base-header-line-height: 1.25;
 
@@ -116,6 +117,15 @@
 @media only screen and (min-width: 360px) {
   :root {
       --flex-direction-row: column;
+      --slogan-font-size: 1.7em;
+  }
+}
+/* --screen-xmobile: 768px; */
+@media only screen and (min-width: 498px) {
+  :root {
+      --flex-direction-row: column;
+      /* --header-height: 3em; */
+      --slogan-font-size: 2em;
   }
 }
 /* --screen-xmobile: 768px; */
@@ -123,6 +133,7 @@
   :root {
       --flex-direction-row: column;
       /* --header-height: 3em; */
+      --slogan-font-size: 2.4em;
   }
 }
 /* --screen-tablet: 1024px; */
@@ -130,12 +141,14 @@
   :root {
       --base-font-size: 1.2em;
       --flex-direction-row: row;
+      --slogan-font-size: 2.7em;
   }
 }
 /* --screen-xtablet: 1360px; */
 @media only screen and (min-width: 1360px) {
   :root { 
       --base-font-size: 1.3em;
+      --slogan-font-size: 3em;
   }
 }
 /* --screen-desktop: 1920px; */
@@ -160,7 +173,7 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--base-font-size);
   line-height: var(--base-line-height);
-  min-width: var(--screen-mobile);
+  /* min-width: var(--screen-mobile); */
 }
 
 nav {
@@ -174,9 +187,10 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   position: absolute;
-  height: 100vh;
-  width: 100vw;
-  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+  min-width: calc(var(--screen-mobile) - 10px);
+  /* overflow-x: hidden; */
 }
 header {
   background-color: var(--brand-bgcolor);
@@ -202,6 +216,13 @@ main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
+}
+main > *:not(video, #homepagecontent) {
+  max-width: var(--content-max-width);
+  width: 100%;
+  min-width: calc(var(--screen-mobile) - 10px);
+  align-self: center;
 }
 footer {
   padding: .5em;
@@ -277,6 +298,16 @@ a, a:visited, a:active, a * {
 .grow {
   flex-grow: 1;
 }
+.nowrap {
+  flex-wrap: nowrap;
+}
+.content {
+  font-size: 1rem;
+}
+h1 { font-size: 2em; }
+h2 { font-size: 1.8em; }
+h3 { font-size: 1.6em; }
+h4 { font-size: 1.4em; }
 
 /* Главное меню сайта, горизонтальное */
 .menu {
@@ -670,20 +701,17 @@ a.tag:hover {
 }
 .box {
   display: block;
-  margin: 0 0 1em;
   padding: 1em;
+  margin-bottom: 1em;
   box-shadow: 0 0 2px var(--body-color);
   border-radius: var(--border-radius);
 }
 #content.box {
   padding: 2em;
 }
-.h1 {
-  font-size: 2rem;
-  text-indent: 1em;
-}
-.box > h1 {
+.box > h1, .box > h2, .box > h3,.box > h4 {
   margin: 0;
+  text-indent: 1em;
 }
 .box__container {
   display: flex;
@@ -691,8 +719,9 @@ a.tag:hover {
   gap: 1.5em;
 }
 .box__child {
+  --width: calc((var(--content-max-width) - 4em) / 3);
   display: block;
-  width: 17em;
+  max-width: calc((var(--content-max-width) - 4em) / 3);
   color: var(--body-color);
   background-color: var(--body-bgcolor);
   border-left: 2px solid var(--body-bgcolor);
@@ -736,4 +765,8 @@ a.tag:hover {
 .date, .location {
   font-size: 1rem;
   padding: .5em 0 0;
+}
+.box__logo {
+  width: 5em;
+  align-self: center;
 }

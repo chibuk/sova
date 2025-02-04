@@ -15,103 +15,105 @@
   {% if page.slogan %}
     <div id="hero_text">
       <h1>{{ page.slogan }}</h1>
-      <div id='timer'>
-        {% if page.timer_date %}
-        <template id="timer_template" data-datetime='{{ page.timer_date.isoformat }}'>
-          <p class='timer__text'>До начала</p>
-          <div class="timer">
-            <div class="timer__item timer__days">00</div>
-            <div class="separator">:</div>
-            <div class="timer__item timer__hours">00</div>
-            <div class="separator">:</div>
-            <div class="timer__item timer__minutes">00</div>
-            <div class="separator">:</div>
-            <div class="timer__item timer__seconds">00</div>
-          </div>
-        </template>
-        {% endif %}
-      </div>
     </div>
   {% endif %}
   <div class="hero_button">
-  {% if page.link_register %}
-      <a id='link_register' href="{% pageurl page.link_register %}">
-          {% if page.button_register %}
-              {{ page.button_register|lower }}
-          {% else %}
-              регистрация
-          {% endif %} 
-      </a>
-  {% endif %}
-  {% if page.link_info %}
-      <a href="{% pageurl page.link_info %}">
-          {% if page.button_info %}
-              {{ page.button_info|lower }}
-          {% else %}
-              подробнее
-          {% endif %} 
-      </a>
-  {% endif %}
-</div>
+    <div id='timer'>
+      {% if page.timer_date %}
+      <template id="timer_template" data-datetime='{{ page.timer_date.isoformat }}'>
+        <div class='timer__text'>До начала</div>
+        <div class="timer">
+          <div class="timer__item timer__days">00</div>
+          <div class="separator">:</div>
+          <div class="timer__item timer__hours">00</div>
+          <div class="separator">:</div>
+          <div class="timer__item timer__minutes">00</div>
+          <div class="separator">:</div>
+          <div class="timer__item timer__seconds">00</div>
+        </div>
+      </template>
+      {% endif %}
+    </div>
+    <div class='flex-row gap'>
+    {% if page.link_register %}
+        <a id='link_register' href="{% pageurl page.link_register %}">
+            {% if page.button_register %}
+                {{ page.button_register|lower }}
+            {% else %}
+                регистрация
+            {% endif %} 
+        </a>
+    {% endif %}
+    {% if page.link_info %}
+        <a href="{% pageurl page.link_info %}">
+            {% if page.button_info %}
+                {{ page.button_info|lower }}
+            {% else %}
+                подробнее
+            {% endif %} 
+        </a>
+    {% endif %}
+    </div>
+  </div>
 </section>
 <section id='homepagecontent'>
   <div class="content">{{ page.body|richtext }}</div>
-</section>
-<section class="section">
-{% if page.slider.all.count > 0 %}
-  <div id="sl" role="region" aria-label="Слайдер">
-    <div role="group" aria-label="Управление слайдами">
-      <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
-      <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
-      <div class="radio-group">
+
+  <section class="section">
+    {% if page.slider.all.count > 0 %}
+      <div id="sl" role="region" aria-label="Слайдер">
+        <div role="group" aria-label="Управление слайдами">
+          <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
+          <button class="button button-next" aria-disabled="false"><i class="fa-light fa-chevron-right"></i></button>
+          <div class="radio-group">
+            {% for slide in page.slider.all %}
+              <button class="button button-radio" type="button" 
+                aria-label="Показать {{ forloop.counter }} из {{ page.slider.all.count }}"
+                {% if forloop.first %} aria-current='true' {% endif %} 
+                data-num="{{ forloop.counter }}"></button>
+            {% endfor %}
+          </div>
+        </div>
+        <div id="sl-slides" aria-live="off">
         {% for slide in page.slider.all %}
-          <button class="button button-radio" type="button" 
-            aria-label="Показать {{ forloop.counter }} из {{ page.slider.all.count }}"
-            {% if forloop.first %} aria-current='true' {% endif %} 
-            data-num="{{ forloop.counter }}"></button>
+          <div class="sl-slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" id="carousel-item-{{ forloop.counter }}">
+            <div class='sl__content'>{{ slide.content|richtext }}</div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="cal">
+    <div id="cal" class="content">
+      <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
+      <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
+      <div id="cal-container">
+        <div id='cal-marker'></div>
+        {% for month, days in calendar %}
+        <div class="cal-month">
+          <time datetime="{{ month }}">{{ month }}</time>
+          <div>
+            {% for date_, day, weekday in days.days %}
+            <a class="cal-day">
+              <time datetime="{{ date_ }}">{{ day }}</time>
+              <p {% if weekday == "сб" or weekday == "вс" %}class='red'{% endif %}>{{ weekday }}</p>
+            </a>
+            {% endfor %}
+            {% if forloop.last %}
+            <a id="cal-last">
+              Другая дата&nbsp; <i class="fa-sharp fa-light fa-caret-down"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
         {% endfor %}
       </div>
     </div>
-    <div id="sl-slides" aria-live="off">
-    {% for slide in page.slider.all %}
-      <div class="sl-slide" role="group" aria-labelledby="item-{{ forloop.counter }}-label" id="carousel-item-{{ forloop.counter }}">
-        <div class='sl__content'>{{ slide.content|richtext }}</div>
-      </div>
-    {% endfor %}
-    </div>
-  </div>
-{% endif %}
+    <div id="cal__content" class="content"></div>
+  </section>
 </section>
-
-<section class="cal">
-  <div id="cal" class="content">
-    <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
-    <a id="cal-end"><i class="fa-light fa-chevron-right"></i></a>
-    <div id="cal-container">
-      <div id='cal-marker'></div>
-      {% for month, days in calendar %}
-      <div class="cal-month">
-        <time datetime="{{ month }}">{{ month }}</time>
-        <div>
-          {% for date_, day, weekday in days.days %}
-          <a class="cal-day">
-            <time datetime="{{ date_ }}">{{ day }}</time>
-            <p {% if weekday == "сб" or weekday == "вс" %}class='red'{% endif %}>{{ weekday }}</p>
-          </a>
-          {% endfor %}
-          {% if forloop.last %}
-          <a id="cal-last">
-            Другая дата&nbsp; <i class="fa-sharp fa-light fa-caret-down"></i>
-          </a>
-          {% endif %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  <div id="cal__content" class="content"></div>
-</section>
-
 {% if self.video %}
   {% video self.video muted loop playsinline autoplay id=bg_video %}
 {% endif %}

@@ -3,7 +3,7 @@
 {% block body_class %}template-eventndexpage{% endblock %}
 {% block content %}
 <section id='content'>
-    <h1 class='box h1'>{{ page.title|upper }}</h1>
+    <div class='box'><h1>{{ page.title|upper }}</h1></div>
     {% if page.body %}<div class='box'>{{ page.body|richtext }}</div>{% endif %}
     <div class='box__container'>
     {% for event in eventpages %}
