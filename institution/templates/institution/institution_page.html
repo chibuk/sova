@@ -1,29 +1,23 @@
 {% extends "base.html" %}
-
 {% load static wagtailcore_tags wagtailimages_tags %}
-
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
 {% endblock %}
-
 {% block body_class %}template-blogpage{% endblock %}
-
 {% block content %}
-<section class='container'>
-    <h1>{{ page.title }}</h1>
-    <h2>{{ page.name }}</h2>
-    <div>{% if page.logo %} {% image page.logo fill-50x50 %} {% endif %}</div>
-    <div>Сайт: <a href="{{ page.site }}">{{ page.site }}</a></div>
-    <div>
+<section id='content' class='box'>
+    <h1 class='h1'>{{ page.title }}</h1>
+    <div class='box__caption'>
+        {% if page.logo %} {% image page.logo fill-50x50 %} {% endif %}
+        <h2>{{ page.name }}</h2>
+    </div>
+    <div class='tags'>
     {% for index in page.get_children.live %}
-        <a href="{% pageurl index %}">{{ index.title }}</a>
+        <a class='tag is-large is-info' href="{% pageurl index %}">{{ index.title }}</a>
     {% endfor %}
     </div>
-
-    {{ page.description|richtext }}
-
-    <div class='container__backlink'>
-        <a href="{% pageurl page.get_parent %}">{{ page.get_parent }}</a>
-    </div>
+    {% if page.description %}{{ page.description|richtext }}{% endif %}
+    {% if page.site %}<div class='location flex-row gap'><strong>Сайт:</strong><a href="{{ page.site }}">{{ page.site }}</a></div>{% endif %}
+    {% if page.address %}<div class='flex-row gap location'><strong>Адрес:</strong><div>{{ page.address }}</div>{% endif %}
 </section>
 {% endblock %}

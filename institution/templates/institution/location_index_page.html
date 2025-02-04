@@ -1,26 +1,30 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
-
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/institution.css' %}">
 {% endblock %}
 {% block body_class %}template-blogndexpage{% endblock %}
 {% block content %}
-<section class='container'>
-    <h1>{{ page.title }}</h1>
-    <div>{{ page.body|richtext }}</div>
-    <div class="content">
-    {% for location in page.get_children.live %}
-        <a class='box' href="{% pageurl location %}">
-            <div class='box__caption'><h2>{{ location.title }}</h2></div>
+<section id='content'>
+    <h1 class='box h1'>{{ page.title }}</h1>
+    {% if page.body %}<div class='box'>{{ page.body|richtext }}</div>{% endif %}
+    <div class="box__container">
+        {% for location in page.get_children.live %}
+        <div class='box box__child'>
+            <a href="{% pageurl location %}"></a>
+            <h2>{{ location.title }}</h2>
             {% with location.specific.photo as photo %}
-                {% if photo %} {% image photo fill-200x100 %} {% endif %}
+                {% if photo %} {% image photo original %} {% endif %}
             {% endwith %}
             <div class='box__body'>{{ location.specific.name }}</div>
-            <div class='box__footer'>{{ location.specific.address }}</div>
-        </a>
-    {% endfor %}
+            {% if location.specific.address %}
+            <div class='flex-row gap grow location'>
+                <strong>Адрес:</strong>
+                <div>{{ location.specific.address }}</div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
-    <div class='container__backlink'><a href="{% pageurl page.get_parent %}">{{ page.get_parent }}</a></div>
 </section>
 {% endblock %}

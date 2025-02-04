@@ -274,6 +274,9 @@ a, a:visited, a:active, a * {
 .gap {
   gap: 1em;
 }
+.grow {
+  flex-grow: 1;
+}
 
 /* Главное меню сайта, горизонтальное */
 .menu {
@@ -666,8 +669,9 @@ a.tag:hover {
   align-self: center;
 }
 .box {
+  display: block;
   margin: 0 0 1em;
-  padding: .5em;
+  padding: 1em;
   box-shadow: 0 0 2px var(--body-color);
   border-radius: var(--border-radius);
 }
@@ -691,7 +695,9 @@ a.tag:hover {
   width: 17em;
   color: var(--body-color);
   background-color: var(--body-bgcolor);
-  transition: opacity 0.3s;
+  border-left: 2px solid var(--body-bgcolor);
+  border-right: 2px solid var(--body-bgcolor);
+  transition: border 0.3s;
   position: relative; /* 1. весь блок будет ссылкой, см. далее.. */
 }
 /* ..2. расширим ссылку на весь relative родительский блок.. */
@@ -717,7 +723,8 @@ a.tag:hover {
   font-size: .5em;
 }
 .box__child:hover, .box__child:focus {
-  opacity: .8;
+  border-left: 2px solid var(--brand-bgcolor);
+  border-right: 2px solid var(--brand-bgcolor);
 }
 .box img {
   max-width: 100%;
@@ -729,7 +736,4 @@ a.tag:hover {
 .date, .location {
   font-size: 1rem;
   padding: .5em 0 0;
-}
-.box strong {
-  padding-right: 1em;
 }

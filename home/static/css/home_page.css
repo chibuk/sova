@@ -68,7 +68,7 @@ section#hero {
   opacity: 100%;
 }
 /* Под hero тоже закругленные углы */
-section#content {
+section#homepagecontent {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   box-shadow: var(--box-shadow);
   padding-top: 1em;

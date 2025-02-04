@@ -4,33 +4,33 @@
 {% block content %}
 <section id='content'>
     <h1 class='box h1'>{{ page.title|upper }}</h1>
-    {% if page.body %}<p class='box'>{{ page.body|richtext }}</p>{% endif %}
+    {% if page.body %}<div class='box'>{{ page.body|richtext }}</div>{% endif %}
     <div class='box__container'>
     {% for event in eventpages %}
-    <div class='box box__child'>
-        <a href="{% pageurl event %}"></a>
-        <h3>{{ event.specific.h1|upper }}</h3>
-        {% with event.specific.image as image %}
-            {% if image %} {% image image original %} {% endif %}
-        {% endwith %}
-        {% with tags=event.specific.tags.all %}
-            {% if tags %}
-                <div class='tags'>
-                    {% for tag in tags  %}
-                        <a class='tag' href="{% slugurl 'event-tags' %}?tag={{ tag }}">{{ tag|lower }}</a>
-                    {% endfor %}
-                </div>
+        <div class='box box__child'>
+            <a href="{% pageurl event %}"></a>
+            <h3>{{ event.specific.h1|upper }}</h3>
+            {% with event.specific.image as image %}
+                {% if image %} {% image image original %} {% endif %}
+            {% endwith %}
+            {% with tags=event.specific.tags.all %}
+                {% if tags %}
+                    <div class='tags'>
+                        {% for tag in tags  %}
+                            <a class='tag' href="{% slugurl 'event-tags' %}?tag={{ tag }}">{{ tag|lower }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <div class='date'>
+                {{ event.specific.date_on }}
+                {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
+            </div>
+            {% if event.specific.location %}
+                <div class='location'>{{ event.specific.location }}</div>
             {% endif %}
-        {% endwith %}
-        <div class='date'>
-            {{ event.specific.date_on }}
-            {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
         </div>
-        {% if event.specific.location %}
-            <div class='location'>{{ event.specific.location }}</div>
-        {% endif %}
-    </div>
     {% endfor %}
-</div>
+    </div>
 </section>
-    {% endblock %}
+{% endblock %}
