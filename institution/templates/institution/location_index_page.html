@@ -6,7 +6,7 @@
 {% block body_class %}template-blogndexpage{% endblock %}
 {% block content %}
 <section id='content'>
-    <h1 class='box h1'>{{ page.title }}</h1>
+    <div class='box'><h2>{{ page.title }}</h2></div>
     {% if page.body %}<div class='box'>{{ page.body|richtext }}</div>{% endif %}
     <div class="box__container">
         {% for location in page.get_children.live %}

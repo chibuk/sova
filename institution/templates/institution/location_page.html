@@ -9,24 +9,20 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
-<section class='container'>
+<section id='conntent' class='box content'>
     <h1>{{ page.title }}</h1>
     <h2>{{ page.name }}</h2>
-    <div>{% if page.photo %} {% image page.photo fill-160x90 %} {% endif %}</div>
-    <div>{% if page.address %} {{ page.address }} {% endif %}</div>
-    <div>{% if page.contacts %} {{ page.contacts }} {% endif %}</div>
-    <div>{% if page.opening_hours %} {{ page.opening_hours }} {% endif %}</div>
+    {% if page.photo %}        <div>{% image page.photo original %}   </div>{% endif %}
+    {% if page.address %}      <div>{{ page.address }}                </div>{% endif %}
+    {% if page.contacts %}     <div>{{ page.contacts }}               </div>{% endif %}
+    {% if page.opening_hours %}<div>{{ page.opening_hours }}          </div>{% endif %}
     <div>Организация: {{ page.institution }}</div>
     {% for photo in page.photos.all %}
-        <div>{% image photo.photo fill-200x160 %}</div>
+        <div>{% image photo.photo original %}</div>
         <div>{{ photo.description }}</div>
     {% endfor %}
     {% for sport in page.sports.all %}
         <div>{{ sport.name }}</div>
     {% endfor %}
-
-    <div class='container__backlink'>
-        <a href="{% pageurl page.get_parent %}">{{ page.get_parent }}</a>
-    </div>
 </section>
 {% endblock %}

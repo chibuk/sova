@@ -8,11 +8,7 @@
 {% block body_class %}template-blogndexpage{% endblock %}
 {% block content %}
 <section id='content' class="content">
-    <div class='box'><h1>{{ page.title|upper }} h1</h1></div>
-    <div class='box'><h2>{{ page.title|upper }} h2</h2></div>
-    <div class='box'><h3>{{ page.title|upper }} h3</h3></div>
-    <div class='box'><h4>{{ page.title|upper }} h4</h4></div>
-    <div class='box'><p>{{ page.title|upper }} текст параграфа "p"</p></div>
+    <div class='box'><h2>{{ page.title|upper }}</h2></div>
     {% if page.body %}<div class='box'>{{ page.body|richtext }}</div>{% endif %}
     <div class="box__container">
         {% for institution in page.get_children.live %}
