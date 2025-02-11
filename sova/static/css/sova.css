@@ -308,6 +308,20 @@ h1 { font-size: 2em; }
 h2 { font-size: 1.8em; }
 h3 { font-size: 1.6em; }
 h4 { font-size: 1.4em; }
+.photos {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1em;
+  justify-content: center;
+  padding: 1em 0;
+  margin: .5em 0;
+  /* border-bottom: 1px solid var(--body-color);
+  border-top: 1px solid var(--body-color); */
+  box-shadow: 0 0 10px hsl(var(--brand-color-h), 10%, 80%);
+}
+.photo {
+  width: 10em;
+}
 
 /* Главное меню сайта, горизонтальное */
 .menu {

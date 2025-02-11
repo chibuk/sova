@@ -12,15 +12,33 @@
 <section id='conntent' class='box content'>
     <h1>{{ page.title }}</h1>
     <h2>{{ page.name }}</h2>
-    {% if page.photo %}        <div>{% image page.photo original %}   </div>{% endif %}
-    {% if page.address %}      <div>{{ page.address }}                </div>{% endif %}
-    {% if page.contacts %}     <div>{{ page.contacts }}               </div>{% endif %}
-    {% if page.opening_hours %}<div>{{ page.opening_hours }}          </div>{% endif %}
-    <div>Организация: {{ page.institution }}</div>
+    {% if page.photo %}<div>{% image page.photo original %}</div>{% endif %}
+    {% if page.address %}
+        <div class='flex-row gap location'>
+            <strong>Адрес:</strong>
+            <div>{{ page.address }}</div>
+        </div>
+    {% endif %}
+    {% if page.contacts %}
+        <div class='flex-row gap location'>
+            <strong>Контакты:</strong>
+            <div>{{ page.contacts }}</div>
+        </div>
+    {% endif %}
+    {% if page.opening_hours %}
+        <div class='flex-row gap location'>
+            <strong>Режим работы:</strong>
+            <div>{{ page.opening_hours }}</div>
+        </div>
+    {% endif %}
+    <div class='photos'>
     {% for photo in page.photos.all %}
-        <div>{% image photo.photo original %}</div>
-        <div>{{ photo.description }}</div>
+        <div class='photo'>
+            {% image photo.photo original %}
+            {% if photo.description %}<div>{{ photo.description }}</div>{% endif %}
+        </div>
     {% endfor %}
+    </div>
     {% for sport in page.sports.all %}
         <div>{{ sport.name }}</div>
     {% endfor %}
