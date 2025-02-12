@@ -173,7 +173,6 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--base-font-size);
   line-height: var(--base-line-height);
-  /* min-width: var(--screen-mobile); */
 }
 
 nav {
@@ -424,11 +423,8 @@ div#logo > a > img {
   -webkit-box-shadow:4px 0px 20px 0px rgba(0,0,0, 0.5); 
   overflow-y: auto;
 }
-/*
-* content: крестик (MULTIPLICATION X),
-*/
 #nav-toggle:checked ~ .nav > .nav-toggle-off:after {
-  content: '\2715';
+  content: '\2715'; /* крестик (MULTIPLICATION X), */
   cursor: pointer;
   color: var(--body-bgcolor);
   display: inline-block;

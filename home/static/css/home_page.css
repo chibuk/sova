@@ -2,6 +2,14 @@
     --button-radio-border-color: var(--body-bgcolor);
     --button-radio-active-color: var(--brand-bgcolor);
 }
+
+section > .content {
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
 video {
   margin: 0;
   background-color: var(--body-color);
@@ -14,6 +22,7 @@ video {
         var(--brand-bgcolor) 40% 60%
       );
     color: var(--body-color);
+    padding: 15px 0;
     position: relative;
 }
 /* Оформление раздела hero (на фоне видео слоган, таймер и две кнопки) */
@@ -212,17 +221,6 @@ section#homepagecontent {
 }
 .sl__content a:hover, .sl__content a:focus {
   color: var(--body-color);
-}
-
-section > .content {
-  max-width: var(--content-max-width);
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 1em;
-}
-
-section.section {
-  padding: 15px 0;
 }
 
 /* Calendar component */
