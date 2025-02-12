@@ -3,9 +3,11 @@
 {% block content %}
 <section id='content'>
     {% if request.GET.tag %}
-    <div class='box tags'>    
-        <h1 class='h1'>СОБЫТИЯ С ТЕГОМ &nbsp;</h1>
-        <span class='tag is-medium'>{{ request.GET.tag|lower }}</span>
+    <div class='box'>
+        <div class='tags gap'>    
+            <h1 class='h1'>СОБЫТИЯ С ТЕГОМ</h1>
+            <span class='tag is-medium'>{{ request.GET.tag|lower }}</span>
+        </div>
     </div>
     {% endif %}
     <div class='box__container'>
