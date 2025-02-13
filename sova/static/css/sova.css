@@ -308,10 +308,7 @@ h2 { font-size: 1.8em; }
 h3 { font-size: 1.6em; }
 h4 { font-size: 1.4em; }
 
-/* <-- Фото лента */
-.gallery {
-  /* border: 1px solid blue; */
-}
+/* [-- Фото лента */
 .gallery__photos {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -322,11 +319,11 @@ h4 { font-size: 1.4em; }
   gap: 1em;
   padding: 1em 0;
   margin: .5em 0;
-  box-shadow: 0 0 10px hsl(var(--brand-color-h), 10%, 80%);
+  /* box-shadow: 0 0 10px hsl(var(--brand-color-h), 10%, 80%); */
    /*_*/
-   --heigth: 150px;
-   min-height: var(--heigth);
-   max-height: var(--heigth);
+  --heigth: 150px;
+  min-height: var(--heigth);
+  max-height: var(--heigth);
 }
 .gallery__photos::-webkit-scrollbar {
   height: 0;
@@ -341,6 +338,8 @@ h4 { font-size: 1.4em; }
   min-width: var(--width);
   max-width: var(--width);
   overflow: hidden;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--body-color);
 }
 .gallery__photo__img {
   height: 100%;
@@ -348,8 +347,6 @@ h4 { font-size: 1.4em; }
   object-fit: cover;
   transition: transform 300ms;
   cursor: pointer;
-  border: 1px solid var(--body-color);
-  border-radius: var(--border-radius);
 }
 .gallery__photo__img:hover {
   transform: scale(104%);
@@ -364,7 +361,7 @@ h4 { font-size: 1.4em; }
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0, 0.5);
+  background-color: rgba(0,0,0, 0.7);
   display: none;
   z-index: 8;
 }
@@ -375,10 +372,10 @@ h4 { font-size: 1.4em; }
   position: fixed;
   top: 2em;
   left: 2em;
-  width: calc(100% - 4em);
+  width: 100%;
   max-width: calc(100vw - 4em);
+  height: 100%;
   max-height: calc(100vh - 4em);
-  aspect-ratio: 2/1;
   z-index: 9;
 }
 #gallery-toggle:checked ~ .gallery > .gallery__photos {
@@ -386,18 +383,26 @@ h4 { font-size: 1.4em; }
   max-height: 100%;
   box-shadow: none;
 }
+#gallery-toggle:checked ~ .gallery .gallery__photo {
+  border: none;
+}
 #gallery-toggle:checked ~ .gallery .gallery__photo__img {
   border: 3px solid var(--body-bgcolor);
-  object-fit: contain;
+  border-radius: var(--border-radius);
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 #gallery-toggle:checked ~ .gallery > .gallery__photos > .gallery__photo {
   min-width: 100%;
   max-width: 100%;
+  text-align: center;
 }
 #gallery-toggle:checked ~ .gallery .gallery__photo__img:hover {
   transform: none;
 }
-/* Фото лента --> */
+/* Фото лента --] */
 
 /* Главное меню сайта, горизонтальное */
 .menu {
