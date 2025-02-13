@@ -15,7 +15,7 @@
         <a class='box box__child' href="{% pageurl institution %}">
             <div class='flex-row gap'>
                 {% with institution.specific.logo as logo %}
-                    {% if logo %}<div class='box__logo'>{% image logo original %}</div>{% endif %}
+                    {% if logo %}<div class='box__logo'>{% image logo original class='box__img' %}</div>{% endif %}
                 {% endwith %}
                 <h3>{{ institution.title|upper }}</h3>
             </div>

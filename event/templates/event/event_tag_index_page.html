@@ -14,7 +14,7 @@
     {% for eventpage in eventpages %}
         <a class='box box__child' href="{% pageurl eventpage %}">
             <h3>{{ eventpage.h1|upper }}</h3>
-            {% image eventpage.image original %}
+            {% image eventpage.image original class='box__img' %}
             <div class='date'>
                 {{ eventpage.date_on }}
                 {% if eventpage.date_end %} - {{ eventpage.date_end }} {% endif %}

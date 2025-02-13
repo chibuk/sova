@@ -59,12 +59,13 @@ function modify_menu() {
      */
     function adjustViewportHeight() {
         document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
+        document.documentElement.style.setProperty('--viewport-width', `${window.innerWidth}px`); // для других целей (для галереи)
     }
     const l = _menu_len();
     setmenu_panel(l);
     setmenu_nav(l);
     adjustViewportHeight();
-}; 
+};
 modify_menu(); // отработать при загрузке
 window.addEventListener('resize', modify_menu);
 window.addEventListener('orientationchange', modify_menu);

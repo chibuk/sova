@@ -1,6 +1,11 @@
 .box__body {
-    flex-grow: 1;
-    font-family: Cruinn Thin;
+    /* flex-grow: 1; */
+    font-family: 'Cruinn Thin', Verdana, sans-serif;
+    font-weight: 100;
     text-align: center;
     margin: 0 0 .5em;
+}
+#content > h2 {
+    font-weight: 100;
+    margin-bottom: .1em;
 }

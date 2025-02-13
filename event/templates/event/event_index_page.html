@@ -11,7 +11,7 @@
             <a href="{% pageurl event %}"></a>
             <h3>{{ event.specific.h1|upper }}</h3>
             {% with event.specific.image as image %}
-                {% if image %} {% image image original %} {% endif %}
+                {% if image %} {% image image original class='box__img' %} {% endif %}
             {% endwith %}
             {% with tags=event.specific.tags.all %}
                 {% if tags %}

@@ -307,20 +307,97 @@ h1 { font-size: 2em; }
 h2 { font-size: 1.8em; }
 h3 { font-size: 1.6em; }
 h4 { font-size: 1.4em; }
-.photos {
+
+/* <-- Фото лента */
+.gallery {
+  /* border: 1px solid blue; */
+}
+.gallery__photos {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scrollbar-width: none; /* Для браузера FireFox */
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   gap: 1em;
-  justify-content: center;
   padding: 1em 0;
   margin: .5em 0;
-  /* border-bottom: 1px solid var(--body-color);
-  border-top: 1px solid var(--body-color); */
   box-shadow: 0 0 10px hsl(var(--brand-color-h), 10%, 80%);
+   /*_*/
+   --heigth: 150px;
+   min-height: var(--heigth);
+   max-height: var(--heigth);
 }
-.photo {
-  width: 10em;
+.gallery__photos::-webkit-scrollbar {
+  height: 0;
+  width: 0;
 }
+.gallery__photo {
+  display: block;
+  --width: 200px;
+  scroll-snap-align: start;
+  min-height: 100%;
+  max-height: 100%;
+  min-width: var(--width);
+  max-width: var(--width);
+  overflow: hidden;
+}
+.gallery__photo__img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 300ms;
+  cursor: pointer;
+  border: 1px solid var(--body-color);
+  border-radius: var(--border-radius);
+}
+.gallery__photo__img:hover {
+  transform: scale(104%);
+}
+#gallery-toggle {
+  display: none;
+}
+/* затеммнеение всей страницы при просмотре медиа */
+#gallery-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0, 0.5);
+  display: none;
+  z-index: 8;
+}
+#gallery-toggle:checked ~ #gallery-cover {
+  display: block;
+}
+#gallery-toggle:checked ~ .gallery {
+  position: fixed;
+  top: 2em;
+  left: 2em;
+  width: calc(100% - 4em);
+  max-width: calc(100vw - 4em);
+  max-height: calc(100vh - 4em);
+  aspect-ratio: 2/1;
+  z-index: 9;
+}
+#gallery-toggle:checked ~ .gallery > .gallery__photos {
+  min-height: 100%;
+  max-height: 100%;
+  box-shadow: none;
+}
+#gallery-toggle:checked ~ .gallery .gallery__photo__img {
+  border: 3px solid var(--body-bgcolor);
+  object-fit: contain;
+}
+#gallery-toggle:checked ~ .gallery > .gallery__photos > .gallery__photo {
+  min-width: 100%;
+  max-width: 100%;
+}
+#gallery-toggle:checked ~ .gallery .gallery__photo__img:hover {
+  transform: none;
+}
+/* Фото лента --> */
 
 /* Главное меню сайта, горизонтальное */
 .menu {
@@ -765,7 +842,7 @@ a.tag:hover {
   border-left: 2px solid var(--brand-bgcolor);
   border-right: 2px solid var(--brand-bgcolor);
 }
-.box img {
+.box__img {
   max-width: 100%;
   height: auto;
 }

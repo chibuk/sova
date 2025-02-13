@@ -7,10 +7,10 @@
 {% block content %}
 <section id='content' class='box'>
     <div class='flex-row gap'>
-        {% if page.logo %}<div class='box__logo'>{% image page.logo original %}</div>{% endif %}
+        {% if page.logo %}<div class='box__logo'>{% image page.logo original class='box__img' %}</div>{% endif %}
         <h1 class='h1'>{{ page.title }}</h1>
     </div>
-    <h2 class='box__body'>{{ page.name }}</h2>
+    <h2>{{ page.name }}</h2>
     <div class='tags'>
     {% for index in page.get_children.live %}
         <a class='tag is-large is-info' href="{% pageurl index %}">{{ index.title }}</a>

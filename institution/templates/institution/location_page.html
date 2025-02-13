@@ -12,7 +12,7 @@
 <section id='content' class='box content'>
     <h1>{{ page.title }}</h1>
     <h2>{{ page.name }}</h2>
-    {% if page.photo %}<div>{% image page.photo original %}</div>{% endif %}
+    {% if page.photo %}<div>{% image page.photo original class='box__img' %}</div>{% endif %}
     {% if page.body %}<div>{{ page.body|richtext }}</div>{% endif %}
     {% if page.address %}
         <div class='flex-row gap location'>
@@ -32,13 +32,17 @@
             <div>{{ page.opening_hours }}</div>
         </div>
     {% endif %}
-    <div class='photos'>
-    {% for photo in page.photos.all %}
-        <div class='photo'>
-            {% image photo.photo original %}
-            {% if photo.description %}<div>{{ photo.description }}</div>{% endif %}
+    <input type="checkbox" id="gallery-toggle" hidden>
+    <div id='gallery-cover'> </div>
+    <div class='gallery'>
+        <div class='gallery__photos'> 
+            {% for photo in page.photos.all %}
+            <label for='gallery-toggle' class='gallery__photo'>
+                {% image photo.photo original class='gallery__photo__img' %}
+                {% comment %} {% if photo.description %}<div>{{ photo.description }}</div>{% endif %} {% endcomment %}
+            </label>
+            {% endfor %}
         </div>
-    {% endfor %}
     </div>
     {% for sport in page.sports.all %}
         <div>{{ sport.name }}</div>
