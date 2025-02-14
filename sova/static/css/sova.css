@@ -244,6 +244,7 @@ footer {
     margin: 0;
     padding: .5em;
     display: inline-block; /* Делаем список строчным блоком для горизонтального расположения */
+    width: inherit; /*если не задать ширину, то расширится за пределы экрана, а прокрутки не будет*/
     /* Стили для тач сколла */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
