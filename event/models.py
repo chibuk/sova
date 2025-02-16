@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
@@ -18,7 +18,8 @@ class EventIndexPage(Page):
     
     def get_context(self, request):
         context = super().get_context(request)
-        eventpages = self.get_children().live().order_by('eventpage__date_on')
+        current_date = timezone.now() # Фильтровать вывод событий - только актуальные (>=текущей_даты)
+        eventpages = self.get_children().live().filter(eventpage__date_end__gte=current_date).order_by('eventpage__date_on')
         context['eventpages'] = eventpages
         return context
     
@@ -84,6 +85,14 @@ class EventPage(Page):
         FieldPanel('founder'),
         FieldPanel('location'),
     ]
+    
+    def save(self, *args, **kwargs):
+        # date_end = date_on, если дата date_end не указана или ошибочно меньше, чем date_on
+        # это нужно, чтобы потом фильтровать события по date_end (пусть будет поле заполнено)
+        if (not self.date_end) or (self.date_on > self.date_end):
+            self.date_end = self.date_on
+        super().save(*args, **kwargs)
+    
     
     class Meta:
         verbose_name = 'Событие'
