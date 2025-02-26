@@ -69,3 +69,17 @@ function modify_menu() {
 modify_menu(); // отработать при загрузке
 window.addEventListener('resize', modify_menu);
 window.addEventListener('orientationchange', modify_menu);
+
+
+// Gallery module
+document.querySelectorAll('.gallery__photo').forEach(element => {
+    element.addEventListener('click', (event) => {
+        const element = event.currentTarget;
+        setTimeout(function(element) {
+            element.scrollIntoView(
+                {behavior: "smooth", block: "nearest", inline: "center"}
+            );
+        }, 500, element);
+
+    });
+});
