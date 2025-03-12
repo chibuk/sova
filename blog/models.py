@@ -25,11 +25,11 @@ class BlogIndexPage(Page):
         FieldPanel('intro'),
     ]
 
-    subpage_types = ['blog.BlogPage', 'blog.BlogTagIndexPage']
+    subpage_types = ['blog.BlogPage',]
     parent_page_types = ['home.HomePage']
 
     class Meta:
-        verbose_name = "Блог, индексная страница"
+        verbose_name = "Новости (Блог), индексная страница"
 
 
 class BlogTagPage(TaggedItemBase):
@@ -70,7 +70,7 @@ class BlogPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Запись блога"
+        verbose_name = "Новость (Запись блога)"
 
 
 class BlogPageGalleryImage(Orderable):
@@ -103,7 +103,7 @@ class Author(models.Model):
 class BlogTagIndexPage(Page):
 
     subpage_types = []
-    parent_page_types = ['blog.BlogIndexPage']
+    parent_page_types = ['home.HomePage']
     
     def get_context(self, requesst):
         tag = requesst.GET.get('tag')
@@ -113,4 +113,4 @@ class BlogTagIndexPage(Page):
         return context
 
     class Meta:
-        verbose_name = "Индексная страница тегов блога"
+        verbose_name = "Все новости (записи блога) по тегу"

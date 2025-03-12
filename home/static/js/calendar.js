@@ -193,7 +193,7 @@ const calCalendar = () => {
       // Вычитаем из существующих, коллекцию id полученных
       const difference = evensIdSet.difference(newEventsId) // получили Set элементов, которые надо удалить
       let elements_for_remove = [];
-      // снаяала присвоим им класс для эффекта исчезновения, потом разом удалим
+      // сначала присвоим им класс для эффекта исчезновения, потом разом удалим
       for (let _i of difference) {
         const element = container.querySelector(`[data-id='${_i}']`); // мученник
         element.classList.add('hideing'); // исчезает
