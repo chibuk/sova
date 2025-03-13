@@ -448,7 +448,7 @@ div#logo {
 div#logo > a {
   display: block;
   height: inherit;
-  padding: .5em;
+  padding: .6em .7em;
 }
 div#logo > a > img {
   height: inherit;

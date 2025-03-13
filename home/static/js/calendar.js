@@ -58,7 +58,7 @@ const calCalendar = () => {
    * aria-current управлять его статусом. Здесь логика реакции на клик, когда
    * элемент выделяется или выделяется диапазон. Поле prn выдает результат.
    */
-  const dateOject = {
+  const dateObject = {
     _start: false,
     _start_element: false,
     _end: false,
@@ -307,14 +307,18 @@ const calCalendar = () => {
    * @param {HTMLTagElement} calDayElement 
    */
   async function _setDate(calDayElement) {
-    if (!dateOject.start) dateOject.start = calDayElement;
-    else if (!dateOject.end) dateOject.end = calDayElement;
+    if (!dateObject.start) dateObject.start = calDayElement;
+    else if (!dateObject.end) dateObject.end = calDayElement;
     else {
-      dateOject.end = false;
-      dateOject.start = calDayElement;
+      dateObject.end = false;
+      dateObject.start = calDayElement;
     }
-    dateOject.prn;
+    dateObject.prn;
   };
-  loadContent(new Date());
+  const _now = new Date(),
+        _end = new Date();
+  _end.setDate(_end.getDate() + 7); // 7 дней событий сразу покажет при загрузке
+  calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode.click();
+  calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode.click();
 }; 
 calCalendar();

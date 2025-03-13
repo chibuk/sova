@@ -388,10 +388,11 @@ section#homepagecontent {
 .event__img {
   width: inherit;
   border-radius: .6em;
-  height: 220px;
-  @media screen and (max-width: 425px) {
-    height: 185px;
-  }
+  height: auto;
+  transition: transform 100ms;
+}
+.event__img:hover {
+  transform: scale(100.5%);
 }
 .event__text {
   padding-top: .3em;
