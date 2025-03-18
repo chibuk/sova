@@ -322,3 +322,27 @@ const calCalendar = () => {
   calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode.click();
 }; 
 calCalendar();
+
+const cal_settings = {
+  mode: "range",
+  dateFormat: "d-m-Y",
+  minDate: "today",
+  position: "auto right",
+  clickOpens: false,
+  positionElement: document.getElementById('cal-last'),
+  defaultDate: ["19-03-2025", "22-03-2025"]
+};
+flatpickr.localize(flatpickr.l10ns.ru);
+const fp = flatpickr('#cal-last-fp', cal_settings);
+
+let toggle = false;
+document.querySelector('#cal-last').addEventListener('click', (event) => {
+  if (toggle) {
+    toggle = false;
+    fp.close();
+  }
+  else {
+    toggle = true;
+    fp.open();
+  }
+});
