@@ -1,4 +1,24 @@
 // Calendar module
+
+
+ /**
+   * Модуль отображения календаря для выбора диапазона дат 
+   * <flatpickr>
+   */
+ const flatpickr_settings = {
+  mode: "range",
+  dateFormat: "d-m-Y",
+  minDate: "today",
+  position: "auto right",
+  clickOpens: false,
+  positionElement: document.getElementById('cal-last'),
+  defaultDate: [] // ["19-03-2025", "22-03-2025"]
+};
+flatpickr.localize(flatpickr.l10ns.ru);
+const fp = flatpickr('#cal-last-fp', flatpickr_settings); // flatpickr instance
+// </flatpickr>
+
+
 const calCalendar = () => {
   const calcontainer = document.getElementById(`cal-container`),
         getPosition = () => { // позиция прокрутки ленты дней календаря
@@ -50,8 +70,9 @@ const calCalendar = () => {
       });
     });
   }; setDayHandlers();
+
   // Коллекция id объектов EventPages, которые уже отображены (для уменьшения операций с DOM)
-  let evensIdSet = new Set();
+  const evensIdSet = new Set();
   /**
    * Объект управляет состоянием диапазона дат. Тут хранится (false|date_object)
    * начальная и конечная дата, начальный и конечный элемент, чтобы атрибутом
@@ -315,34 +336,19 @@ const calCalendar = () => {
     }
     dateObject.prn;
   };
+  // Начальная инициализация
   const _now = new Date(),
         _end = new Date();
   _end.setDate(_end.getDate() + 7); // 7 дней событий сразу покажет при загрузке
   calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode.click();
   calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode.click();
+
+ 
+  // Обработка клика по кнопаке "Другая дата" в конце ленты дат, для отображения календаря
+  document.querySelector('#cal-last').addEventListener('click', (event) => {
+    fp.setDate([dateObject.start, dateObject.end]);
+    fp.open();
+  });
+  // </flatpickr>
 }; 
 calCalendar();
-
-const cal_settings = {
-  mode: "range",
-  dateFormat: "d-m-Y",
-  minDate: "today",
-  position: "auto right",
-  clickOpens: false,
-  positionElement: document.getElementById('cal-last'),
-  defaultDate: ["19-03-2025", "22-03-2025"]
-};
-flatpickr.localize(flatpickr.l10ns.ru);
-const fp = flatpickr('#cal-last-fp', cal_settings);
-
-let toggle = false;
-document.querySelector('#cal-last').addEventListener('click', (event) => {
-  if (toggle) {
-    toggle = false;
-    fp.close();
-  }
-  else {
-    toggle = true;
-    fp.open();
-  }
-});
