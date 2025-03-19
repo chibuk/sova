@@ -11,11 +11,12 @@
   minDate: "today",
   position: "auto right",
   clickOpens: false,
+  wrap: true,
   positionElement: document.getElementById('cal-last'),
   defaultDate: [] // ["19-03-2025", "22-03-2025"]
 };
 flatpickr.localize(flatpickr.l10ns.ru);
-const fp = flatpickr('#cal-last-fp', flatpickr_settings); // flatpickr instance
+const fp = flatpickr('.flatpickr', flatpickr_settings); // flatpickr instance
 // </flatpickr>
 
 
@@ -80,9 +81,9 @@ const calCalendar = () => {
    * элемент выделяется или выделяется диапазон. Поле prn выдает результат.
    */
   const dateObject = {
-    _start: false,
+    _start: false,  // YYYY-mm-dd|false
     _start_element: false,
-    _end: false,
+    _end: false,    // YYYY-mm-dd|false
     _end_element: false,
     _setDate(calDayElement) { 
       const day = calDayElement.querySelector('time').getAttribute('datetime');
@@ -90,7 +91,7 @@ const calCalendar = () => {
     },
     set start(day) {
       if (day) { // YYYY-mm-dd|false
-        if (this._start_element && this._start_element != day) this._start_element.setAttribute('aria-current', 'false');
+        if (this._start_element != day) this._start_element.setAttribute('aria-current', 'false');
         this._start = this._setDate(day);
         this._start_element = day;
         day.setAttribute('aria-current', 'true');
@@ -169,7 +170,7 @@ const calCalendar = () => {
    * @param {DateObject} date 
    * @returns "YYYY-mm-dd"
    */
-  const dateToISO = (date) => {return date ? date.toISOString().split("T")[0] : ""};
+  const dateToISO = (date) => {return date ? flatpickr.formatDate(date, "Y-m-d") : ""};
   /**
    * Формирование строки даты
    * @param {'YYYY-mm-dd'} datestr 
@@ -343,11 +344,22 @@ const calCalendar = () => {
   calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode.click();
   calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode.click();
 
- 
+  // <flatpickr>
   // Обработка клика по кнопаке "Другая дата" в конце ленты дат, для отображения календаря
   document.querySelector('#cal-last').addEventListener('click', (event) => {
     fp.setDate([dateObject.start, dateObject.end]);
-    fp.open();
+    // fp.open();
+  });
+  fp.config.onClose.push(function(selectedDates, dateStr, instance) {
+    const dates = [dateToISO(selectedDates[0]), dateToISO(selectedDates[0])]
+    if (selectedDates.length > 1) dates[1] = dateToISO(selectedDates[1]);
+    const startelement = calcontainer.querySelector(`[datetime="${dates[0]}"]`);
+    const endelement = calcontainer.querySelector(`[datetime="${dates[1]}"]`);
+    if (startelement && endelement) {
+      startelement.parentNode.click();
+      endelement.parentNode.click();
+    }
+    else loadContent(...dates);
   });
   // </flatpickr>
 }; 

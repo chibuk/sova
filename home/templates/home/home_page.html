@@ -103,10 +103,10 @@
             </a>
             {% endfor %}
             {% if forloop.last %}
-            <a id="cal-last">
-              Другая дата&nbsp; <i class="fa-sharp fa-light fa-caret-down"></i>
-            </a>
-            <input type='text' id='cal-last-fp' style='display: none'>
+            <div id="cal-last" class='flatpickr'>
+              <a data-toggle>Другая дата&nbsp; <i class="fa-sharp fa-light fa-caret-down"></i></a>
+              <input type='text' id='cal-last-fp' style='display: none' data-input>
+            </div>
             {% endif %}
           </div>
         </div>
