@@ -330,6 +330,9 @@ section#homepagecontent {
   color: red;
 }
 #cal-last {
+  padding: .3em 0;
+}
+#cal-last > a {
   border-radius: 1.2em;
   box-shadow: 0 0 3px rgba(50, 50, 50, .4);
   font-size: .7em;
@@ -339,7 +342,7 @@ section#homepagecontent {
   padding: .6em .8em;
   white-space: nowrap;
 }
-#cal-last:hover, #cal-last:focus {
+#cal-last > a:hover, #cal-last > a:focus {
   box-shadow: 0 3px 15px rgba(50, 50, 50, .3);
   transform: translateY(-3px);
 }
@@ -354,8 +357,12 @@ section#homepagecontent {
 #cal__content {
   display: flex;
   flex-flow: row wrap;
-  min-height: 400px;
+  min-height: 460px;
   overflow: hidden;
+}
+#cal__intervaltext {
+  text-indent: 2em;
+  font-weight: bold;
 }
 .hideing {  /*при подключении эффект исчезновения элемента*/
   opacity: 1;

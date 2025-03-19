@@ -17,6 +17,7 @@
 };
 flatpickr.localize(flatpickr.l10ns.ru);
 const fp = flatpickr('.flatpickr', flatpickr_settings); // flatpickr instance
+fp.calendarContainer.style.borderRadius = '15px';
 // </flatpickr>
 
 
@@ -291,6 +292,8 @@ const calCalendar = () => {
       }
       return elem;
     }
+    // Отображение периода на странице
+    document.getElementById('cal__intervaltext').innerText = d_interval_str(dateToISO(start), dateToISO(end));
   }
   /**
    * Загружает объекты EventPage, пересекающиеся с диапазоном запрошеных дат
@@ -341,8 +344,9 @@ const calCalendar = () => {
   const _now = new Date(),
         _end = new Date();
   _end.setDate(_end.getDate() + 7); // 7 дней событий сразу покажет при загрузке
-  calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode.click();
-  calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode.click();
+  dateObject.start = calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode;
+  dateObject.end = calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode;
+  dateObject.prn;
 
   // <flatpickr>
   // Обработка клика по кнопаке "Другая дата" в конце ленты дат, для отображения календаря
@@ -356,10 +360,15 @@ const calCalendar = () => {
     const startelement = calcontainer.querySelector(`[datetime="${dates[0]}"]`);
     const endelement = calcontainer.querySelector(`[datetime="${dates[1]}"]`);
     if (startelement && endelement) {
-      startelement.parentNode.click();
-      endelement.parentNode.click();
+      _setDate(startelement.parentNode);
+      _setDate(endelement.parentNode);
     }
-    else loadContent(...dates);
+    else {
+      if (selectedDates.length == 0) return;  // если увлендарь закрылся без выбора дат, ничего не происходит
+      loadContent(...selectedDates);
+      dateObject.start = false;
+      dateObject.end = false;
+    }
   });
   // </flatpickr>
 }; 
