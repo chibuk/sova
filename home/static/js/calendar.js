@@ -81,23 +81,23 @@ const calCalendar = () => {
    * aria-current управлять его статусом. Здесь логика реакции на клик, когда
    * элемент выделяется или выделяется диапазон. Поле prn выдает результат.
    */
-  const dateObject = {
+  const dateData = {
     _start: false,  // YYYY-mm-dd|false
     _start_element: false,
     _end: false,    // YYYY-mm-dd|false
     _end_element: false,
-    _setDate(calDayElement) { 
+    _getDateFromAttr(calDayElement) { 
       const day = calDayElement.querySelector('time').getAttribute('datetime');
       return new Date(Date.parse(day)) 
     },
     set start(day) {
       if (day) { // YYYY-mm-dd|false
         if (this._start_element != day) this._start_element.setAttribute('aria-current', 'false');
-        this._start = this._setDate(day);
+        this._start = this._getDateFromAttr(day);
         this._start_element = day;
         day.setAttribute('aria-current', 'true');
       }
-      else { // Римена выбора дня
+      else { // Отмена выбора дня
         this._start = false;
         this._start_element.setAttribute('aria-current', 'false');
         this._start_element = false;
@@ -114,7 +114,7 @@ const calCalendar = () => {
           return;
         }
         if (this._end_element) this._end_element.setAttribute('aria-current', 'false');
-        this._end = this._setDate(day);
+        this._end = this._getDateFromAttr(day);
         this._end_element = day;
         day.setAttribute('aria-current', 'true');
         /**
@@ -332,42 +332,45 @@ const calCalendar = () => {
    * @param {HTMLTagElement} calDayElement 
    */
   async function _setDate(calDayElement) {
-    if (!dateObject.start) dateObject.start = calDayElement;
-    else if (!dateObject.end) dateObject.end = calDayElement;
+    if (!dateData.start) dateData.start = calDayElement;
+    else if (!dateData.end) dateData.end = calDayElement;
     else {
-      dateObject.end = false;
-      dateObject.start = calDayElement;
+      dateData.end = false;
+      dateData.start = calDayElement;
     }
-    dateObject.prn;
+    dateData.prn;
   };
-  // Начальная инициализация
+  // Начальная инициализация при загрузке страницы
   const _now = new Date(),
         _end = new Date();
   _end.setDate(_end.getDate() + 7); // 7 дней событий сразу покажет при загрузке
-  dateObject.start = calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode;
-  dateObject.end = calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode;
-  dateObject.prn;
+  dateData.start = calcontainer.querySelector(`[datetime="${dateToISO(_now)}"]`).parentNode;
+  dateData.end = calcontainer.querySelector(`[datetime="${dateToISO(_end)}"]`).parentNode;
+  dateData.prn;
 
   // <flatpickr>
   // Обработка клика по кнопаке "Другая дата" в конце ленты дат, для отображения календаря
-  document.querySelector('#cal-last').addEventListener('click', (event) => {
-    fp.setDate([dateObject.start, dateObject.end]);
-    // fp.open();
+  // Отображение/скрытие запрограммировано внутри flatpickr по aria-toggle атрибуту
+  document.querySelector('#cal-last').addEventListener('click', () => {
+    fp.setDate([dateData.start, dateData.end]); // установки уже выбранных значений
   });
+  // Добавляем обработчик на закрытие окна выбора дат
   fp.config.onClose.push(function(selectedDates, dateStr, instance) {
     const dates = [dateToISO(selectedDates[0]), dateToISO(selectedDates[0])]
     if (selectedDates.length > 1) dates[1] = dateToISO(selectedDates[1]);
     const startelement = calcontainer.querySelector(`[datetime="${dates[0]}"]`);
     const endelement = calcontainer.querySelector(`[datetime="${dates[1]}"]`);
+    // Если выбранные даты всплывающего окна дат календаря содержаться в ленте чисел
     if (startelement && endelement) {
-      _setDate(startelement.parentNode);
-      _setDate(endelement.parentNode);
+      dateData.start = startelement.parentNode; // Устнановить начало диапазона, отрисовать
+      dateData.end = endelement.parentNode; // Установить конец диапазона, отрисовать
+      dateData.prn; // Выполнить загрузку, показать
     }
     else {
       if (selectedDates.length == 0) return;  // если увлендарь закрылся без выбора дат, ничего не происходит
       loadContent(...selectedDates);
-      dateObject.start = false;
-      dateObject.end = false;
+      dateData.start = false;
+      dateData.end = false;
     }
   });
   // </flatpickr>

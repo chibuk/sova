@@ -58,10 +58,9 @@
   </div>
 </section>
 <section id='homepagecontent'>
-  <div class="content">{{ page.body|richtext }}</div>
-
-  <section class="section">
-    {% if page.slider.all.count > 0 %}
+  {% if page.body %}<div class="content">{{ page.body|richtext }}</div>{% endif %}
+  {% if page.slider.all.count > 0 %}
+    <section class="section">
       <div id="sl" role="region" aria-label="Слайдер">
         <div role="group" aria-label="Управление слайдами">
           <button class="button button-prev" aria-disabled="true"><i class="fa-light fa-chevron-left" ></i></button>
@@ -82,10 +81,9 @@
           </div>
         {% endfor %}
         </div>
-      </div>
-    {% endif %}
-  </section>
-
+      </div>  
+    </section>
+  {% endif %}
   <section class="cal">
     <div id="cal" class="content">
       <a id="cal-start"><i class="fa-light fa-chevron-left"></i></a>
@@ -123,7 +121,7 @@
 {% endblock %}
 {% block extra_js %}
 {% if page.timer_date %}<script async type="text/javascript" src="{% static 'js/timer.js' %}"></script>{% endif %}
-<script async type="text/javascript" src="{% static 'js/slider.js' %}"></script>
+{% if page.slider.all.count > 0 %}<script async type="text/javascript" src="{% static 'js/slider.js' %}"></script>{% endif %}
 <script async type="text/javascript" src="{% static 'js/flatpickr.js' %}"></script>
 <script async type="text/javascript" src="{% static 'js/ru.js' %}"></script>
 <script async type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
