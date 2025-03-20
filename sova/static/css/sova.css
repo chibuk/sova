@@ -189,7 +189,7 @@ h1, h2, h3, h4 {
   height: 100%;
   width: 100%;
   min-width: calc(var(--screen-mobile) - 10px);
-  /* overflow-x: hidden; */
+  background-color: var(--body-bgcolor);
 }
 header {
   background-color: var(--brand-bgcolor);
@@ -416,7 +416,7 @@ h4 { font-size: 1.4em; }
   display: block;
   padding: 0 .5em;
 }
-.menu-item-extra {
+/* .menu-item-extra {
   display: block;
   padding: 0 .5em;
   color: var(--body-bgcolor);
@@ -428,7 +428,7 @@ h4 { font-size: 1.4em; }
 }
 .menu-item-extra:hover, .menu-item-extra:focus {
   opacity: .5;
-}
+} */
 .menu-item > a {
   color: var(--body-bgcolor);
   font-family: IntroHeadR,'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -454,6 +454,103 @@ div#logo > a > img {
   height: inherit;
   width: auto;
 }
+/*<Кнопка поиска в главном меню>*/
+.search {
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  background: transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: 0.5s;
+  /* box-shadow: 0 0 0 5px #bf360c; */
+}
+.search .icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.5em;
+  height: 1.5em;
+  background: var(--brand-bgcolor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1;
+}
+.search .icon:before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 3px solid var(--body-bgcolor);
+  border-radius: 50%;
+  transform: translate(-4px, -4px);
+  transition: 0.5s;
+}
+
+.search .icon:after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 12px;
+  background: var(--body-bgcolor);
+  transform: translate(6px, 6px) rotate(315deg);
+}
+.search.active {
+  width: 360px;
+}
+.search .input {
+  position: relative;
+  width: 300px;
+  height: 60px;
+  left: 60px;
+  background: #f0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search .input input {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  border: none; 
+  outline: none;
+  font-size: 18px;
+}
+.clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  width: 15px;
+  height: 15px;
+  display: block;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clear:before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 15px;
+  background: #999;
+  transform: rotate(45deg);
+}
+.clear:after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 15px;
+  background: #999;
+  transform: rotate(315deg);
+}
+/*</Кнопка поиска в главном меню>*/
 
 /* Navigation panel */
 .nav {
