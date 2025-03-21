@@ -1,6 +1,7 @@
 // Клик блока, затемняющего страницу при активной боковой панели меню.
-document.querySelector('#cover').addEventListener('click', function(event) {
+document.querySelector('.cover').addEventListener('click', function(event) {
     document.querySelector('#nav-toggle').checked = false;
+    // alert('cover');
 });
 
 /**
@@ -83,3 +84,20 @@ document.querySelectorAll('.gallery__photo').forEach(element => {
 
     });
 });
+
+// Модуль поиска
+{
+document.querySelector('#search-button').addEventListener('click', (event) => {
+    const searchElment = document.querySelector('.search');
+    // const right = event.currentTarget.getBoundingClientRect()['right'] + 'px';
+    // searchElment.style.right = right;
+    searchElment.style.display = 'block';
+    // document.getElementById('gallery-cover').style.display = 'block';
+    const interval = setInterval(()=>{
+        searchElment.classList.add('search__active');
+        document.getElementById('SearchInput').focus();
+        document.querySelector('.cover').classList.add('cover_on');
+    }, 500);
+    
+})
+}

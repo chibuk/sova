@@ -177,6 +177,7 @@ body {
 
 nav {
   margin: auto 0;
+  position: relative;
 }
 
 h1, h2, h3, h4 {
@@ -442,26 +443,30 @@ div#logo > a > img {
   width: auto;
 }
 /*<Кнопка поиска в главном меню>*/
-#search {
+#search-button {
   color: var(--body-bgcolor);
   font-size: 1.4em;
   background-color: transparent;
   border: none;
 }
-#search:hover, .search:focus {
+#search-button:hover, .search-button:focus {
   opacity: .5;
 }
+/*Далее скрытые элементы, которые появятся при активации*/
 .search {
-  position: fixed;
-  top: .8em;
+  position: absolute;
+  top: -.3em;
+  right: 4em;
   width: 2.5em;
   height: 2.5em;
   background: var(--brand-bgcolor);
   border-radius: 1.25em;
   overflow: hidden;
-  transition: 0.3s;
+  transition: width 0.3s;
   box-shadow: 0 0 0 1px var(--body-bgcolor);
   color: var(--body-bgcolor);
+  display: none;
+  z-index: 9;
 }
 .search__icon {
   position: absolute;
@@ -469,15 +474,16 @@ div#logo > a > img {
   top: 50%;
   background-color: var(--brand-bgcolor);
   transform: translateY(-40%);
-  z-index: 2;
+  z-index: 10;
 }
-.search.active {
-  width: 15em;
+.search__active {
+  min-width: 12em;
+  /* max-width: 25em; */
+  width: 100%;
 }
  .search__input {
   font-size: 1em;
   position: absolute;
-  /* inset: .2em 1.5em .2em 2.2em; */
   top: 50%;
   transform: translateY(-50%);
   right: 1.2em;
@@ -493,13 +499,13 @@ div#logo > a > img {
  .search__input:active {
   box-shadow: none;
  }
-.clear {
+.search__clear {
   position: absolute;
   top: 50%;
   right: .7em;
   transform: translateY(-40%);
   background: transparent;
-  z-index: 1;
+  z-index: 9;
   cursor: pointer;
 }
 /*</Кнопка поиска в главном меню>*/
@@ -509,7 +515,8 @@ div#logo > a > img {
   width: 20em;
   min-width: 15em;
   max-width: 25em;
-  height: var(--viewport-height); /* переменная из js window.innerHeight для мобильных */
+  /* height: var(--viewport-height); /* переменная из js window.innerHeight для мобильных */
+  bottom: 0;
   position: fixed;
   top: 0;
   right: -30em;
@@ -581,7 +588,7 @@ div#logo > a > img {
 #nav-toggle:checked ~ .nav > ul > li {
   opacity: 1;
 }
-#nav-toggle:checked ~ #cover {
+#nav-toggle:checked ~ .cover {
   display: block;
 }
 .nav > ul > li > a {
@@ -600,7 +607,7 @@ div#logo > a > img {
   border-bottom: none;
 }
 /* затеммнеение всей страницы при открытии боковой панели */
-#cover {
+.cover {
   position: fixed;
   top: 0;
   left: 0;
@@ -609,6 +616,12 @@ div#logo > a > img {
   background-color: rgba(0,0,0, 0.5);
   display: none;
   z-index: 8;
+}
+/* .cover.cover_on делает затемнение только того, что ниже верхнего 
+гризонтального меню - нужно для поиска */
+.cover_on {
+  display: block;
+  z-index: 6;
 }
 /* Боковая панель */
 .nav > ul {
