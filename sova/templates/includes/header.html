@@ -20,21 +20,21 @@
                     <a href="{% pageurl menuitem %}">{{ menuitem.title|lower }}</a>
                 </li>
                 {% endfor %}
-                <li id='search' class='menu-item'>
-                    {% comment %} <button href="#"><i class="fa-light fa-magnifying-glass"></i></button> {% endcomment %}
-                    <div class="search">
-                        <div class="icon"></div>
-                        <div class="input">
-                          <input type="text" name="search" id="SearchInput" placeholder="Поиск">
-                        </div>
-                        <span class="clear" onclick="document.getElementById('SearchInput').value = ''"></span>
-                      </div>
+                <li class='menu-item'>
+                    <button id='search' href="#"><i class="fa-light fa-magnifying-glass"></i></button>
                 </li>
                 <li class='menu-item'>
                     <label for="nav-toggle" class="nav-toggle" onclick></label>
                 </li>
             </ul>
         </nav>
+    </div>
+    <div class="search">
+        <div class="search__icon"><i class="fa-light fa-magnifying-glass"></i></div>
+        <input class='search__input' type="text" name="search" id="SearchInput" placeholder="Поиск">
+        <div class="clear" onclick="document.getElementById('SearchInput').value = ''">
+            &times;
+        </div>
     </div>
     {% wagtailuserbar "bottom-right" %}
 </header>
