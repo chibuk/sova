@@ -85,19 +85,115 @@ document.querySelectorAll('.gallery__photo').forEach(element => {
     });
 });
 
-// Модуль поиска
-{
-document.querySelector('#search-button').addEventListener('click', (event) => {
-    const searchElment = document.querySelector('.search');
-    // const right = event.currentTarget.getBoundingClientRect()['right'] + 'px';
-    // searchElment.style.right = right;
-    searchElment.style.display = 'block';
-    // document.getElementById('gallery-cover').style.display = 'block';
-    const interval = setInterval(()=>{
-        searchElment.classList.add('search__active');
-        document.getElementById('SearchInput').focus();
-        document.querySelector('.cover').classList.add('cover_on');
-    }, 500);
+/**
+ * Модуль поиска
+ */
+function searchActivate () {
+    const searchElment = document.querySelector('.search'); //блок появится поверх символа поиска
+    const cover = document.querySelector('.cover'); //затемнение остальной части страницы (кроме гориз.меню)
+    const output = searchElment.querySelector('.search__output');
+    document.querySelector('#search-button').addEventListener('click', () => {
+        searchElment.style.display = 'block';
+        const interval = setTimeout(()=>{
+            searchElment.classList.add('search__active');
+            document.getElementById('SearchInput').focus();
+            cover.classList.add('cover_on');
+            cover.addEventListener('click', searchOff)
+        }, 500);
+    });
+    function searchOff () {
+        searchElment.classList.remove('search__active');
+        output.classList.remove('search__output_on');
+        const interval = setTimeout(()=>{
+            searchElment.style.display = 'none';
+            cover.classList.remove('cover_on');
+        }, 500);
+        cover.removeEventListener('click', searchOff);
+    };
+    document.querySelector('.search__icon').addEventListener('click', searchOff);
     
-})
-}
+   /**
+     * Выполняет поиск через API с возможностью добавления параметров
+     * @param {string} query - Поисковый запрос
+     * @param {Object} [params={}] - Дополнительные параметры запроса
+     * @returns {Promise<Object>} - Обещание с данными JSON от сервера
+     */
+    async function fetchSearchResults(query, params = {}) {
+        try {
+        // Создаем параметры URL, включая поисковый запрос и дополнительные параметры
+        const urlParams = new URLSearchParams({
+            // search: encodeURIComponent(query),
+            search: query,
+            ...params
+        });
+        
+        const apiUrl = `/jsonapi/v2/pages/?${urlParams.toString()}`;
+        
+        // Выполняем GET-запрос
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        });
+    
+        // Проверяем статус ответа
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        // Парсим JSON и возвращаем данные
+        return await response.json();
+        
+        } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+        throw error;
+        }
+    }
+    
+    // Пример использования:
+    // fetchSearchResults('пример запроса', {page: 2, per_page: 10})
+    //   .then(data => console.log(data))
+    //   .catch(err => console.error(err));
+
+    // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
+    function debounce(callee, timeoutMs) {
+        return function perform(...args) {
+          let previousCall = this.lastCall;
+          this.lastCall = Date.now();
+          if (previousCall && this.lastCall - previousCall <= timeoutMs) {
+            clearTimeout(this.lastCallTimer);
+          }
+          this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs);
+        }
+    }
+
+    function createTag (tag, attrs={}, innerText) {
+        const elem = document.createElement(tag);
+        elem.innerText = innerText;
+        for (let key in attrs) {
+            elem.setAttribute(key, attrs[key])
+        }
+        return elem;
+    }
+
+    async function search(event) {
+        const search_text = event.value;
+        // _search(search_text)
+        if (search_text.length > 2) {
+            output.classList.add('search__output_on');
+            const response = await fetchSearchResults(search_text);
+            output.innerHTML = '';
+            // output.innerHTML = `<pre>${JSON.stringify(response.meta.total_count)}</pre>`;
+            for (const item of response.items) {
+                output.appendChild(createTag('a', {
+                    href: item.meta.html_url,
+                }, item.title));
+            }
+
+        };
+    };
+    const searchDebounse = debounce(search, 1000);
+    document.getElementById('SearchInput').addEventListener('input', function() {searchDebounse(this)});
+}; searchActivate();

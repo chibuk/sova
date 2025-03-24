@@ -108,6 +108,7 @@
   --slogan-font-size: 1.5em;
   --base-line-height: 1,5;
   --base-header-line-height: 1.25;
+  --searchinput-min-width: 210px;
 
   --body-font-family: "Cruinn", "Literal Light", Verdana, sans-serif ;
   --header-font-family: "IntroHeadR", Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
@@ -118,21 +119,21 @@
   :root {
       --flex-direction-row: column;
       --slogan-font-size: 1.7em;
+      --searchinput-min-width: 210px;
   }
 }
 /* --screen-xmobile: 768px; */
 @media only screen and (min-width: 498px) {
   :root {
       --flex-direction-row: column;
-      /* --header-height: 3em; */
       --slogan-font-size: 2em;
+      --searchinput-min-width: 20em;
   }
 }
 /* --screen-xmobile: 768px; */
 @media only screen and (min-width: 768px) {
   :root {
       --flex-direction-row: column;
-      /* --header-height: 3em; */
       --slogan-font-size: 2.4em;
   }
 }
@@ -216,7 +217,6 @@ main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 }
 main > *:not(video, #homepagecontent) {
   max-width: var(--content-max-width);
@@ -458,15 +458,16 @@ div#logo > a > img {
   top: -.3em;
   right: 4em;
   width: 2.5em;
+  min-width: 2.5em;
   height: 2.5em;
   background: var(--brand-bgcolor);
   border-radius: 1.25em;
   overflow: hidden;
-  transition: width 0.3s;
   box-shadow: 0 0 0 1px var(--body-bgcolor);
   color: var(--body-bgcolor);
   display: none;
   z-index: 9;
+  transition: width 0.3s, min-width 0.3s;
 }
 .search__icon {
   position: absolute;
@@ -474,19 +475,19 @@ div#logo > a > img {
   top: 50%;
   background-color: var(--brand-bgcolor);
   transform: translateY(-40%);
+  cursor: pointer;
   z-index: 10;
 }
 .search__active {
-  min-width: 12em;
-  /* max-width: 25em; */
+  min-width: var(--searchinput-min-width);
   width: 100%;
 }
  .search__input {
   font-size: 1em;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  right: 1.2em;
+  transform: translateY(-45%);
+  right: 1.5em;
   left: 2.2em;
   background-color: transparent;
   border: none;
@@ -503,10 +504,31 @@ div#logo > a > img {
   position: absolute;
   top: 50%;
   right: .7em;
-  transform: translateY(-40%);
+  transform: translateY(-50%);
   background: transparent;
   z-index: 9;
   cursor: pointer;
+}
+.search__output {
+  display: block;
+  position: fixed;
+  width: 90%;
+  left: 50%;
+  transform: translate(-50%);
+  max-width: calc(var(--content-max-width) - 10%);
+  top: var(--header-height);
+  border: 1px solid var(--brand-bgcolor);
+  min-height: 5rem;
+  background-color: var(--body-bgcolor);
+  color: var(--body-color);
+  border-radius: var(--border-radius);
+  padding: 1em;
+  opacity: 0;
+  transition: opacity 300ms 300ms;
+}
+.search__output_on {
+  display: block;
+  opacity: 1;
 }
 /*</Кнопка поиска в главном меню>*/
 
