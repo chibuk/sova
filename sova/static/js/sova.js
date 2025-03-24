@@ -152,11 +152,6 @@ function searchActivate () {
         }
     }
     
-    // Пример использования:
-    // fetchSearchResults('пример запроса', {page: 2, per_page: 10})
-    //   .then(data => console.log(data))
-    //   .catch(err => console.error(err));
-
     // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
     function debounce(callee, timeoutMs) {
         return function perform(...args) {
@@ -180,15 +175,14 @@ function searchActivate () {
 
     async function search(event) {
         const search_text = event.value;
-        // _search(search_text)
         if (search_text.length > 2) {
             output.classList.add('search__output_on');
             const response = await fetchSearchResults(search_text);
             output.innerHTML = '';
-            // output.innerHTML = `<pre>${JSON.stringify(response.meta.total_count)}</pre>`;
             for (const item of response.items) {
                 output.appendChild(createTag('a', {
                     href: item.meta.html_url,
+                    class: 'search__response_link',
                 }, item.title));
             }
 
@@ -196,4 +190,4 @@ function searchActivate () {
     };
     const searchDebounse = debounce(search, 1000);
     document.getElementById('SearchInput').addEventListener('input', function() {searchDebounse(this)});
-}; searchActivate();
+}; searchActivate(); // TODO: обработка клавиатурных событий, обнуление ввода и поиска при сворачивании

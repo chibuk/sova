@@ -503,11 +503,20 @@ div#logo > a > img {
 .search__clear {
   position: absolute;
   top: 50%;
-  right: .7em;
+  right: .6em;
   transform: translateY(-50%);
   background: transparent;
   z-index: 9;
   cursor: pointer;
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: .8;
+}
+input.search__input[type="search"]::-webkit-search-decoration, 
+input.search__input[type="search"]::-webkit-search-cancel-button, 
+input.search__input[type="search"]::-webkit-search-results-button, 
+input.search__input[type="search"]::-webkit-search-results-decoration { 
+    display: none;
 }
 .search__output {
   display: block;
@@ -522,13 +531,27 @@ div#logo > a > img {
   background-color: var(--body-bgcolor);
   color: var(--body-color);
   border-radius: var(--border-radius);
-  padding: 1em;
   opacity: 0;
   transition: opacity 300ms 300ms;
+  overflow: hidden;
 }
 .search__output_on {
   display: block;
   opacity: 1;
+}
+.search__response_link {
+  display: block;
+  width: 100%;
+  background-color: hsl(var(--brand-color-h), 39%, 50%);
+  color: var(--body-bgcolor);
+  padding: .5em 1em;
+  font-weight: bold;
+}
+.search__response_link:hover, .search__response_link:focus {
+  background-color: hsl(var(--brand-color-h), 59%, 30%);;
+}
+.search__response_link + .search__response_link {
+  border-top: 1px dotted var(--body-bgcolor);
 }
 /*</Кнопка поиска в главном меню>*/
 
