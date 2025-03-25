@@ -32,7 +32,6 @@ video {
   left: 0;
   width: 100%;
   object-fit: cover;
-  z-index: -1;
 }
 #hero {
   display: flex;
@@ -45,7 +44,7 @@ video {
   position: relative;
   width: 100%;
   align-items: center;
-  aspect-ratio: 2.2/1;
+  aspect-ratio: 2.1/1;
 }
 #hero_text { flex-grow: 1; }
 #hero_text > h1 {
@@ -80,10 +79,13 @@ video {
   opacity: 100%;
 }
 /* Под hero тоже закругленные углы */
-section#homepagecontent {
+#homepagecontent {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   box-shadow: var(--box-shadow);
   padding-top: 1em;
+  color: var(--body-color);
+  background-color: var(--body-bgcolor);
+  z-index: 1;
 }
 
 /* Стили для слайдера обернуты в div#sl */

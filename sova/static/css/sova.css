@@ -229,6 +229,7 @@ footer {
   font-size: .9em;
   background-color: var(--footer-bgcolor);
   color: var(--body-color);
+  z-index: 1;
 }
 
 /* Bread crumb module [ */

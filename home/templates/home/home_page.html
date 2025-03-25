@@ -11,7 +11,9 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-
+{% if self.video %}
+    {% video self.video muted loop playsinline autoplay id=bg_video %}
+{% endif %}
 <section id='hero'>
   {% if page.slogan %}
     <div id="hero_text">
@@ -57,7 +59,7 @@
     </div>
   </div>
 </section>
-<section id='homepagecontent'>
+<div id='homepagecontent'>
   {% if page.body %}<div class="content">{{ page.body|richtext }}</div>{% endif %}
   {% if page.slider.all.count > 0 %}
     <section class="section">
@@ -114,10 +116,7 @@
     <div id="cal__intervaltext" class="content"></div>
     <div id="cal__content" class="content"></div>
   </section>
-</section>
-{% if self.video %}
-  {% video self.video muted loop playsinline autoplay id=bg_video %}
-{% endif %}
+</div>
 {% endblock %}
 {% block extra_js %}
 {% if page.timer_date %}<script async type="text/javascript" src="{% static 'js/timer.js' %}"></script>{% endif %}
