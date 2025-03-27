@@ -122,7 +122,7 @@ function searchActivate () {
         try {
         // Создаем параметры URL, включая поисковый запрос и дополнительные параметры
         const urlParams = new URLSearchParams({
-            // search: encodeURIComponent(query),
+            // search: encodeURIComponent(query), - кодирует так, что сервер не находит ничего на кириллице
             search: query,
             ...params
         });
@@ -152,7 +152,8 @@ function searchActivate () {
         }
     }
     
-    // Функция debounce: минимизирует число вызовов функции (включая несколько в один финальный)
+    // Функция debounce: минимизирует число вызовов функции 
+    // (пропуская несколько, в один финальный)
     function debounce(callee, timeoutMs) {
         return function perform(...args) {
           let previousCall = this.lastCall;
@@ -190,4 +191,26 @@ function searchActivate () {
     };
     const searchDebounse = debounce(search, 1000);
     document.getElementById('SearchInput').addEventListener('input', function() {searchDebounse(this)});
+    document.getElementById('SearchInput').addEventListener('keydown', function(event) {
+        
+        switch (event.key) {
+            case 'Enter':
+            console.log('Нажата клавиша Enter');
+            // Здесь можно добавить логику поиска
+            // Например: выполнить поиск или подтвердить выбор
+            event.preventDefault(); // При необходимости отменить действие по умолчанию
+            break;
+            case 'Escape':
+            // handleEscapeKey(event);
+            break;
+            case 'ArrowDown':
+            // handleArrowDownKey(event);
+            break;
+            case 'ArrowUp':
+            // handleArrowUpKey(event);
+            break;
+            // Можно добавить обработку других клавиш при необходимости
+        }
+          
+    });
 }; searchActivate(); // TODO: обработка клавиатурных событий, обнуление ввода и поиска при сворачивании
