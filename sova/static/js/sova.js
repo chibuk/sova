@@ -92,8 +92,11 @@ function searchActivate () {
     const searchElment = document.querySelector('.search'); //блок появится поверх символа поиска
     const cover = document.querySelector('.cover'); //затемнение остальной части страницы (кроме гориз.меню)
     const output = searchElment.querySelector('.search__output');
+    // флаг того, чо поиск был уже произведён для исключения дублирующих запросов
+    let done = false; // false | "query"
     document.querySelector('#search-button').addEventListener('click', () => {
         searchElment.style.display = 'block';
+        done = false;
         const interval = setTimeout(()=>{
             searchElment.classList.add('search__active');
             document.getElementById('SearchInput').focus();
@@ -173,20 +176,30 @@ function searchActivate () {
         }
         return elem;
     }
+    // Объект нужен для реализации перемещения по результатам поиска
+    // с помощью клавиш вверх и вниз и выбора по Enter
+    // let responseObject = {};
 
     async function search(event) {
         const search_text = event.value;
+        if (done === search_text) return;
         if (search_text.length > 2) {
             output.classList.add('search__output_on');
             const response = await fetchSearchResults(search_text);
             output.innerHTML = '';
+            output.appendChild(createTag('div', {
+                style: "padding: .5em; text-indent: .5em;",
+            }, `Всего совпадений ${response.items.length}`));
+            const output_links = createTag('div', {})
+            output.appendChild(output_links)
             for (const item of response.items) {
-                output.appendChild(createTag('a', {
+                output_links.appendChild(createTag('a', {
                     href: item.meta.html_url,
                     class: 'search__response_link',
                 }, item.title));
             }
-
+            // responseObject = JSON.parse(response);
+            done = search_text;
         };
     };
     const searchDebounse = debounce(search, 1000);
@@ -194,23 +207,45 @@ function searchActivate () {
     document.getElementById('SearchInput').addEventListener('keydown', function(event) {
         
         switch (event.key) {
+
             case 'Enter':
-            console.log('Нажата клавиша Enter');
-            // Здесь можно добавить логику поиска
-            // Например: выполнить поиск или подтвердить выбор
-            event.preventDefault(); // При необходимости отменить действие по умолчанию
-            break;
+                search(event.currentTarget);
+                event.preventDefault();
+                break;
+            
             case 'Escape':
-            // handleEscapeKey(event);
-            break;
+                output.innerHTML = '';
+                output.classList.remove('search__output_on')
+                break;
+            
             case 'ArrowDown':
-            // handleArrowDownKey(event);
-            break;
+                searchResponseArrowHandler(true);            
+                break;
+            
             case 'ArrowUp':
-            // handleArrowUpKey(event);
-            break;
-            // Можно добавить обработку других клавиш при необходимости
+                searchResponseArrowHandler(false);
+                break;
         }
           
     });
+    /**
+     * Ищем в DOM результаты поиска, a.search__response_link
+     * если находим элемент a.search__response_link.search__response_link_active,
+     * то двигаемся в зависимости от direction - (true) вниз или (false) вверх, по кругу.
+     */
+    function searchResponseArrowHandler(direction=true) {
+        const seach_total_elements = output.querySelectorAll('a.search__response_link'); //все элементы
+        if (seach_total_elements.length == 0) return;
+        //ищем текущий, если его нет, то "выбираем первый"
+        let active = output.querySelector('.search__response_link_active');
+        if (direction) {
+            if (active) active = active.nextSibling ? active.nextSibling : active;
+            else active = seach_total_elements[0]; // выбираем первый
+        } else {
+            if (active) active = active.previousSibling ? active.previousSibling : active;
+            else active = seach_total_elements[seach_total_elements.length - 1] // выбираем последний
+        }
+        for (let element of seach_total_elements) element.classList.remove('search__response_link_active');
+        active.classList.add('search__response_link_active');
+    }
 }; searchActivate(); // TODO: обработка клавиатурных событий, обнуление ввода и поиска при сворачивании

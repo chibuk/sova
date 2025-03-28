@@ -528,7 +528,6 @@ input.search__input[type="search"]::-webkit-search-results-decoration {
   max-width: calc(var(--content-max-width) - 10%);
   top: var(--header-height);
   border: 1px solid var(--brand-bgcolor);
-  min-height: 5rem;
   background-color: var(--body-bgcolor);
   color: var(--body-color);
   border-radius: var(--border-radius);
@@ -548,7 +547,7 @@ input.search__input[type="search"]::-webkit-search-results-decoration {
   padding: .5em 1em;
   font-weight: bold;
 }
-.search__response_link:hover, .search__response_link:focus {
+.search__response_link:hover, .search__response_link:focus, .search__response_link_active {
   background-color: hsl(var(--brand-color-h), 59%, 30%);;
 }
 .search__response_link + .search__response_link {
@@ -562,7 +561,7 @@ input.search__input[type="search"]::-webkit-search-results-decoration {
   min-width: 15em;
   max-width: 25em;
   /* height: var(--viewport-height); /* переменная из js window.innerHeight для мобильных */
-  bottom: 0;
+  bottom: 0; /* это проще, заменяет строку выше, нужно полное тестирование */
   position: fixed;
   top: 0;
   right: -30em;
