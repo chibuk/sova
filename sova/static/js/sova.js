@@ -1,7 +1,6 @@
 // Клик блока, затемняющего страницу при активной боковой панели меню.
 document.querySelector('.cover').addEventListener('click', function(event) {
     document.querySelector('#nav-toggle').checked = false;
-    // alert('cover');
 });
 
 /**
@@ -176,9 +175,6 @@ function searchActivate () {
         }
         return elem;
     }
-    // Объект нужен для реализации перемещения по результатам поиска
-    // с помощью клавиш вверх и вниз и выбора по Enter
-    // let responseObject = {};
 
     async function search(event) {
         const search_text = event.value;
@@ -190,7 +186,7 @@ function searchActivate () {
             output.appendChild(createTag('div', {
                 style: "padding: .5em; text-indent: .5em;",
             }, `Всего совпадений ${response.items.length}`));
-            const output_links = createTag('div', {})
+            const output_links = createTag('div', {}, '')
             output.appendChild(output_links)
             for (const item of response.items) {
                 output_links.appendChild(createTag('a', {
@@ -198,54 +194,57 @@ function searchActivate () {
                     class: 'search__response_link',
                 }, item.title));
             }
-            // responseObject = JSON.parse(response);
             done = search_text;
         };
     };
     const searchDebounse = debounce(search, 1000);
     document.getElementById('SearchInput').addEventListener('input', function() {searchDebounse(this)});
     document.getElementById('SearchInput').addEventListener('keydown', function(event) {
-        
+        const active = output.querySelector('.search__response_link_active');
         switch (event.key) {
-
             case 'Enter':
+                if (active) {
+                    window.location.assign(active.getAttribute('href')); // переход с сохранением истории
+                    break;
+                };
                 search(event.currentTarget);
                 event.preventDefault();
                 break;
-            
             case 'Escape':
+                if (active) {
+                    active.classList.remove('search__response_link_active');
+                    event.preventDefault();
+                    break;
+                };
                 output.innerHTML = '';
                 output.classList.remove('search__output_on')
                 break;
-            
             case 'ArrowDown':
                 searchResponseArrowHandler(true);            
                 break;
-            
             case 'ArrowUp':
                 searchResponseArrowHandler(false);
                 break;
         }
-          
     });
     /**
      * Ищем в DOM результаты поиска, a.search__response_link
      * если находим элемент a.search__response_link.search__response_link_active,
-     * то двигаемся в зависимости от direction - (true) вниз или (false) вверх, по кругу.
+     * то двигаемся в зависимости от direction - (true) вниз или (false) вверх.
      */
     function searchResponseArrowHandler(direction=true) {
         const seach_total_elements = output.querySelectorAll('a.search__response_link'); //все элементы
         if (seach_total_elements.length == 0) return;
-        //ищем текущий, если его нет, то "выбираем первый"
+        //ищем активный, если его нет, то "выбираем первый"
         let active = output.querySelector('.search__response_link_active');
-        if (direction) {
+        if (direction) { // вниз
             if (active) active = active.nextSibling ? active.nextSibling : active;
             else active = seach_total_elements[0]; // выбираем первый
-        } else {
+        } else { // вверх
             if (active) active = active.previousSibling ? active.previousSibling : active;
             else active = seach_total_elements[seach_total_elements.length - 1] // выбираем последний
-        }
+        } // очищаем все элементы от .search__response_link_active
         for (let element of seach_total_elements) element.classList.remove('search__response_link_active');
         active.classList.add('search__response_link_active');
     }
-}; searchActivate(); // TODO: обработка клавиатурных событий, обнуление ввода и поиска при сворачивании
+}; searchActivate();
