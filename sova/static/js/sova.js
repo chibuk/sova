@@ -1,10 +1,7 @@
-// Клик блока, затемняющего страницу при активной боковой панели меню.
-document.querySelector('.cover').addEventListener('click', function(event) {
-    document.querySelector('#nav-toggle').checked = false;
-});
-
 /**
- * Перемещение пунктов оризонтального меню в меню вертикальной панели и иобратно в завиисмомти от ширины
+ * Перемещение пунктов горизонтального меню в меню 
+ * вертикальной панели и иобратно в завиисмомти от ширины
+ * Данное меню выплывает при клике на "бургер"
  */
 function modify_menu() {
     /**
@@ -69,6 +66,10 @@ function modify_menu() {
 modify_menu(); // отработать при загрузке
 window.addEventListener('resize', modify_menu);
 window.addEventListener('orientationchange', modify_menu);
+// Клик блока, затемняющего страницу при активной боковой панели меню
+document.querySelector('.cover').addEventListener('click', function(event) {
+    document.querySelector('#nav-toggle').checked = false;
+});
 
 
 // Gallery module

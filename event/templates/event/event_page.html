@@ -14,17 +14,19 @@
         {% endif %}
     {% endwith %}
     {% image page.image original class='box__img' %}
-    <div class='flex-row gap'>
-        <div class='date flex-row gap'>
-            <strong>Когда:</strong>
-            {{ page.date_on }}{% if page.date_end %} - {{ page.date_end }} {% endif %}
+    <div class='block'>
+        <div class='flex-row wrap'>
+            <div class='date flex-row gap'>
+                <strong>Когда:</strong>
+                {{ page.date_on }}{% if page.date_end %} - {{ page.date_end }} {% endif %}
+            </div>
+            {% if page.location %}
+            <div class='location flex-row gap'>
+                <strong>Где:</strong>
+                <div>{{ page.location }}</div>
+            </div>
+            {% endif %}
         </div>
-        {% if page.location %}
-        <div class='location flex-row gap'>
-            <strong>Где:</strong>
-            <div>{{ page.location }}</div>
-        </div>
-        {% endif %}
     </div>
     <h2>{{ page.h2 }}</h2>
     {{ page.body|richtext }}

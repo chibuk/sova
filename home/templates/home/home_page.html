@@ -121,7 +121,7 @@
 {% block extra_js %}
 {% if page.timer_date %}<script async type="text/javascript" src="{% static 'js/timer.js' %}"></script>{% endif %}
 {% if page.slider.all.count > 0 %}<script async type="text/javascript" src="{% static 'js/slider.js' %}"></script>{% endif %}
-<script async type="text/javascript" src="{% static 'js/flatpickr.js' %}"></script>
-<script async type="text/javascript" src="{% static 'js/ru.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/flatpickr.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ru.js' %}"></script>
 <script async type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
 {% endblock %}

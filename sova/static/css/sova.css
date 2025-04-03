@@ -294,6 +294,12 @@ a, a:visited, a:active, a * {
   display: flex;
   flex-wrap: nowrap;
 }
+.block {
+  padding-bottom: 1em;
+}
+.wrap {
+  flex-wrap: wrap;
+}
 .gap {
   gap: 1em;
 }
@@ -965,6 +971,9 @@ a.tag:hover {
 .date, .location {
   font-size: 1rem;
   padding: .5em 0 0;
+}
+.date + .location {
+  margin-left: 1em;
 }
 .box__logo {
   width: 5em;
