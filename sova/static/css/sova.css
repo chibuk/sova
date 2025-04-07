@@ -379,17 +379,22 @@ h4 { font-size: 1.4em; }
 }
 #gallery-toggle:checked ~ .gallery {
   position: fixed;
-  top: 2em;
+  /* top: 2em;
   left: 2em;
   width: 100%;
   max-width: calc(100vw - 4em);
   height: 100%;
-  max-height: calc(100vh - 4em);
+  max-height: calc(100vh - 4em); */
+  inset: 0;
   z-index: 9;
 }
 #gallery-toggle:checked ~ .gallery > .gallery__photos {
+  /* min-height: 100%;
+  max-height: 100%; */
   min-height: 100%;
-  max-height: 100%;
+  min-width: 100%;
+  padding: 0;
+  margin: 0;
   box-shadow: none;
 }
 #gallery-toggle:checked ~ .gallery .gallery__photo {
@@ -400,8 +405,11 @@ h4 { font-size: 1.4em; }
   border-radius: var(--border-radius);
   width: auto;
   height: auto;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 90%;
+  max-height: 90%;
+  min-width: 60%;
+  min-height: 60%;
+  margin-top: 1em;
 }
 #gallery-toggle:checked ~ .gallery > .gallery__photos > .gallery__photo {
   min-width: 100%;
@@ -410,6 +418,23 @@ h4 { font-size: 1.4em; }
 }
 #gallery-toggle:checked ~ .gallery .gallery__photo__img:hover {
   transform: none;
+}
+.gallery__control {
+  display: none;
+  position: absolute;
+  bottom: 2rem;
+  color: white;
+  cursor: pointer;
+  font-size: 2rem;
+}
+.gallery__control_forward {
+  right: calc(50% - 3rem);
+}
+.gallery__control_backward {
+  left: calc(50% - 3rem);
+}
+#gallery-toggle:checked ~ .gallery .gallery__control {
+  display: block;
 }
 /* Фото лента --] */
 
