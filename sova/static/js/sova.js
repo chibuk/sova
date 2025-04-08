@@ -78,44 +78,48 @@ document.querySelector('.cover').addEventListener('click', function(event) {
  * это затемненный экран и фото в центре в полном размере. Можно листать стрелочками-кнопками,
  * стрелками на клавиатуре, свайпами, выход по ESC или кликом в любом месте экрана.
  */
-document.querySelectorAll('.gallery__photo').forEach(element => {
-    element.addEventListener('click', (event) => {
-        const element = event.currentTarget;
-        setTimeout(function(element) {
-            element.scrollIntoView( // В режиме просмотра двигаем элемент в центр экрана
-                {behavior: "smooth", block: "nearest", inline: "center"}
-            );
-        }, 500, element);
+function galleryModule() {
+    document.querySelectorAll('.gallery__photo').forEach(element => {
+        element.addEventListener('click', (event) => {
+            const element = event.currentTarget;
+            setTimeout(function(element) {
+                element.scrollIntoView( // В режиме просмотра двигаем элемент в центр экрана
+                    {behavior: "smooth", block: "nearest", inline: "center"}
+                );
+            }, 500, element);
+        });
     });
-});
-document.getElementById('gallery-toggle').addEventListener('change', function() {
-    function EscapeHandler(event) { // Выход из раежима просмотра по ESC
-        const checkbox = document.getElementById('gallery-toggle');
-        if(event.key === 'Escape') {
-            checkbox.checked = false;   // выходим, отработало и
-            document.removeEventListener('keydown', EscapeHandler); // сразу убираем обработчик
+    document.getElementById('gallery-toggle').addEventListener('change', function() {
+        function EscapeHandler(event) { // Выход из раежима просмотра по ESC
+            const checkbox = document.getElementById('gallery-toggle');
+            if(event.key === 'Escape') {
+                checkbox.checked = false;   // выходим, отработало и
+                document.removeEventListener('keydown', EscapeHandler); // сразу убираем обработчик
+            }
+        };
+        if (this.checked) {
+            document.addEventListener('keydown', EscapeHandler);
         }
-    };
-    if (this.checked) {
-        document.addEventListener('keydown', EscapeHandler);
-    }
-});
-document.getElementById('gallery__control_backward').addEventListener('click', function(){
-    const position = document.querySelector(".gallery__photos").scrollLeft;
-    const current = Math.round(position / window.innerWidth);
-    photos = document.querySelectorAll('.gallery__photo');
-    photos[(current - 1 + photos.length) % photos.length].scrollIntoView(
-        {behavior: "smooth", block: "nearest", inline: "center"}
-    );
-})
-document.getElementById('gallery__control_forward').addEventListener('click', function(){
-    const position = document.querySelector(".gallery__photos").scrollLeft;
-    const current = Math.round(position / window.innerWidth);
-    photos = document.querySelectorAll('.gallery__photo');
-    photos[(current + 1) % photos.length].scrollIntoView(
-        {behavior: "smooth", block: "nearest", inline: "center"}
-    );
-});
+    });
+    document.getElementById('gallery__control_backward').addEventListener('click', function(){
+        const position = document.querySelector(".gallery__photos").scrollLeft;
+        const current = Math.round(position / window.innerWidth);
+        photos = document.querySelectorAll('.gallery__photo');
+        photos[(current - 1 + photos.length) % photos.length].scrollIntoView(
+            {behavior: "smooth", block: "nearest", inline: "center"}
+        );
+    })
+    document.getElementById('gallery__control_forward').addEventListener('click', function(){
+        const position = document.querySelector(".gallery__photos").scrollLeft;
+        const current = Math.round(position / window.innerWidth);
+        photos = document.querySelectorAll('.gallery__photo');
+        photos[(current + 1) % photos.length].scrollIntoView(
+            {behavior: "smooth", block: "nearest", inline: "center"}
+        );
+    });
+}; 
+if (document.querySelectorAll('.gallery__photos').length > 0) galleryModule();
+
 
 /**
  * Модуль поиска

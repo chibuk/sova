@@ -236,10 +236,18 @@ const calCalendar = () => {
           'data-id': event.id,
           'data-date': event.date_on, // для сортировки будем, сранвнивать строки дат YYYY-mm-dd
         }, '');
-        div.appendChild(createTag("img", {
-          src: event.image_thumbnail.url,
-          class: "event__img"
-        }, ''));
+        if (event.image_thumbnail != null) {
+          div.appendChild(createTag("img", {
+            src: event.image_thumbnail.url,
+            class: "event__img"
+          }, ''));
+        } else { // каотинки нет - делаем div с рамкой на всю высоту
+          div.appendChild(createTag("div", {
+            class: "box",
+            style: "height: 100%;"
+          }, ' '));
+        }
+        
         const div_txt = createTag("div", {class: "event__text"}, ''); // блок с текстами под картинкой
         div.appendChild(div_txt);
         div_txt.appendChild(createTag("div",{class: 'event__text__h1'}, event.h1))
