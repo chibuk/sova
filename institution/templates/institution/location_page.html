@@ -43,8 +43,8 @@
             </label>
             {% endfor %}
         </div>
-        <div class="gallery__control gallery__control_forward">&rarr;</div>
-        <div class="gallery__control gallery__control_backward">&larr;</div>
+        <div class="gallery__control" id="gallery__control_forward">&rarr;</div>
+        <div class="gallery__control" id="gallery__control_backward">&larr;</div>
     </div>
     {% for sport in page.sports.all %}
         <div>{{ sport.name }}</div>

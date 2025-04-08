@@ -408,7 +408,6 @@ h4 { font-size: 1.4em; }
   max-width: 90%;
   max-height: 90%;
   min-width: 60%;
-  min-height: 60%;
   margin-top: 1em;
 }
 #gallery-toggle:checked ~ .gallery > .gallery__photos > .gallery__photo {
@@ -425,13 +424,19 @@ h4 { font-size: 1.4em; }
   bottom: 2rem;
   color: white;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 3rem;
+  padding: 1rem;
+  opacity: 0.6;
+  transition: opacity 300ms;
 }
-.gallery__control_forward {
-  right: calc(50% - 3rem);
+.gallery__control:hover {
+  opacity: 1;
 }
-.gallery__control_backward {
-  left: calc(50% - 3rem);
+#gallery__control_forward {
+  right: calc(50% - 5rem);
+}
+#gallery__control_backward {
+  left: calc(50% - 5rem);
 }
 #gallery-toggle:checked ~ .gallery .gallery__control {
   display: block;

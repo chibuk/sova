@@ -81,9 +81,60 @@ document.querySelectorAll('.gallery__photo').forEach(element => {
                 {behavior: "smooth", block: "nearest", inline: "center"}
             );
         }, 500, element);
-
+    });
+    element.addEventListener('keydown', function (event) {
+        const checkbox = document.getElementById('gallery-toggle');
+        switch(event.key) {
+            case 'Escape':
+                // alert('esc');
+                checkbox.checked = false;
+                break;
+            // case 'ArrowLeft':
+            //     alert('Нажата стрелка влево');
+            //     break;
+            // case 'ArrowRight':
+            //     alert('Нажата стрелка вправо');
+            //     break;
+            // default:
+            //     break;
+        }
     });
 });
+function EscapeHandler(event) {
+    const checkbox = document.getElementById('gallery-toggle');
+    if(event.key === 'Escape') {
+        checkbox.checked = false;
+        document.removeEventListener('keydown', EscapeHandler);
+    }
+}
+document.getElementById('gallery-toggle').addEventListener('change', function() {
+    if (this.checked) {
+        document.addEventListener('keydown', EscapeHandler);
+    }
+})
+document.getElementById('gallery__control_backward').addEventListener('click', function(){
+    
+})
+document.getElementById('gallery__control_forward').addEventListener('click', function(){
+    
+})
+// document.addEventListener('keydown', function (event) {
+//     const checkbox = document.getElementById('gallery-toggle');
+//     switch(event.key) {
+//         case 'Escape':
+//             alert('esc');
+//             checkbox.checked = false;
+//             break;
+//         case 'ArrowLeft':
+//             alert('Нажата стрелка влево');
+//             break;
+//         case 'ArrowRight':
+//             alert('Нажата стрелка вправо');
+//             break;
+//         default:
+//             break;
+//     }
+// });
 
 /**
  * Модуль поиска
