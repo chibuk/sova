@@ -72,69 +72,50 @@ document.querySelector('.cover').addEventListener('click', function(event) {
 });
 
 
-// Gallery module
+/**
+ * Gallery module
+ * Галерея в виде ряда миниатюр фотографий, которые при клике переходят в режим просмотра,
+ * это затемненный экран и фото в центре в полном размере. Можно листать стрелочками-кнопками,
+ * стрелками на клавиатуре, свайпами, выход по ESC или кликом в любом месте экрана.
+ */
 document.querySelectorAll('.gallery__photo').forEach(element => {
     element.addEventListener('click', (event) => {
         const element = event.currentTarget;
         setTimeout(function(element) {
-            element.scrollIntoView(
+            element.scrollIntoView( // В режиме просмотра двигаем элемент в центр экрана
                 {behavior: "smooth", block: "nearest", inline: "center"}
             );
         }, 500, element);
     });
-    element.addEventListener('keydown', function (event) {
-        const checkbox = document.getElementById('gallery-toggle');
-        switch(event.key) {
-            case 'Escape':
-                // alert('esc');
-                checkbox.checked = false;
-                break;
-            // case 'ArrowLeft':
-            //     alert('Нажата стрелка влево');
-            //     break;
-            // case 'ArrowRight':
-            //     alert('Нажата стрелка вправо');
-            //     break;
-            // default:
-            //     break;
-        }
-    });
 });
-function EscapeHandler(event) {
-    const checkbox = document.getElementById('gallery-toggle');
-    if(event.key === 'Escape') {
-        checkbox.checked = false;
-        document.removeEventListener('keydown', EscapeHandler);
-    }
-}
 document.getElementById('gallery-toggle').addEventListener('change', function() {
+    function EscapeHandler(event) { // Выход из раежима просмотра по ESC
+        const checkbox = document.getElementById('gallery-toggle');
+        if(event.key === 'Escape') {
+            checkbox.checked = false;   // выходим, отработало и
+            document.removeEventListener('keydown', EscapeHandler); // сразу убираем обработчик
+        }
+    };
     if (this.checked) {
         document.addEventListener('keydown', EscapeHandler);
     }
-})
+});
 document.getElementById('gallery__control_backward').addEventListener('click', function(){
-    
+    const position = document.querySelector(".gallery__photos").scrollLeft;
+    const current = Math.round(position / window.innerWidth);
+    photos = document.querySelectorAll('.gallery__photo');
+    photos[(current - 1 + photos.length) % photos.length].scrollIntoView(
+        {behavior: "smooth", block: "nearest", inline: "center"}
+    );
 })
 document.getElementById('gallery__control_forward').addEventListener('click', function(){
-    
-})
-// document.addEventListener('keydown', function (event) {
-//     const checkbox = document.getElementById('gallery-toggle');
-//     switch(event.key) {
-//         case 'Escape':
-//             alert('esc');
-//             checkbox.checked = false;
-//             break;
-//         case 'ArrowLeft':
-//             alert('Нажата стрелка влево');
-//             break;
-//         case 'ArrowRight':
-//             alert('Нажата стрелка вправо');
-//             break;
-//         default:
-//             break;
-//     }
-// });
+    const position = document.querySelector(".gallery__photos").scrollLeft;
+    const current = Math.round(position / window.innerWidth);
+    photos = document.querySelectorAll('.gallery__photo');
+    photos[(current + 1) % photos.length].scrollIntoView(
+        {behavior: "smooth", block: "nearest", inline: "center"}
+    );
+});
 
 /**
  * Модуль поиска
