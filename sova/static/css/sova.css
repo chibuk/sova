@@ -155,7 +155,8 @@ nav {
 
 h1, h2, h3, h4 {
   font-family: var(--header-font-family);
-  font-variant: small-caps;
+  font-variant: all-small-caps;
+  font-weight: 900;
 }
 #container {
   display: flex;

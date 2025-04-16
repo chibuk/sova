@@ -410,8 +410,10 @@ video {
 }
 .event__text__h1 {
   font-weight: bold;
-  font-size: 1.5rem;
-  padding: .2em;
+  font-family: var( --header-font-family);
+  font-size: 1.8rem;
+  padding: .2rem;
+  font-variant: all-small-caps;
 }
 .event__text__footer {
   display: flex;
@@ -437,32 +439,7 @@ video {
   white-space: nowrap;
 }
 
-/* Timer component 
-.timer {
-  --v1: calc(var(--slogan-font-size) * 1);
-  --v2: calc(var(--slogan-font-size) * .05);
-  display: grid;
-  grid-template-columns: var(--v1) var(--v2) var(--v1) var(--v2) var(--v1) var(--v2) var(--v1); /* v1 - 4.5rem v2 - 0.5rem *
-  font-size: var(--slogan-font-size); /* 3em; *
-  justify-items: center;
-  margin-bottom: .4em;
-  mix-blend-mode: difference;
-}
-
-.timer__item {
-  position: relative;
-}
-
-.timer__item::before {
-  content: attr(data-title);
-  display: block;
-  position: absolute;
-  bottom: -0.65em; /* -0.75rem; *
-  left: 50%;
-  transform: translateX(-50%);
-  font-size:  calc(var(--slogan-font-size) * .15); /*0.875rem; *
-  color: var(--body-color);
-} */
+/* Timer component */
 #timer {
   flex-grow: 1;
   color: var(--body-bgcolor);
