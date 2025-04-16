@@ -387,7 +387,7 @@ h4 { font-size: 1.4em; }
 .gallery__control {
   display: none;
   position: absolute;
-  bottom: 2rem;
+  bottom: 0; /* у контролов есть свой паддинг для отсупов */
   color: white;
   cursor: pointer;
   font-size: 3rem;
