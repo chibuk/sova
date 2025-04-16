@@ -1,68 +1,38 @@
-/* 
-@font-face {
-  font-family: "SOMGER Condensed";
-  font-style: normal;
-  font-weight: bold;
-  src: local("SOMGER Condensed"),
-       url("ttf/songercondensed_heavy.otf") format('otf');
-}
-
-@font-face {
-  font-family: "Literal";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Literal"),
-       url("ttf/LiteralRegular.otf") format('otf');
-}
-@font-face {
-  font-family: "Literal Bold";
-  font-style: normal;
-  font-weight: bold;
-  src: local("Literal Bold"),
-       url("ttf/LiteralBold.otf") format('otf');
-}
-@font-face {
-  font-family: "Literal Light";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Literal Light"),
-       url("ttf/LiteralLight.otf") format('otf');
-} */
 @font-face {
   font-family: 'Cruinn';
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   src: local("Cruin"),
       url('ttf/Cruinn Regular.ttf');
 }
 @font-face {
-  font-family: 'Cruinn Thin';
+  font-family: 'Cruinn';
   font-style: normal;
-  font-weight: normal;
+  font-weight: 100;
   src: local("Cruin Thin"),
       url('ttf/Cruinn Thin.ttf');
 }@font-face {
-  font-family: 'Cruinn Light';
+  font-family: 'Cruinn';
   font-style: normal;
-  font-weight: normal;
+  font-weight: 300;
   src: local("Cruin Light"),
       url('ttf/Cruinn Light.ttf');
 }@font-face {
-  font-family: 'Cruinn Medium';
+  font-family: 'Cruinn';
   font-style: normal;
-  font-weight: normal;
+  font-weight: 500;
   src: local("Cruin Medium"),
       url('ttf/Cruinn Medium.ttf');
 }@font-face {
-  font-family: 'Cruinn Bold';
+  font-family: 'Cruinn';
   font-style: normal;
-  font-weight: bold;
+  font-weight: 700;
   src: local("Cruin Bold"),
       url('ttf/Cruinn Bold.ttf');
 }@font-face {
-  font-family: 'Cruinn Black';
+  font-family: 'Cruinn';
   font-style: normal;
-  font-weight: bolder;
+  font-weight: 900;
   src: local("Cruin Black"),
       url('ttf/Cruinn Black.ttf');
 }
@@ -76,12 +46,16 @@
 }
 
 @font-face {
-  font-family: 'Theater';
+  font-family: 'Open Sans';
   font-style: normal;
-  font-weight: bold;
-  src: local("Theater"),
-      url('ttf/Theaterv04_Bold.ttf'),
-      url('ttf/Theater_Bold.otf');
+  src: local("Open Sans"),
+      url('ttf/OpenSans.ttf');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  src: local("Open Sans"),
+      url('ttf/OpenSans-Italic.ttf');
 }
 
 :root {
@@ -106,12 +80,11 @@
 
   --base-font-size: 1em;
   --slogan-font-size: 1.5em;
-  --base-line-height: 1,5;
   --base-header-line-height: 1.25;
   --searchinput-min-width: 210px;
 
-  --body-font-family: "Cruinn", "Literal Light", Verdana, sans-serif ;
-  --header-font-family: "IntroHeadR", Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+  --body-font-family: "Cruinn", sans-serif ;
+  --header-font-family: "IntroHeadR", 'Arial Narrow Bold', sans-serif; 
 }
 
 /* --screen-mobile: 360px; */
@@ -173,7 +146,6 @@ body {
   margin: 0;
   font-family: var(--body-font-family);
   font-size: var(--base-font-size);
-  line-height: var(--base-line-height);
 }
 
 nav {
@@ -183,6 +155,7 @@ nav {
 
 h1, h2, h3, h4 {
   font-family: var(--header-font-family);
+  font-variant: small-caps;
 }
 #container {
   display: flex;
