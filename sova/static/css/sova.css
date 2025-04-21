@@ -913,7 +913,6 @@ a.tag:hover {
 }
 .box > h1, .box > h2, .box > h3,.box > h4 {
   margin: 0;
-  text-indent: 1em;
 }
 .box__container {
   display: flex;
@@ -923,7 +922,8 @@ a.tag:hover {
 .box__child {
   --width: calc((var(--content-max-width) - 4em) / 3);
   display: block;
-  max-width: calc((var(--content-max-width) - 4em) / 3);
+  max-width: var(--width);
+  width: var(--width);
   color: var(--body-color);
   background-color: var(--body-bgcolor);
   border-left: 2px solid var(--body-bgcolor);
@@ -959,6 +959,7 @@ a.tag:hover {
 }
 .box__img {
   max-width: 100%;
+  width: 100%;
   height: auto;
 }
 .box__child a:not(.tag) {
