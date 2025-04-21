@@ -14,7 +14,7 @@
             <a href="{% pageurl location %}"></a>
             <h2>{{ location.title }}</h2>
             {% with location.specific.photo as photo %}
-                {% if photo %}<div>{% image photo original class='box__img' %}</div>{% endif %}
+                {% if photo %}<div class="location_image">{% image photo original class='box__img' %}</div>{% endif %}
             {% endwith %}
             <div class='box__body'>{{ location.specific.name }}</div>
             {% if location.specific.address %}

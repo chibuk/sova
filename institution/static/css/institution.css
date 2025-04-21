@@ -13,3 +13,12 @@
     font-family: "Open Sans", sans-serif;
     font-size: 1rem;
 }
+.location_image {
+    max-height: 18em;
+    overflow: hidden;
+}
+.locationpage_photo > img {
+    aspect-ratio: 16/9;
+    /* overflow: hidden; */
+    object-fit: cover;
+}

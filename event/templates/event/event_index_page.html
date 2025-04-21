@@ -22,13 +22,15 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <div class='date'>
-                {{ event.specific.date_on }}
-                {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
+            <div class='flex-row wrap'>
+                <div class='date'>
+                    {{ event.specific.date_on }}
+                    {% if event.specific.date_end %} - {{ event.specific.date_end }} {% endif %}
+                </div>
+                {% if event.specific.location %}
+                    <div class='location'>{{ event.specific.location }}</div>
+                {% endif %}
             </div>
-            {% if event.specific.location %}
-                <div class='location'>{{ event.specific.location }}</div>
-            {% endif %}
         </div>
     {% endfor %}
     </div>
